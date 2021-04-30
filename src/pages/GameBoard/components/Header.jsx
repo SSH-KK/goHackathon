@@ -1,14 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import Logo from '../../../assets/img/logo_game.png'
-import { MAIN_URL } from '../../../constants/routes'
 
 const Wrapper = styled.div`
   display: flex;
   height: 66px;
   align-items: center;
-  margin-bottom: 34px;
-  padding-top: 29px;
 `
 const Content = styled.div`
   display: flex;
@@ -25,12 +21,6 @@ const Left = styled.div`
   display: flex;
   align-items: center;
 `
-const LogoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
-const Logotype = styled.img``
 const Text = styled.p`
   font-size: 24px;
   line-height: 28px;
@@ -64,9 +54,9 @@ export const Header = ({
     <Wrapper>
       <Content>
         <Left>
-          <LogoWrapper onClick={() => history.push(MAIN_URL)}>
+          {/* <LogoWrapper onClick={() => history.push(MAIN_URL)}>
             <Logotype alt="logo" src={Logo} />
-          </LogoWrapper>
+          </LogoWrapper> */}
           <Menu>
             {viewPass && <Text onClick={() => setPass()}>Пас</Text>}
             <Text onClick={() => setResign()}>Сдаться</Text>
