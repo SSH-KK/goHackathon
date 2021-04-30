@@ -6,7 +6,7 @@ import { markersClear, setMapStones } from '../../../store/Board/actions'
 import { client } from '../../../Socket'
 
 const Wrapper = styled.div`
-  width: 50%;
+  width: 100%;
   position: relative;
   & > div {
     position: absolute;
@@ -32,7 +32,6 @@ const Board = ({
   setHelpType,
   setMultipleType,
   setActiveHelpId,
-  setMapType,
   setStonePosition,
   mapStones,
 }) => {
@@ -70,7 +69,6 @@ const Board = ({
       setHelpType('')
       setActiveHelpId('')
       setMultipleType(false)
-      setMapType(false)
     }
   }
 

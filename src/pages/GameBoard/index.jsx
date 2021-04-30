@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Board from './components/Board'
-import GameInfo from './components/GameInfo'
 import styled from 'styled-components'
-import { Header } from './components/Header'
-import Help from './components/Help'
+import { clearGameId } from '../../store/GameCreate/actions'
 import {
   hintHeatmapFull,
   hintHeatmapZone,
@@ -18,21 +15,22 @@ import {
   hintBestMoves,
 } from '../../store/Board/actions'
 
-import { clearGameId } from '../../store/GameCreate/actions'
+import { formatTurn } from '../../helpers/rightBar'
 
 import { client, token } from '../../Socket.js'
 import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './components/Help/types'
+import deadstones from '@sabaki/deadstones'
+
+import { GameContainer } from './GameContainer'
+import { RightContainer } from './RightContainer'
+
+deadstones.useFetch('deadstones_bg.wasm')
 
 const Wrapper = styled.div`
-  max-width: 1377px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   margin: 0 auto;
-`
-const Flex = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: stretch;
-  height: calc(100vh - 129px);
+  height: 100vh;
 `
 const Wrap = styled.div`
   width: 100%;
@@ -49,25 +47,24 @@ const GameBoard = ({ history }) => {
   const blocked = useSelector(state => state.board.blocked)
   const mapStones = useSelector(state => state.board.mapStones)
 
-  const [hint, setHint] = useState(false)
+  const [hintsShow, setHintsShow] = useState(false)
   const [enemyPass, setEnemyPass] = useState(false)
   const [lastMarkers, setLastMarkers] = useState(null)
   const [helpType, setHelpType] = useState('')
   const [activeHelpId, setActiveHelpId] = useState('')
   const [multipleType, setMultipleType] = useState(false)
-  const [mapType, setMapType] = useState(false)
   const [multipleHint, setMultipleHint] = useState({})
   const [multipleCount, setMultipleCount] = useState([])
   const [turns, setTurns] = useState([])
-  const [yourColor, setYourColor] = useState('white')
+  const [selfColor, setSelfColor] = useState('white')
   const [coordinates, setCoordinates] = useState({})
-  const [you, setYou] = useState({})
-  const [opponent, setOpponent] = useState({})
-  const [stepMain, setStepMain] = useState(0)
-  const [stepTwo, setStepTwo] = useState(0)
-  const [stepColor, setStepColor] = useState('white')
-  const dispatch = useDispatch()
+  const [self, setSelf] = useState({}) // self player object
+  const [opponent, setOpponent] = useState({}) // opponent player object
+  const [selfStonesCount, setSelfStonesCount] = useState(0)
+  const [opponentStonesCount, setOpponentStonesCount] = useState(0)
+  const [currentPlayerColor, setCurrentPlayerColor] = useState('white')
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (Object.keys(multipleHint).length === multipleCount) {
@@ -107,15 +104,24 @@ const GameBoard = ({ history }) => {
       let jsonData = JSON.parse(e.data)
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
-          setCoordinates(mapMap(jsonData.payload.currentMap))
+          const currentMap = jsonData.payload.currentMap
+          // const startTime = Date.now()
+          // deadstones.getProbabilityMap(currentMap, 200).then(data => {
+          //   console.group('here')
+          //   console.log(currentMap)
+          //   console.log(data)
+          //   console.log(Date.now() - startTime)
+          //   console.groupEnd()
+          // })
+          setCoordinates(mapMap(currentMap))
         }
         if (jsonData.payload.type === 'currentMap') {
-          setYou(jsonData.payload.you)
+          setSelf(jsonData.payload.you)
           setOpponent(jsonData.payload.opponent)
         }
         if (jsonData.payload.player) {
           if (typeof jsonData.payload.player === 'string') {
-            setYourColor(jsonData.payload.player === 'w' ? 'white' : 'black')
+            setSelfColor(jsonData.payload.player === 'w' ? 'white' : 'black')
           }
         }
         if (jsonData.payload.type && jsonData.payload.type === 'endGame') {
@@ -128,19 +134,16 @@ const GameBoard = ({ history }) => {
           dispatch(clearGameId())
         }
         if (jsonData.payload.turn) {
-          setStepColor(jsonData.payload.turn)
+          setCurrentPlayerColor(jsonData.payload.turn)
         }
         if (jsonData.payload.move) {
-          setTurns(turns => [
-            ...turns,
-            timeConverter(jsonData.time) + ': ' + jsonData.payload.move,
-          ])
+          setTurns(turns => [...turns, formatTurn(jsonData)])
         }
         if (jsonData.payload.type === 'newTurn') {
           setLastMarkers({ [jsonData.payload.place]: 'last_pos_marker' })
         }
         if (jsonData.payload.moveType === 'pass') {
-          if (stepColor !== yourColor) {
+          if (currentPlayerColor !== selfColor) {
             setEnemyPass(true)
           }
         }
@@ -180,19 +183,19 @@ const GameBoard = ({ history }) => {
     let steMainTemp = 0
     let stepTwoTemp = 0
     Object.keys(coords).forEach(key => {
-      if (String(yourColor) === String(coords[key])) {
+      if (String(selfColor) === String(coords[key])) {
         steMainTemp += 1
       } else {
         stepTwoTemp += 1
       }
     })
-    setStepMain(steMainTemp)
-    setStepTwo(stepTwoTemp)
+    setSelfStonesCount(steMainTemp)
+    setOpponentStonesCount(stepTwoTemp)
     return coords
   }
 
   const move = coord => {
-    if (stepColor === yourColor) {
+    if (currentPlayerColor === selfColor) {
       dispatch(markersClear())
       setActiveHelpId(null)
       setHelpType('')
@@ -212,7 +215,7 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  const pass = () => {
+  const passFn = () => {
     dispatch(markersClear())
     setActiveHelpId(null)
     setHelpType('')
@@ -254,7 +257,6 @@ const GameBoard = ({ history }) => {
     if (type === 'map') {
       dispatch(setBlocked(true))
       setHelpType('map')
-      setMapType('map')
       switch (id) {
         case HEATMAP_FULL:
           dispatch(hintHeatmapFull(game_id))
@@ -310,75 +312,46 @@ const GameBoard = ({ history }) => {
 
   return (
     <Wrapper>
-      <Header
-        hint={hint}
-        setPass={pass}
-        viewPass={Object.keys(coordinates).length > 0}
-        history={history}
-        setHint={e => setHint(e)}
-        setResign={resign}
+      {blocked && <Wrap />}
+      <GameContainer
+        lastMarkers={lastMarkers}
+        hint={hintsShow}
+        setHint={setHintsShow}
+        currentColor={currentPlayerColor}
+        setCurrentColor={setCurrentPlayerColor}
+        yourColor={selfColor}
         helpType={helpType}
-        gameId={game_id}
-        view={stepColor === yourColor}
-        timeOut={() => alert('End Time')}
-        timer={stepColor === yourColor}
+        setMultipleHint={val => setMultipleHintFunc(val)}
+        multipleHint={multipleHint}
+        multipleCount={multipleCount}
+        coordinates={coordinates}
+        setStonePosition={move}
+        setHelpType={setHelpType}
+        setMultipleType={setMultipleType}
+        setActiveHelpId={setActiveHelpId}
+        classNames={{}}
+        mapStones={mapStones}
+        passFn={passFn}
       />
-      <Flex>
-        {blocked && <Wrap />}
-        <Board
-          lastMarkers={lastMarkers}
-          hint={hint}
-          setHint={setHint}
-          currentColor={stepColor}
-          setCurrentColor={setStepColor}
-          yourColor={yourColor}
-          helpType={helpType}
-          setMultipleHint={val => setMultipleHintFunc(val)}
-          multipleHint={multipleHint}
-          multipleCount={multipleCount}
-          coordinates={coordinates}
-          setStonePosition={move}
-          setHelpType={setHelpType}
-          setMapType={setMapType}
-          setMultipleType={setMultipleType}
-          setActiveHelpId={setActiveHelpId}
-          classNames={{}}
-          mapStones={mapStones}
-        />
-        {!hint ? (
-          <GameInfo
-            you={you}
-            opponent={opponent}
-            stepColor={stepColor}
-            yourColor={yourColor}
-            turns={turns}
-            enemyPass={enemyPass}
-            stepMain={stepMain}
-            times={times}
-            stepTwo={stepTwo}
-          />
-        ) : (
-          <Help
-            you={you}
-            opponent={opponent}
-            stepColor={stepColor}
-            yourColor={yourColor}
-            turns={turns}
-            enemyPass={enemyPass}
-            stepMain={stepMain}
-            stepTwo={stepTwo}
-            currentColor={yourColor}
-            setHint={setHint}
-            handleHelp={handleHelp}
-            helpType={helpType}
-            multipleType={multipleType}
-            mapType={mapType}
-            activeHelpId={activeHelpId}
-            times={times}
-            scores={stepColor !== yourColor ? false : true}
-          />
-        )}
-      </Flex>
+      <RightContainer
+        hint={hintsShow}
+        you={self}
+        opponent={opponent}
+        stepColor={currentPlayerColor}
+        yourColor={selfColor}
+        turns={turns}
+        enemyPass={enemyPass}
+        stepMain={selfStonesCount}
+        stepTwo={opponentStonesCount}
+        currentColor={selfColor}
+        setHint={setHintsShow}
+        handleHelp={handleHelp}
+        helpType={helpType}
+        multipleType={multipleType}
+        activeHelpId={activeHelpId}
+        times={times}
+        scores={currentPlayerColor !== selfColor ? false : true}
+      />
     </Wrapper>
   )
 }
