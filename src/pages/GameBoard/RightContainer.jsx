@@ -1,5 +1,5 @@
-import GameInfo from "./components/GameInfo"
-import Help from "./components/Help"
+import GameInfo from './components/GameInfo'
+import Help from './components/Help'
 
 export const RightContainer = ({
   you,
@@ -15,7 +15,6 @@ export const RightContainer = ({
   handleHelp,
   helpType,
   multipleType,
-  mapType,
   activeHelpId,
   times,
 }) => {
@@ -46,7 +45,6 @@ export const RightContainer = ({
       handleHelp={handleHelp}
       helpType={helpType}
       multipleType={multipleType}
-      mapType={mapType}
       activeHelpId={activeHelpId}
       times={times}
       scores={stepColor !== yourColor ? false : true}
