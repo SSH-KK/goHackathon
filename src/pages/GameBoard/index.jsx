@@ -215,7 +215,7 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  const pass = () => {
+  const passFn = () => {
     dispatch(markersClear())
     setActiveHelpId(null)
     setHelpType('')
@@ -331,6 +331,7 @@ const GameBoard = ({ history }) => {
         setActiveHelpId={setActiveHelpId}
         classNames={{}}
         mapStones={mapStones}
+        passFn={passFn}
       />
       <RightContainer
         hint={hintsShow}
