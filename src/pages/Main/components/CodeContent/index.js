@@ -1,1 +1,1 @@
-export * from './CodeContent';
+export * from './CodeContent'

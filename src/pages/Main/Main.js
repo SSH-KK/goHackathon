@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {useDispatch, useSelector} from 'react-redux'
-import { Header } from "./components/Header";
-import { Content } from "./components/Content";
-import styled from "styled-components";
-import { getProfile } from "../../store/Profile/actions";
-import { getCurrentGame } from "../../store/GameCreate/actions";
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Header } from './components/Header'
+import { Content } from './components/Content'
+import styled from 'styled-components'
+import { getProfile } from '../../store/Profile/actions'
+import { getCurrentGame } from '../../store/GameCreate/actions'
 
 const Wrapper = styled.div`
   max-width: 1300px;
@@ -14,20 +14,22 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   padding-top: 170px;
-`;
+`
 
 const Main = ({ history, location }) => {
-  const [searchType, setSearchType] = useState(location.state?.from ? location.state.from : '');
-  const dispatch = useDispatch();
-  const playerInfo = useSelector((state) => state.profile.userProfile.user);
+  const [searchType, setSearchType] = useState(
+    location.state?.from ? location.state.from : ''
+  )
+  const dispatch = useDispatch()
+  const playerInfo = useSelector(state => state.profile.userProfile.user)
 
   useEffect(() => {
-    dispatch(getProfile());
-    dispatch(getCurrentGame());
+    dispatch(getProfile())
+    dispatch(getCurrentGame())
   }, [])
 
-  if(!playerInfo) {
-    return null;
+  if (!playerInfo) {
+    return null
   }
 
   return (
@@ -47,7 +49,7 @@ const Main = ({ history, location }) => {
         setSearchType={setSearchType}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Main;
+export default Main

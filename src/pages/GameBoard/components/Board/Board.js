@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Goban } from "react-goban";
-import styled from "styled-components";
-import { markersClear, setMapStones } from "../../../../store/Board/actions";
-import { client } from "../../../../Socket";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Goban } from 'react-goban'
+import styled from 'styled-components'
+import { markersClear, setMapStones } from '../../../../store/Board/actions'
+import { client } from '../../../../Socket'
 
 const Wrapper = styled.div`
   width: 50%;
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
   }
-`;
+`
 
 const Board = ({
   lastMarkers,
@@ -38,50 +38,61 @@ const Board = ({
   setMapType,
   setStonePosition,
   classNames,
-  mapStones
+  mapStones,
 }) => {
-  const dispatch = useDispatch();
-  const markers = useSelector((state) => state.board.markers);
+  const dispatch = useDispatch()
+  const markers = useSelector(state => state.board.markers)
   const classNamesMapStones = useSelector(
-    (state) => state.board.classNamesMapStones
-  );
+    state => state.board.classNamesMapStones
+  )
 
-  const handleTurn = (stonePosition) => {
-    client.send(JSON.stringify([7, "go/game", {command: "move", token: "1cfc52aacaba0507e66d74cd878020f071457220", place: stonePosition.toString().toLowerCase(), game_id: 8}]));
-    let valid = true;
+  const handleTurn = stonePosition => {
+    client.send(
+      JSON.stringify([
+        7,
+        'go/game',
+        {
+          command: 'move',
+          token: '1cfc52aacaba0507e66d74cd878020f071457220',
+          place: stonePosition.toString().toLowerCase(),
+          game_id: 8,
+        },
+      ])
+    )
+    let valid = true
     for (const key in coordinates) {
       if (key === stonePosition) {
-        valid = false;
+        valid = false
       }
     }
     if (valid && currentColor === yourColor) {
       setStonePosition(stonePosition)
       //setCoordinates({ ...coordinates, [stonePosition]: currentColor });
-      setCurrentColor(currentColor === "white" ? "black" : "white");
-      setHint(false);
-      dispatch(markersClear());
-      setHelpType("");
-      setActiveHelpId("");
-      setMultipleType(false);
-      setMapType(false);
+      setCurrentColor(currentColor === 'white' ? 'black' : 'white')
+      setHint(false)
+      dispatch(markersClear())
+      setHelpType('')
+      setActiveHelpId('')
+      setMultipleType(false)
+      setMapType(false)
     }
-  };
+  }
 
-  const handleMultipleTurn = (stonePosition) => {
-    let valid = true;
+  const handleMultipleTurn = stonePosition => {
+    let valid = true
     for (const key in coordinates) {
       if (key === stonePosition) {
-        valid = false;
+        valid = false
       }
     }
     if (valid) {
       dispatch(setMapStones({ ...mapStones, [stonePosition]: 'circle' }))
-      setMultipleHint(stonePosition);
+      setMultipleHint(stonePosition)
       //setCoordinates({ ...coordinates, [stonePosition]: currentColor });
     }
-  };
+  }
 
-  let className;
+  let className
   if (currentColor !== yourColor) {
     className = 'disabled'
   } else {
@@ -90,20 +101,20 @@ const Board = ({
 
   return (
     <Wrapper className={className}>
-        <Goban
-          style={{ position: "absolute" }}
-          stones={coordinates}
-          markers={markers}
-          lastMarkers={lastMarkers}
-          mapStones={mapStones}
-          classNamesMapStones={classNamesMapStones}
-          onIntersectionClick={
-            helpType !== "multiple" ? handleTurn : handleMultipleTurn
-          }
-          nextToPlay={yourColor}
-        />
+      <Goban
+        style={{ position: 'absolute' }}
+        stones={coordinates}
+        markers={markers}
+        lastMarkers={lastMarkers}
+        mapStones={mapStones}
+        classNamesMapStones={classNamesMapStones}
+        onIntersectionClick={
+          helpType !== 'multiple' ? handleTurn : handleMultipleTurn
+        }
+        nextToPlay={yourColor}
+      />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Board;
+export default Board

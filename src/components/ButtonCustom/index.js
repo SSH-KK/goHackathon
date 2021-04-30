@@ -1,35 +1,35 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 
 const Btn = styled.button`
-  width: ${(props) => (props.width ? props.width : "100%")};
-  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
-  text-align: ${(props) => (props.textAlign ? props.textAlign : "center")};
-  font-family: "Roboto", sans-serif;
-  padding: ${(props) => (props.padding ? props.padding : "0")};
-  height: ${(props) => (props.height ? props.height : "62px")};
+  width: ${props => (props.width ? props.width : '100%')};
+  font-weight: ${props => (props.fontWeight ? props.fontWeight : 400)};
+  text-align: ${props => (props.textAlign ? props.textAlign : 'center')};
+  font-family: 'Roboto', sans-serif;
+  padding: ${props => (props.padding ? props.padding : '0')};
+  height: ${props => (props.height ? props.height : '62px')};
   display: block;
   outline: none;
   flex-shrink: 0;
-  margin-right: ${(props) => (props.mr ? `${props.mr}px` : "0")};
-  margin-left: ${(props) => (props.ml ? `${props.ml}px` : "0")};
-  margin-top: ${(props) => (props.mt ? `${props.mt}px` : "0")};
-  margin-bottom: ${(props) => (props.mb ? `${props.mb}px` : "0")};
-  background-color: ${(props) =>
+  margin-right: ${props => (props.mr ? `${props.mr}px` : '0')};
+  margin-left: ${props => (props.ml ? `${props.ml}px` : '0')};
+  margin-top: ${props => (props.mt ? `${props.mt}px` : '0')};
+  margin-bottom: ${props => (props.mb ? `${props.mb}px` : '0')};
+  background-color: ${props =>
     props.disabled
-      ? "#DEDEDE"
+      ? '#DEDEDE'
       : props.backgroundColor
       ? props.backgroundColor
-      : "#FFE3BA"};
-  color: ${(props) =>
-    props.disabled ? "#9b9b9b" : props.textColor ? props.textColor : "#000"};
+      : '#FFE3BA'};
+  color: ${props =>
+    props.disabled ? '#9b9b9b' : props.textColor ? props.textColor : '#000'};
   cursor: pointer;
-  font-size: ${(props) => (props.fontSize ? props.fontSize : "28px")};
+  font-size: ${props => (props.fontSize ? props.fontSize : '28px')};
   border: none;
   &:hover {
-    background-color: ${(props) => (props.disabled ? "#DEDEDE" : "#FFC266")};
+    background-color: ${props => (props.disabled ? '#DEDEDE' : '#FFC266')};
   }
-`;
+`
 
 export const ButtonCustom = ({
   children,
@@ -47,7 +47,7 @@ export const ButtonCustom = ({
   textColor,
   disabled,
   type,
-  onClick
+  onClick,
 }) => (
   <Btn
     width={width}
@@ -68,4 +68,4 @@ export const ButtonCustom = ({
   >
     {children}
   </Btn>
-);
+)

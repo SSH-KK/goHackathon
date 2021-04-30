@@ -1,40 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import styled from "styled-components";
-import { ButtonCustom } from "../../../../components/ButtonCustom";
-import { Input } from "../../../../components/InputCustom";
-import { clearGameId, createGameCode, joinGameWithCode } from "../../../../store/GameCreate/actions";
-import { client, token } from "../../../../Socket";
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector, useStore } from 'react-redux'
+import styled from 'styled-components'
+import { ButtonCustom } from '../../../../components/ButtonCustom'
+import { Input } from '../../../../components/InputCustom'
+import {
+  clearGameId,
+  createGameCode,
+  joinGameWithCode,
+} from '../../../../store/GameCreate/actions'
+import { client, token } from '../../../../Socket'
 
 const Text = styled.p`
   font-size: 36px;
   line-height: 42px;
   text-align: center;
-`;
+`
 
 const CustomCodeContent = ({ setSearchType, setContentType }) => (
   <>
     <Text>«Закрытая игра»</Text>
-    <ButtonCustom mt={40} mb={30} onClick={() => setContentType("CreateGame")}>
+    <ButtonCustom mt={40} mb={30} onClick={() => setContentType('CreateGame')}>
       Создать игру
     </ButtonCustom>
-    <ButtonCustom mb={30} onClick={() => setContentType("JoinGame")}>
+    <ButtonCustom mb={30} onClick={() => setContentType('JoinGame')}>
       Присоединиться
     </ButtonCustom>
-    <ButtonCustom onClick={() => setSearchType("")}>Отмена</ButtonCustom>
+    <ButtonCustom onClick={() => setSearchType('')}>Отмена</ButtonCustom>
   </>
-);
+)
 
 const CreateGame = ({ setSearchType, cancelGame, code }) => (
   <>
     <Text>Код вашей игры:</Text>
-    <Input value={code || 'Ожидайте'} textAlign="center" disabled mt={40} mb={30} />
-    <ButtonCustom mb={30} onClick={() => setSearchType("CodeEnter")}>
+    <Input
+      value={code || 'Ожидайте'}
+      textAlign="center"
+      disabled
+      mt={40}
+      mb={30}
+    />
+    <ButtonCustom mb={30} onClick={() => setSearchType('CodeEnter')}>
       Начать игру
     </ButtonCustom>
     <ButtonCustom onClick={() => cancelGame()}>Отмена</ButtonCustom>
   </>
-);
+)
 
 const JoinGame = ({ setSearchType, cancelGame, code, setCode }) => (
   <>
@@ -43,30 +53,30 @@ const JoinGame = ({ setSearchType, cancelGame, code, setCode }) => (
     <ButtonCustom
       mb={30}
       disabled={!code}
-      onClick={() => code && setSearchType("CodeEnter")}
+      onClick={() => code && setSearchType('CodeEnter')}
     >
       Присоединиться
     </ButtonCustom>
     <ButtonCustom onClick={() => cancelGame()}>Отмена</ButtonCustom>
   </>
-);
+)
 
 export const CodeContent = ({ gameId, setSearchType }) => {
-  const [code, setCode] = useState("");
-  const [contentType, setContentType] = useState("");
-  const dispatch = useDispatch();
-  const codeGame = useSelector(state => state.createGame.code);
+  const [code, setCode] = useState('')
+  const [contentType, setContentType] = useState('')
+  const dispatch = useDispatch()
+  const codeGame = useSelector(state => state.createGame.code)
 
   useEffect(() => {
-    if (contentType === "CreateGame") {
-      dispatch(createGameCode());
+    if (contentType === 'CreateGame') {
+      dispatch(createGameCode())
     }
-  }, [contentType]);
+  }, [contentType])
 
-  const getGameId = async (val) => {
-    if (val === "CodeEnter") {
+  const getGameId = async val => {
+    if (val === 'CodeEnter') {
       if (code) {
-        await dispatch(joinGameWithCode(code));
+        await dispatch(joinGameWithCode(code))
       }
     } else {
       setSearchType(val)
@@ -74,9 +84,15 @@ export const CodeContent = ({ gameId, setSearchType }) => {
   }
 
   const cancelGame = async () => {
-    client.send(JSON.stringify([7, "go/game", {command: "resign", token: token, game_id: gameId}]));
+    client.send(
+      JSON.stringify([
+        7,
+        'go/game',
+        { command: 'resign', token: token, game_id: gameId },
+      ])
+    )
     await dispatch(clearGameId())
-    setSearchType("")
+    setSearchType('')
   }
 
   return (
@@ -87,12 +103,21 @@ export const CodeContent = ({ gameId, setSearchType }) => {
           setContentType={setContentType}
         />
       ) : null}
-      {contentType === "CreateGame" ? (
-        <CreateGame cancelGame={()=>cancelGame()} setSearchType={setSearchType} code={codeGame} />
+      {contentType === 'CreateGame' ? (
+        <CreateGame
+          cancelGame={() => cancelGame()}
+          setSearchType={setSearchType}
+          code={codeGame}
+        />
       ) : null}
-      {contentType === "JoinGame" ? (
-        <JoinGame cancelGame={()=>cancelGame()} setSearchType={(val) => getGameId(val)} code={code} setCode={(val) => setCode(val)} />
+      {contentType === 'JoinGame' ? (
+        <JoinGame
+          cancelGame={() => cancelGame()}
+          setSearchType={val => getGameId(val)}
+          code={code}
+          setCode={val => setCode(val)}
+        />
       ) : null}
     </>
-  );
-};
+  )
+}

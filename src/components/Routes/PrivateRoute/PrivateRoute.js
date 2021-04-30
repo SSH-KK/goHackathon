@@ -1,13 +1,13 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { isAuth } from "../../../helpers/session";
-import { AUTH_URL } from "../../../constants/routes";
+import React from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { isAuth } from '../../../helpers/session'
+import { AUTH_URL } from '../../../constants/routes'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) =>
+      render={props =>
         isAuth() ? (
           <Component {...props} />
         ) : (
@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         )
       }
     />
-  );
-};
+  )
+}
 
-export default PrivateRoute;
+export default PrivateRoute

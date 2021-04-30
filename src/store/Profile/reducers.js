@@ -1,10 +1,10 @@
-import { PROFILE_INFO, PROFILE_BY_ID_INFO, SET_LIDERS } from "./types";
+import { PROFILE_INFO, PROFILE_BY_ID_INFO, SET_LIDERS } from './types'
 
 const initialState = {
   userProfile: {},
   userByIdProfile: {},
-  liders: []
-};
+  liders: [],
+}
 
 export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -12,18 +12,18 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         userProfile: action.payload,
-      };
+      }
     case PROFILE_BY_ID_INFO:
       return {
         ...state,
         userByIdProfile: action.payload,
-      };
+      }
     case SET_LIDERS:
       return {
         ...state,
         liders: action.payload.leaderboard,
-      };
+      }
     default:
-      return { ...state };
+      return { ...state }
   }
-};
+}

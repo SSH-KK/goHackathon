@@ -1,1 +1,1 @@
-export const wsUri = "ws://172.104.137.176:41239"
+export const wsUri = 'ws://172.104.137.176:41239'

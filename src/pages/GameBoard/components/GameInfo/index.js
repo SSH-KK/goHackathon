@@ -1,1 +1,1 @@
-export * from './GameInfo';
+export * from './GameInfo'

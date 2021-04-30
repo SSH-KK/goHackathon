@@ -1,13 +1,13 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { isAuth } from "../../../helpers/session";
-import { MAIN_URL } from "../../../constants/routes";
+import React from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { isAuth } from '../../../helpers/session'
+import { MAIN_URL } from '../../../constants/routes'
 
 const LoginRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) =>
+      render={props =>
         !isAuth() ? (
           <Component {...props} />
         ) : (
@@ -20,7 +20,7 @@ const LoginRoute = ({ component: Component, ...rest }) => {
         )
       }
     />
-  );
-};
+  )
+}
 
-export default LoginRoute;
+export default LoginRoute
