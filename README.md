@@ -1,3 +1,26 @@
+# Структура проекта
+index.js - Входная точка проекта 
+
+routes.js - Роутинг,все роты приватные, выкидывают на логин, если нет токена
+
+Папка src/api - содержит запросы для работы с сервером
+
+Папка src/assests - Иконки, картинки 
+
+Папка src/components -  Содержит компоненты, например кастомные кнопки и т.д
+
+Папка src/constants -  константы проекта
+
+Папка src/helpers - вспомогательные функции, которые используются на проекте
+
+Папка src/pages - страницы проекта, могут содержать в себе компоненты, необходимые для страницы
+
+Папка src/scss - Общие стили проекта
+
+Папка src/store - Работа с тором проекта, используется redux + redux-saga, redux-saga используется для работы с api.
+
+На проекте используется библиотека styled-components, предназначена для работы со стилями. 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -62,6 +85,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/m
 This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
 ### Deployment
+
+
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
