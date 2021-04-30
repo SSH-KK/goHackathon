@@ -98,7 +98,7 @@ const Board = ({
   return (
     <Wrapper className={className}>
       <Goban
-        style={{ position: 'absolute' }}
+        theme={'new_night'}
         stones={coordinates}
         markers={markers}
         lastMarkers={lastMarkers}

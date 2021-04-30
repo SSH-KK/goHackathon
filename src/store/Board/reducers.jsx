@@ -76,7 +76,7 @@ export const boardReducer = (state = initialState, action) => {
             if (parseInt(cell) !== 0) {
               let sign = alpha[rowId]
               let coord = `${sign}${colId + 1}`
-              mapStones[coord] = 'circle'
+              mapStones[coord] = 'circle_gradient'
               classNamesMapStones[coord] = `redstone size-${cell}`
             }
           })

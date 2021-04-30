@@ -137,7 +137,7 @@ const GameBoard = ({ history }) => {
           ])
         }
         if (jsonData.payload.type === 'newTurn') {
-          setLastMarkers({ [jsonData.payload.place]: 'circle' })
+          setLastMarkers({ [jsonData.payload.place]: 'last_pos_marker' })
         }
         if (jsonData.payload.moveType === 'pass') {
           if (stepColor !== yourColor) {
