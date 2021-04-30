@@ -2,7 +2,6 @@ import { all, takeLatest, call, put } from 'redux-saga/effects'
 import { registration, login } from '../../api/auth'
 import { setToken } from '../../helpers/session'
 import { REG_SUBMIT, REG_ERROR, LOGIN_ERROR, LOGIN_SUBMIT } from './types'
-import history from '../../history'
 
 function* fetchReg_saga(action) {
   const { payload } = action

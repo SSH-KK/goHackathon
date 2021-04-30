@@ -1,14 +1,14 @@
 import React from 'react'
 import { Redirect, Router, Switch } from 'react-router-dom'
 import history from './history'
-import Auth from './pages/Auth/components/Auth'
-import Main from './pages/Main/Main'
-import GameBoard from './pages/GameBoard/GameBoard'
-import Profile from './pages/Profile/Profile'
-import Info from './pages/Info/Info'
-import PrivateRoute from './components/Routes/PrivateRoute/PrivateRoute'
-import LoginRoute from './components/Routes/LoginRoute/LoginRoute'
-import Liders from './pages/Liders/Liders'
+import Auth from './pages/Auth'
+import Main from './pages/Main'
+import GameBoard from './pages/GameBoard'
+import Profile from './pages/Profile'
+import Info from './pages/Info'
+import PrivateRoute from './components/Routes/PrivateRoute'
+import LoginRoute from './components/Routes/LoginRoute'
+import Liders from './pages/Liders'
 import {
   AUTH_URL,
   GAME_URL,

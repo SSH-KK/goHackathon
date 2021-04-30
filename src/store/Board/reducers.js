@@ -61,16 +61,18 @@ export const boardReducer = (state = initialState, action) => {
         blocked: false,
       }
     case MAP_HELP:
+      let mapStones = {},
+        classNamesMapStones = {}
       if (action.payload.zone) {
-        var { mapStones, classNamesMapStones } = action.payload.isQuarter
+        const values = action.payload.isQuarter
           ? MAP_QUARTERS[action.payload.zone]
           : MAP_HALF[action.payload.zone]
+        mapStones = values.mapStones
+        classNamesMapStones = values.classNamesMapStones
       } else {
-        var mapStones = {}
-        var classNamesMapStones = {}
         let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
-        action.payload.map((row, rowId) => {
-          row.map((cell, colId) => {
+        action.payload.forEach((row, rowId) => {
+          row.forEach((cell, colId) => {
             if (parseInt(cell) !== 0) {
               let sign = alpha[rowId]
               let coord = `${sign}${colId + 1}`

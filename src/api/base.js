@@ -20,14 +20,6 @@ const fetchWithTimeout = (...args) => {
   })
 }
 
-const authHeaders = token => {
-  const headers = new Headers()
-  headers.append('Content-Type', 'application/json')
-  headers.append('Authorization', `Bearer ${token}`)
-  headers.append('Accept', 'application/json')
-  return headers
-}
-
 /**
  * Throws connection error.
  */

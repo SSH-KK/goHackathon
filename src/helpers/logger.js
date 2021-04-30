@@ -4,7 +4,7 @@
 import { __DEV__ } from '../constants/env'
 
 const emptyFn = () => {}
-export default {
+const Logger = {
   info: __DEV__
     ? function () {
         console.info(...arguments)
@@ -26,3 +26,5 @@ export default {
       }
     : emptyFn,
 }
+
+export default Logger
