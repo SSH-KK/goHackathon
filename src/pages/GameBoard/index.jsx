@@ -22,6 +22,9 @@ import { clearGameId } from '../../store/GameCreate/actions'
 
 import { client, token } from '../../Socket.js'
 import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './components/Help/types'
+import deadstones from '@sabaki/deadstones'
+
+deadstones.useFetch('deadstones_bg.wasm')
 
 const Wrapper = styled.div`
   max-width: 1377px;
@@ -107,7 +110,16 @@ const GameBoard = ({ history }) => {
       let jsonData = JSON.parse(e.data)
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
-          setCoordinates(mapMap(jsonData.payload.currentMap))
+          const currentMap = jsonData.payload.currentMap
+          // const startTime = Date.now()
+          // deadstones.getProbabilityMap(currentMap, 200).then(data => {
+          //   console.group('here')
+          //   console.log(currentMap)
+          //   console.log(data)
+          //   console.log(Date.now() - startTime)
+          //   console.groupEnd()
+          // })
+          setCoordinates(mapMap(currentMap))
         }
         if (jsonData.payload.type === 'currentMap') {
           setYou(jsonData.payload.you)
