@@ -1,30 +1,45 @@
-import React from 'react'
-import styled from 'styled-components'
-import Players from '../GameInfo/components/Players'
-import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './types'
+import React from "react"
+import styled from "styled-components"
+import Players from "../GameInfo/components/Players"
+import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./types"
 
 const Wrapper = styled.div`
-  width: 46%;
-  margin-left: 25px;
+  color: #fff;
+  padding: var(--gap);
+  overflow-y: scroll;
 `
 
-const HelpWrapper = styled.div`
-  margin-top: 23px;
-  max-height: 508px;
-  overflow: scroll;
-  overflow-x: hidden;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
+const HelpHeader = styled.h2`
+  padding-bottom: var(--gap);
+`
+
+const HelpGroup = styled.details`
+  margin-bottom: var(--gap);
+`
+
+const HelpGroupHeader = styled.summary`
+  outline: none;
+  color: #fff;
+  margin-bottom: var(--gap);
+  cursor: pointer;
+`
+
+const HelpGroupList = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: var(--gap);
 `
 
 const HelpItem = styled.div`
-  width: 48%;
-  margin-bottom: 10px;
-  background: ${props => (props.active ? '#D8AD63' : '#f6f6f6')};
-  padding: 10px;
+  border-radius: var(--gap);
+  border: 2px solid #20e7c1;
+  background: ${(props) => (props.active ? "#20e7c1" : "#212529")};
+  color: ${(props) => (props.active ? "#212529" : "#fff")};
+  padding: var(--gap);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const Help = ({
@@ -40,59 +55,58 @@ const Help = ({
   scores,
   times,
 }) => {
+  const helpers = [
+    {
+      title: "Продвинутые подсказки",
+      content: [
+        {
+          name: "Выбрать лучший из трёх вариантов",
+          command: () =>
+            scores &&
+            handleHelp({ type: "multiple", multipleHandleCount: 4, id: 16 }),
+          id: 16,
+        },
+        {
+          name: "Тепловая карта",
+          id: HEATMAP_FULL,
+          command: () =>
+            scores && handleHelp({ type: "map", id: HEATMAP_FULL }),
+        },
+      ],
+    },
+    {
+      title: "Для дурачков",
+      content: [
+        {
+          name: "В какой четверти доски сейчас лучший ход?",
+          id: HEATMAP_ZONE_QUARTER,
+          command: () =>
+            scores && handleHelp({ type: "map", id: HEATMAP_ZONE_QUARTER }),
+        },
+      ],
+    },
+  ]
+
   return (
     <Wrapper>
-      <Players
-        enemyPass={enemyPass}
-        opponent={opponent}
-        you={you}
-        stepColor={stepColor}
-        yourColor={yourColor}
-        stepMain={stepMain}
-        stepTwo={stepTwo}
-        times={times}
-      />
-      <HelpWrapper>
-        <HelpItem
-          active={activeHelpId === 1}
-          onClick={() =>
-            scores && handleHelp({ type: 'single', id: 1, count: 1 })
-          }
-        >
-          Лучший ход
-        </HelpItem>
-        <HelpItem
-          active={activeHelpId === HEATMAP_FULL}
-          onClick={() =>
-            scores && handleHelp({ type: 'map', id: HEATMAP_FULL })
-          }
-        >
-          Тепловая карта всей доски. Детализированная
-        </HelpItem>
-        <HelpItem
-          active={activeHelpId === 16}
-          onClick={() =>
-            scores &&
-            handleHelp({ type: 'multiple', multipleHandleCount: 4, id: 16 })
-          }
-        >
-          Показать лучший из заданных 3 ходов
-        </HelpItem>
-        <HelpItem
-          active={activeHelpId === HEATMAP_ZONE_QUARTER}
-          onClick={() =>
-            scores && handleHelp({ type: 'map', id: HEATMAP_ZONE_QUARTER })
-          }
-        >
-          В какой четверти доски сейчас лучший ход?
-        </HelpItem>
-        <HelpItem
-          active={activeHelpId === 34}
-          onClick={() => scores && handleHelp({ type: 'score', id: 34 })}
-        >
-          Кто побеждает на данный момент?
-        </HelpItem>
-      </HelpWrapper>
+      <HelpHeader>Подсказки</HelpHeader>
+      {helpers.map((group, groupIndex) => (
+        <HelpGroup key={groupIndex}>
+          <HelpGroupHeader>{group.title}</HelpGroupHeader>
+          <HelpGroupList>
+            {group.content.map((helper, helperIndex) => (
+              <HelpItem
+                key={helperIndex}
+                active={activeHelpId === helper.id}
+                onClick={helper.command}
+              >
+                {helper.name}
+                {console.log(helper, activeHelpId === helper.id)}
+              </HelpItem>
+            ))}
+          </HelpGroupList>
+        </HelpGroup>
+      ))}
     </Wrapper>
   )
 }

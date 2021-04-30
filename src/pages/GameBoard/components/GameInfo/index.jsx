@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import Players from './components/Players'
-import Info from './components/Info'
+import React from "react"
+import styled from "styled-components"
+import Players from "./components/Players"
+import Info from "./components/Info"
 
 const Wrapper = styled.div`
-  width: 46%;
+  width: 100%;
   margin-left: 25px;
   display: flex;
   flex-direction: column;
@@ -23,17 +23,6 @@ const GameInfo = ({
 }) => {
   return (
     <Wrapper>
-      <Players
-        enemyPass={enemyPass}
-        opponent={opponent}
-        you={you}
-        stepColor={stepColor}
-        yourColor={yourColor}
-        stepMain={stepMain}
-        stepTwo={stepTwo}
-        times={times}
-      />
-      <Info turns={turns} />
     </Wrapper>
   )
 }
