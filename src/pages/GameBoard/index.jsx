@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import {
   hintHeatmapFull,
   hintHeatmapZone,
@@ -12,23 +12,25 @@ import {
   hintShowBest,
   setScoresWinner,
   hintBestMoves,
-} from "../../store/Board/actions"
+} from "../../store/Board/actions";
 
-import { formatTurn } from "../../helpers/rightBar"
+import { formatTurn } from "../../helpers/rightBar";
 
-import { clearGameId } from "../../store/GameCreate/actions"
+import { client, token } from "../../Socket.js";
+import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./components/Help/types";
+import deadstones from "@sabaki/deadstones";
 
-import { client, token } from "../../Socket.js"
-import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./components/Help/types"
-import { GameContainer } from "./GameContainer"
-import { RightContainer } from "./RightContainer"
+import { GameContainer } from "./GameContainer";
+import { RightContainer } from "./RightContainer";
+
+deadstones.useFetch("deadstones_bg.wasm");
 
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   margin: 0 auto;
   height: 100vh;
-`
+`;
 const Wrap = styled.div`
   width: 100%;
   height: 100%;
@@ -37,50 +39,50 @@ const Wrap = styled.div`
   top: 0;
   background-color: rgba(255, 255, 255, 0.5);
   z-index: 99999999;
-`
+`;
 
 const GameBoard = ({ history }) => {
-  const game_id = useSelector((state) => state.createGame.id)
-  const blocked = useSelector((state) => state.board.blocked)
-  const mapStones = useSelector((state) => state.board.mapStones)
+  const game_id = useSelector((state) => state.createGame.id);
+  const blocked = useSelector((state) => state.board.blocked);
+  const mapStones = useSelector((state) => state.board.mapStones);
 
-  const [hint, setHint] = useState(false)
-  const [enemyPass, setEnemyPass] = useState(false)
-  const [lastMarkers, setLastMarkers] = useState(null)
-  const [helpType, setHelpType] = useState("")
-  const [activeHelpId, setActiveHelpId] = useState("")
-  const [multipleType, setMultipleType] = useState(false)
-  const [mapType, setMapType] = useState(false)
-  const [multipleHint, setMultipleHint] = useState({})
-  const [multipleCount, setMultipleCount] = useState([])
-  const [turns, setTurns] = useState([])
-  const [yourColor, setYourColor] = useState("white")
-  const [coordinates, setCoordinates] = useState({})
-  const [you, setYou] = useState({})
-  const [opponent, setOpponent] = useState({})
-  const [stepMain, setStepMain] = useState(0)
-  const [stepTwo, setStepTwo] = useState(0)
-  const [stepColor, setStepColor] = useState("white")
-  const dispatch = useDispatch()
-  const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
+  const [hint, setHint] = useState(false);
+  const [enemyPass, setEnemyPass] = useState(false);
+  const [lastMarkers, setLastMarkers] = useState(null);
+  const [helpType, setHelpType] = useState("");
+  const [activeHelpId, setActiveHelpId] = useState("");
+  const [multipleType, setMultipleType] = useState(false);
+  const [mapType, setMapType] = useState(false);
+  const [multipleHint, setMultipleHint] = useState({});
+  const [multipleCount, setMultipleCount] = useState([]);
+  const [turns, setTurns] = useState([]);
+  const [yourColor, setYourColor] = useState("white");
+  const [coordinates, setCoordinates] = useState({});
+  const [you, setYou] = useState({});
+  const [opponent, setOpponent] = useState({});
+  const [stepMain, setStepMain] = useState(0);
+  const [stepTwo, setStepTwo] = useState(0);
+  const [stepColor, setStepColor] = useState("white");
+  const dispatch = useDispatch();
+  const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 });
 
   useEffect(() => {
     if (Object.keys(multipleHint).length === multipleCount) {
-      dispatch(multipleHelp())
-      deleteCoordinates(multipleHint)
-      setHelpType("")
-      setMultipleHint({})
+      dispatch(multipleHelp());
+      deleteCoordinates(multipleHint);
+      setHelpType("");
+      setMultipleHint({});
     }
     // eslint-disable-next-line
-  }, [multipleHint, multipleCount])
+  }, [multipleHint, multipleCount]);
 
   if (game_id === null) {
-    history.push("/")
+    history.push("/");
   }
 
   useEffect(() => {
     if (game_id) {
-      client.send(JSON.stringify([5, "go/game"]))
+      client.send(JSON.stringify([5, "go/game"]));
       client.send(
         JSON.stringify([
           7,
@@ -91,49 +93,58 @@ const GameBoard = ({ history }) => {
             game_id: game_id,
           },
         ])
-      )
+      );
     }
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   client.onmessage = function (e) {
-    setEnemyPass(false)
+    setEnemyPass(false);
     if (typeof e.data === "string") {
-      let jsonData = JSON.parse(e.data)
+      let jsonData = JSON.parse(e.data);
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
-          setCoordinates(mapMap(jsonData.payload.currentMap))
+          const currentMap = jsonData.payload.currentMap;
+          // const startTime = Date.now()
+          // deadstones.getProbabilityMap(currentMap, 200).then(data => {
+          //   console.group('here')
+          //   console.log(currentMap)
+          //   console.log(data)
+          //   console.log(Date.now() - startTime)
+          //   console.groupEnd()
+          // })
+          setCoordinates(mapMap(currentMap));
         }
         if (jsonData.payload.type === "currentMap") {
-          setYou(jsonData.payload.you)
-          setOpponent(jsonData.payload.opponent)
+          setYou(jsonData.payload.you);
+          setOpponent(jsonData.payload.opponent);
         }
         if (jsonData.payload.player) {
           if (typeof jsonData.payload.player === "string") {
-            setYourColor(jsonData.payload.player === "w" ? "white" : "black")
+            setYourColor(jsonData.payload.player === "w" ? "white" : "black");
           }
         }
         if (jsonData.payload.type && jsonData.payload.type === "endGame") {
-          let winner = jsonData.payload.winnerPlayer
-          let loser = jsonData.payload.loserPlayer
-          winner.finalScore = jsonData.payload.finalScore
-          dispatch(setWinnerUser(winner))
-          dispatch(setLoserUser(loser))
-          history.push("/", { from: "Win" })
-          dispatch(clearGameId())
+          let winner = jsonData.payload.winnerPlayer;
+          let loser = jsonData.payload.loserPlayer;
+          winner.finalScore = jsonData.payload.finalScore;
+          dispatch(setWinnerUser(winner));
+          dispatch(setLoserUser(loser));
+          history.push("/", { from: "Win" });
+          dispatch(clearGameId());
         }
         if (jsonData.payload.turn) {
-          setStepColor(jsonData.payload.turn)
+          setStepColor(jsonData.payload.turn);
         }
         if (jsonData.payload.move) {
-          setTurns((turns) => [...turns, formatTurn(jsonData)])
+          setTurns((turns) => [...turns, formatTurn(jsonData)]);
         }
         if (jsonData.payload.type === "newTurn") {
-          setLastMarkers({ [jsonData.payload.place]: "circle" })
+          setLastMarkers({ [jsonData.payload.place]: "circle" });
         }
         if (jsonData.payload.moveType === "pass") {
           if (stepColor !== yourColor) {
-            setEnemyPass(true)
+            setEnemyPass(true);
           }
         }
         if (
@@ -151,44 +162,44 @@ const GameBoard = ({ history }) => {
                 new Date().getTime()) /
                 1000
             ),
-          })
+          });
         }
       }
     }
-    dispatch(setBlocked(false))
-  }
+    dispatch(setBlocked(false));
+  };
 
   const mapMap = (map) => {
-    let coords = {}
-    let alpha = "ABCDEFGHJKLMNOPQRSTUV"
+    let coords = {};
+    let alpha = "ABCDEFGHJKLMNOPQRSTUV";
     map.forEach((row, rowId) =>
       row.forEach((cell, colId) => {
         if (cell !== 0) {
-          let sign = alpha[rowId]
-          coords[`${sign}${colId + 1}`] = cell === -1 ? "white" : "black"
+          let sign = alpha[rowId];
+          coords[`${sign}${colId + 1}`] = cell === -1 ? "white" : "black";
         }
       })
-    )
-    let steMainTemp = 0
-    let stepTwoTemp = 0
+    );
+    let steMainTemp = 0;
+    let stepTwoTemp = 0;
     Object.keys(coords).forEach((key) => {
       if (String(yourColor) === String(coords[key])) {
-        steMainTemp += 1
+        steMainTemp += 1;
       } else {
-        stepTwoTemp += 1
+        stepTwoTemp += 1;
       }
-    })
-    setStepMain(steMainTemp)
-    setStepTwo(stepTwoTemp)
-    return coords
-  }
+    });
+    setStepMain(steMainTemp);
+    setStepTwo(stepTwoTemp);
+    return coords;
+  };
 
   const move = (coord) => {
     if (stepColor === yourColor) {
-      dispatch(markersClear())
-      setActiveHelpId(null)
-      setHelpType("")
-      dispatch(setBlocked(true))
+      dispatch(markersClear());
+      setActiveHelpId(null);
+      setHelpType("");
+      dispatch(setBlocked(true));
       client.send(
         JSON.stringify([
           7,
@@ -200,105 +211,105 @@ const GameBoard = ({ history }) => {
             game_id: game_id,
           },
         ])
-      )
+      );
     }
-  }
+  };
 
   const pass = () => {
-    dispatch(markersClear())
-    setActiveHelpId(null)
-    setHelpType("")
-    dispatch(setBlocked(true))
+    dispatch(markersClear());
+    setActiveHelpId(null);
+    setHelpType("");
+    dispatch(setBlocked(true));
     client.send(
       JSON.stringify([
         7,
         "go/game",
         { command: "pass", token: token, game_id: game_id },
       ])
-    )
-  }
+    );
+  };
 
   const resign = () => {
-    dispatch(setBlocked(true))
+    dispatch(setBlocked(true));
     client.send(
       JSON.stringify([
         7,
         "go/game",
         { command: "resign", token: token, game_id: game_id },
       ])
-    )
-  }
+    );
+  };
 
   const handleHelp = ({ type, multipleHandleCount, id, count }) => {
-    dispatch(markersClear())
-    setMultipleHint({})
-    setActiveHelpId(id)
+    dispatch(markersClear());
+    setMultipleHint({});
+    setActiveHelpId(id);
     if (type === "single") {
-      dispatch(setBlocked(true))
-      setHelpType("single")
-      dispatch(hintBestMoves(game_id, count))
+      dispatch(setBlocked(true));
+      setHelpType("single");
+      dispatch(hintBestMoves(game_id, count));
     }
     if (type === "multiple") {
-      setHelpType("multiple")
-      setMultipleType("multiple")
-      setMultipleCount(multipleHandleCount)
+      setHelpType("multiple");
+      setMultipleType("multiple");
+      setMultipleCount(multipleHandleCount);
     }
     if (type === "map") {
-      dispatch(setBlocked(true))
-      setHelpType("map")
-      setMapType("map")
+      dispatch(setBlocked(true));
+      setHelpType("map");
+      setMapType("map");
       switch (id) {
         case HEATMAP_FULL:
-          dispatch(hintHeatmapFull(game_id))
-          break
+          dispatch(hintHeatmapFull(game_id));
+          break;
         case HEATMAP_ZONE_QUARTER:
-          dispatch(hintHeatmapZone(game_id, true))
-          break
+          dispatch(hintHeatmapZone(game_id, true));
+          break;
         default:
-          console.error("invalid id", id)
+          console.error("invalid id", id);
       }
     }
     if (type === "score") {
-      dispatch(setBlocked(true))
-      dispatch(setScoresWinner(game_id))
+      dispatch(setBlocked(true));
+      dispatch(setScoresWinner(game_id));
     }
-  }
+  };
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
       for (const keyHint in hints) {
         if (key === keyHint) {
-          delete coordinates[key]
+          delete coordinates[key];
         }
       }
     }
-  }
+  };
 
   const timeConverter = (UNIX_timestamp) => {
-    let a = new Date(UNIX_timestamp)
-    let year = a.getFullYear().toString().substr(-2)
-    let month = ("0" + (a.getMonth() + 1)).slice(-2)
-    let date = ("0" + a.getDate()).slice(-2)
-    let hour = ("0" + a.getHours()).slice(-2)
-    let min = ("0" + a.getMinutes()).slice(-2)
-    let time = `${date}/${month}/${year} ${hour}:${min}`
-    return time
-  }
+    let a = new Date(UNIX_timestamp);
+    let year = a.getFullYear().toString().substr(-2);
+    let month = ("0" + (a.getMonth() + 1)).slice(-2);
+    let date = ("0" + a.getDate()).slice(-2);
+    let hour = ("0" + a.getHours()).slice(-2);
+    let min = ("0" + a.getMinutes()).slice(-2);
+    let time = `${date}/${month}/${year} ${hour}:${min}`;
+    return time;
+  };
 
   const setMultipleHintFunc = (val) => {
     if (Object.keys(mapStones).length === multipleCount - 2) {
-      dispatch(markersClear())
-      setActiveHelpId(null)
-      setMultipleHint({})
-      setHelpType("")
-      dispatch(setBlocked(true))
+      dispatch(markersClear());
+      setActiveHelpId(null);
+      setMultipleHint({});
+      setHelpType("");
+      dispatch(setBlocked(true));
       dispatch(
         hintShowBest(game_id, Object.keys({ ...mapStones, [val]: "circle" }))
-      )
+      );
     } else {
-      setMultipleHint(mapStones)
+      setMultipleHint(mapStones);
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -344,7 +355,7 @@ const GameBoard = ({ history }) => {
         scores={stepColor !== yourColor ? false : true}
       />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default GameBoard
+export default GameBoard;
