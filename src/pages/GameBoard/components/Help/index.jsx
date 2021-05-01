@@ -61,8 +61,6 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
   const [dialog, setDialog] = useState(null)
   const [rangeValue, setRangeValue] = useState(0)
 
-  console.log(yourColor)
-
   const possibleEnemyMove = useSelector(
     (state) => state.board.possibleEnemyMove
   )
