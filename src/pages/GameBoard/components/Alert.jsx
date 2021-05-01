@@ -1,6 +1,6 @@
-import React from "react"
-import styled from "styled-components"
-import { ButtonCustom } from "../../../components/ButtonCustom"
+import React from 'react'
+import styled from 'styled-components'
+import { ButtonCustom } from '../../../components/ButtonCustom'
 
 const Outer = styled.div`
   position: absolute;
@@ -12,6 +12,7 @@ const Outer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 100;
+  background-color: rgba(255, 255, 255, 0.5);
 `
 
 const Inner = styled.div`
@@ -24,13 +25,19 @@ const Inner = styled.div`
   background-color: #bbbbbb;
 `
 
-export function Alert({ text, hideAlert }) {
+export function Alert({ child, okCallback, close }) {
   return (
     <Outer>
       <Inner>
-        <h1>{text}</h1>
-        <ButtonCustom backgroundColor="#20e7c1" onClick={hideAlert}>
-          Ok
+        {child}
+        <ButtonCustom
+          backgroundColor="#20e7c1"
+          onClick={() => {
+            if (okCallback) okCallback()
+            close()
+          }}
+        >
+          OK
         </ButtonCustom>
       </Inner>
     </Outer>

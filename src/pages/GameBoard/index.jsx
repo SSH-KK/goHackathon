@@ -126,7 +126,7 @@ const GameBoard = ({ history }) => {
     if (typeof e.data === 'string') {
       let jsonData = JSON.parse(e.data)
       if (jsonData.error && jsonData.error.startsWith('illegal move')) {
-        setAlert(jsonData.error)
+        setAlert({ child: <h1>{jsonData.error}</h1> })
         setCurrentColor(currentColor === 'white' ? 'black' : 'white')
       }
       if (jsonData.payload) {
@@ -365,12 +365,7 @@ const GameBoard = ({ history }) => {
         times={times}
         scores={currentColor !== selfColor ? false : true}
       />
-      {alert && (
-        <>
-          <Wrap />
-          <Alert text={alert} hideAlert={() => setAlert(null)} />
-        </>
-      )}
+      {alert && <Alert {...alert} close={() => setAlert(null)} />}
     </Wrapper>
   )
 }
