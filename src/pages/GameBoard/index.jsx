@@ -298,12 +298,18 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  useEffect(()=>{
-    if(!hintsShow){
+  useEffect(() => {
+    if (!hintsShow) {
       dispatch(markersClear())
-      dispatch(territoryShow(probabilityMap.map((row, rowId)=>row.map((col, colId)=>currentMap[rowId][colId] == 0 ? col : 0))))
+      dispatch(
+        territoryShow(
+          probabilityMap.map((row, rowId) =>
+            row.map((col, colId) => (currentMap[rowId][colId] == 0 ? col : 0))
+          )
+        )
+      )
     }
-  },[probabilityMap])
+  }, [probabilityMap])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
