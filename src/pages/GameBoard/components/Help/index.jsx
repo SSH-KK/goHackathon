@@ -64,8 +64,6 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
   const [rangeValue, setRangeValue] = useState(0)
   const [zone, setZone] = useState(0)
 
-  useEffect(() => console.log(zone), [zone])
-
   const possibleEnemyMove = useSelector(
     (state) => state.board.possibleEnemyMove
   )

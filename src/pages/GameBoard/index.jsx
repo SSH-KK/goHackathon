@@ -35,6 +35,8 @@ import { GameContainer } from './GameContainer'
 import { RightPanel } from './RightPanel'
 import { Alert } from './components/Alert'
 import { prepareProbability } from '../../helpers/prepareProbability'
+import { coord2yx } from '../../helpers/coords'
+import { ButtonCustom } from '../../components/ButtonCustom'
 
 deadstones.useFetch('deadstones_bg.wasm')
 
@@ -67,6 +69,8 @@ const mapMap = (map) => {
   )
   return coords
 }
+
+const xyDist = (x1, x2, y1, y2) => Math.abs(x1 - x2) + Math.abs(y1 - y2)
 
 const GameBoard = ({ history }) => {
   const game_id = useSelector((state) => state.createGame.id)
@@ -239,25 +243,65 @@ const GameBoard = ({ history }) => {
     dispatch(setBlocked(false))
   }
 
-  const move = (coord) => {
-    if (currentColor === selfColor) {
-      dispatch(markersClear())
-      setActiveHelpId(null)
-      setHelpType('')
-      dispatch(setBlocked(true))
-      client.send(
-        JSON.stringify([
-          7,
-          'go/game',
-          {
-            command: 'move',
-            token: token,
-            place: coord.toString().toLowerCase(),
-            game_id: game_id,
-          },
-        ])
+  const move = (coord, ignoreAlert = false) => {
+    if (currentColor !== selfColor) return
+    const [y, x] = coord2yx(coord)
+    let showAlert = false
+    const selfColorInt = selfColor === 'black' ? 1 : -1
+    if (!ignoreAlert && currentMap[y][x] === 0) {
+      const newMap = currentMap.map((row) => [...row])
+      newMap[y][x] = selfColorInt
+      const powers = calculatePowers(newMap).map((row) =>
+        row.map((power) => power === 1)
       )
+      let minDist = 1000
+      const size = powers.length
+      for (let px = 0; px < size; px++) {
+        for (let py = 0; py < size; py++) {
+          if (!powers[py][px]) continue
+          // if (currentMap[py][px] !== selfColorInt) continue // if missclick when user tried to capture group
+          const d = xyDist(px, x, py, y)
+          if (d < minDist) minDist = d
+        }
+      }
+      showAlert = minDist <= 2
     }
+    if (showAlert) {
+      setAlert({
+        children: (
+          <>
+            <h2>Nearly with your move will be akami</h2>
+            <ButtonCustom
+              onClick={() => {
+                setCurrentColor(selfColor)
+                setAlert(null)
+              }}
+            >
+              Cancel
+            </ButtonCustom>
+          </>
+        ),
+        okCallback: () => move(coord, true),
+        close: () => setAlert(null),
+      })
+      return
+    }
+    dispatch(markersClear())
+    setActiveHelpId(null)
+    setHelpType('')
+    dispatch(setBlocked(true))
+    client.send(
+      JSON.stringify([
+        7,
+        'go/game',
+        {
+          command: 'move',
+          token: token,
+          place: coord.toString().toLowerCase(),
+          game_id: game_id,
+        },
+      ])
+    )
   }
 
   const passFn = () => {
