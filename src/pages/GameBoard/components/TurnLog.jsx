@@ -54,7 +54,7 @@ const TimeContainer = ({ timeStamp, active }) => {
   )
 }
 
-const Info = ({ turns }) => {
+const TurnLog = ({ turns }) => {
   const endRef = useRef(null)
 
   useEffect(() => {
@@ -92,4 +92,4 @@ const Info = ({ turns }) => {
   )
 }
 
-export default Info
+export default TurnLog
