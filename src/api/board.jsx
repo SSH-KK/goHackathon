@@ -35,6 +35,30 @@ export const helpHeatmapZone = (token, game_id, is_quarter) => {
   )
 }
 
+export const helpHeatmapQuarter = (token, game_id, quarter) => {
+  return GET(
+    `hints/heatmap-best-move-zone?game_id=${game_id}&centaur_token=test1&token=${token}&quarter=${quarter}`,
+    {},
+    token
+  )
+}
+
+export const helpFutureMoves = (token, game_id, count) => {
+  return GET(
+    `hints/best-moves?token=${token}&game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&count=${count}`,
+    {},
+    token
+  )
+}
+
+export const helpSuperiority = (token, game_id) => {
+  return GET(
+    `hints/superiority?token=${token}&game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}`,
+    {},
+    token
+  )
+}
+
 export const scoresWinner = (token, game_id) => {
   return GET(
     `hints/winner?game_id=${game_id}&centaur_token=test1&token=${token}`,
