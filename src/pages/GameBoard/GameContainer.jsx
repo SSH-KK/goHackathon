@@ -19,6 +19,9 @@ const BaseInfo = styled.div`
   width: 50%;
 `
 const PlayerP = styled.p`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 2rem;
   margin-right: 1rem;
   width: 45%;
@@ -27,8 +30,8 @@ const PlayerP = styled.p`
 const PlayerCircle = styled.div`
   background-color: ${(props) =>
     props.color === 'black' ? '#292929;' : '#F0F0F0;'};
-  height: 2rem;
-  width: 2rem;
+  min-height: 2rem;
+  min-width: 2rem;
   margin-right: 1rem;
   border: ${(props) =>
     props.stepColor === props.color
