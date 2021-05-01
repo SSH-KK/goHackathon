@@ -94,6 +94,40 @@ const GameBoard = ({ history }) => {
   const coordinates = mapMap(currentMap)
 
   useEffect(() => {
+    let selfStones = 0
+    let oppStones = 0
+    const selfValue = selfColor === 'black' ? 1 : -1
+    currentMap.forEach((row) =>
+      row.forEach((value) => {
+        if (value === selfValue) {
+          selfStones += 1
+        } else if (value !== 0) {
+          oppStones += 1
+        }
+      })
+    )
+    if (selfStones < selfStonesCount) {
+      setSelfDiedCount((n) => n + (selfStonesCount - selfStones))
+    }
+    if (oppStones < opponentStonesCount) {
+      setOpponentDiedCount((n) => n + (opponentStonesCount - oppStones))
+    }
+    setSelfStonesCount(selfStones)
+    setOpponentStonesCount(oppStones)
+
+    deadstones
+      .getProbabilityMap(currentMap, 150)
+      .then((probabilities) => setProbabilityMap(probabilities))
+
+    // eslint-disable-next-line
+  }, [currentMap])
+
+  useEffect(() => {
+    if (showDead)
+      deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
+  }, [currentMap, showDead])
+
+  useEffect(() => {
     if (Object.keys(multipleHint).length === multipleCount) {
       dispatch(multipleHelp())
       deleteCoordinates(multipleHint)
@@ -136,34 +170,7 @@ const GameBoard = ({ history }) => {
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
           const currentMap = jsonData.payload.currentMap
-          {
-            let selfStones = 0
-            let oppStones = 0
-            const selfValue = selfColor === 'black' ? 1 : -1
-            currentMap.forEach((row) =>
-              row.forEach((value) => {
-                if (value === selfValue) {
-                  selfStones += 1
-                } else if (value !== 0) {
-                  oppStones += 1
-                }
-              })
-            )
-            if (selfStones < selfStonesCount) {
-              setSelfDiedCount((n) => n + (selfStonesCount - selfStones))
-            }
-            if (oppStones < opponentStonesCount) {
-              setOpponentDiedCount((n) => n + (opponentStonesCount - oppStones))
-            }
-            setSelfStonesCount(selfStones)
-            setOpponentStonesCount(oppStones)
-          }
           setCurrentMap(currentMap)
-          if (showDead)
-            deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
-          deadstones
-            .getProbabilityMap(currentMap, 150)
-            .then((probabilities) => setProbabilityMap(probabilities))
         }
         if (jsonData.payload.type === 'currentMap') {
           setSelf(jsonData.payload.you)
@@ -330,11 +337,11 @@ const GameBoard = ({ history }) => {
     }
   }, [probabilityMap, showTerritory, deadStones, showDead])
 
-  useEffect(()=>{
-    if (showDead){
+  useEffect(() => {
+    if (showDead) {
       deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
     }
-  },[showDead])
+  }, [showDead])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
