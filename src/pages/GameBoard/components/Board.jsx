@@ -100,7 +100,6 @@ const Board = ({
     }
     if (valid) {
       dispatch(setMapStones({ ...mapStones, [stonePosition]: 'circle' }))
-      console.log('HOD')
       setMultipleHint(stonePosition)
     }
   }

@@ -25,11 +25,11 @@ const Inner = styled.div`
   background-color: #bbbbbb;
 `
 
-export function Alert({ child, okCallback, close }) {
+export function Alert({ children, okCallback, close }) {
   return (
     <Outer>
       <Inner>
-        {child}
+        {children}
         <ButtonCustom
           backgroundColor="#20e7c1"
           onClick={() => {

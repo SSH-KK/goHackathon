@@ -1,6 +1,7 @@
-import React from "react"
-import styled from "styled-components"
-import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./types"
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './types'
+import { Alert } from '../Alert'
 
 const Wrapper = styled.div`
   color: #fff;
@@ -32,8 +33,8 @@ const HelpGroupList = styled.div`
 const HelpItem = styled.div`
   border-radius: var(--gap);
   border: 2px solid #20e7c1;
-  background: ${(props) => (props.active ? "#20e7c1" : "#212529")};
-  color: ${(props) => (props.active ? "#212529" : "#fff")};
+  background: ${(props) => (props.active ? '#20e7c1' : '#212529')};
+  color: ${(props) => (props.active ? '#212529' : '#fff')};
   padding: var(--gap);
   cursor: pointer;
   display: flex;
@@ -41,51 +42,80 @@ const HelpItem = styled.div`
   justify-content: center;
   transition: all 0.3s;
 
-  &:hover{
-    background-color: ${(props) => (props.active ? "rgba(32,231,193,1)" : "rgba(32,231,193,0.6)")};
+  &:hover {
+    background-color: ${(props) =>
+      props.active ? 'rgba(32,231,193,1)' : 'rgba(32,231,193,0.6)'};
   }
 `
 
-const Help = ({
-  enemyPass,
-  stepColor,
-  yourColor,
-  you,
-  opponent,
-  stepMain,
-  stepTwo,
-  handleHelp,
-  activeHelpId,
-  scores,
-  times,
-}) => {
+const Range = ({ from = 1, to, step = 1, value, setValue }) => {
+  useEffect(() => setValue(from), [])
+  const handleChange = (e) => setValue(parseInt(e.target.value))
+
+  return (
+    <>
+      <span>{value}</span>
+      <input
+        type="range"
+        min={from}
+        max={to}
+        step={step}
+        value={value}
+        onChange={handleChange}
+      />
+    </>
+  )
+}
+
+const Help = ({ handleHelp, activeHelpId, scores }) => {
+  const [dialog, setDialog] = useState(null)
+  const [rangeValue, setRangeValue] = useState(0)
+
+  const showDialog = (callback) => {
+    setDialog({
+      type: 'range',
+      props: {
+        from: 2,
+        to: 7,
+        setValue: setRangeValue,
+      },
+      callback,
+    })
+  }
+
   const helpers = [
     {
-      title: "Продвинутые подсказки",
+      title: 'Продвинутые подсказки',
       content: [
         {
-          name: "Выбрать лучший из трёх вариантов",
-          command: () =>
-            scores &&
-            handleHelp({ type: "multiple", multipleHandleCount: 4, id: 16 }),
-          id: 16,
-        },
-        {
-          name: "Тепловая карта",
+          name: 'Тепловая карта',
           id: HEATMAP_FULL,
           command: () =>
-            scores && handleHelp({ type: "map", id: HEATMAP_FULL }),
+            scores && handleHelp({ type: 'map', id: HEATMAP_FULL }),
+        },
+        {
+          name: 'Выбрать лучший из N ходов',
+          id: 16,
+          command: () =>
+            scores &&
+            showDialog((value) =>
+              handleHelp({
+                type: 'multiple',
+                multipleHandleCount: value + 1,
+                id: 16,
+              })
+            ),
         },
       ],
     },
     {
-      title: "Для дурачков",
+      title: 'Для дурачков',
       content: [
         {
-          name: "В какой четверти доски сейчас лучший ход?",
+          name: 'В какой четверти доски сейчас лучший ход?',
           id: HEATMAP_ZONE_QUARTER,
           command: () =>
-            scores && handleHelp({ type: "map", id: HEATMAP_ZONE_QUARTER }),
+            scores && handleHelp({ type: 'map', id: HEATMAP_ZONE_QUARTER }),
         },
       ],
     },
@@ -110,6 +140,14 @@ const Help = ({
           </HelpGroupList>
         </HelpGroup>
       ))}
+      {dialog && (
+        <Alert
+          okCallback={() => dialog.callback(rangeValue)}
+          close={() => setDialog(null)}
+        >
+          <Range {...dialog.props} value={rangeValue} />
+        </Alert>
+      )}
     </Wrapper>
   )
 }
