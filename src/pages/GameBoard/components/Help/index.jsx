@@ -60,7 +60,6 @@ const HelpItem = styled.div`
 const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
   const [dialog, setDialog] = useState(null)
   const [rangeValue, setRangeValue] = useState(0)
-  const [ratioValue, setRatioValur] = useState(null)
 
   console.log(yourColor)
 
