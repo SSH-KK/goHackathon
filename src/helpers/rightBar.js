@@ -10,7 +10,7 @@ export const formatTurn = (data) => ({
 })
 
 export const convertCoord = (str) => {
-  return [str[0].charCodeAt(0) - 'A'.charCodeAt(0), parseInt(str[1]) - 1]
+  return [str[0].charCodeAt(0) - 'A'.charCodeAt(0), 11 - parseInt(str[1])]
 }
 
 export const countTerritories = (territory) => {
@@ -20,7 +20,7 @@ export const countTerritories = (territory) => {
   territory.forEach((row) =>
     row.forEach((probability) => {
       if (probability > 0) whiteSum++
-      else blackSum++
+      else if (probability < 0) blackSum++
     })
   )
 
@@ -28,18 +28,23 @@ export const countTerritories = (territory) => {
 }
 
 export const countDiff = async (currentMap, enemyMove, myColor) => {
-  const newMap = [...currentMap]
+  const newMap = currentMap.map((row) => [...row])
   const pos = convertCoord(enemyMove)
+
+  console.log(enemyMove, pos)
   newMap[pos[0]][pos[1]] = myColor === 'black' ? -1 : 1
 
   const currentTerritory = await deadstones.getProbabilityMap(currentMap, 150)
   const afterPassTerritory = await deadstones.getProbabilityMap(newMap, 150)
+
+  console.log(currentMap, currentTerritory)
+  console.log(newMap, afterPassTerritory)
 
   const [currentWhite, currentBlack] = countTerritories(currentTerritory)
   const [newWhite, newBlack] = countTerritories(afterPassTerritory)
 
   return (
     (newBlack - newWhite - (currentBlack - currentWhite)) *
-    (myColor === 'black' ? 1 : -1)
+    (myColor === 'black' ? -1 : 1)
   )
 }
