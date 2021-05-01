@@ -12,20 +12,20 @@ import {
   hintShowBest,
   setScoresWinner,
   hintBestMoves,
-} from "../../store/Board/actions"
+} from '../../store/Board/actions'
 
-import { formatTurn } from "../../helpers/rightBar"
+import { formatTurn } from '../../helpers/rightBar'
 
-import { client, token } from "../../Socket.js"
-import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./components/Help/types"
-import deadstones from "@sabaki/deadstones"
+import { client, token } from '../../Socket.js'
+import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './components/Help/types'
+import deadstones from '@sabaki/deadstones'
 
-import { clearGameId } from "../../store/GameCreate/actions"
+import { clearGameId } from '../../store/GameCreate/actions'
 
-import { GameContainer } from "./GameContainer"
-import { RightPanel } from "./RightPanel"
+import { GameContainer } from './GameContainer'
+import { RightPanel } from './RightPanel'
 
-deadstones.useFetch("deadstones_bg.wasm")
+deadstones.useFetch('deadstones_bg.wasm')
 
 const Wrapper = styled.div`
   display: grid;
@@ -43,10 +43,24 @@ const Wrap = styled.div`
   z-index: 99999999;
 `
 
+const mapMap = (map) => {
+  let coords = {}
+  let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
+  map.forEach((row, rowId) =>
+    row.forEach((cell, colId) => {
+      if (cell !== 0) {
+        let sign = alpha[rowId]
+        coords[`${sign}${colId + 1}`] = cell === -1 ? 'white' : 'black'
+      }
+    })
+  )
+  return coords
+}
+
 const GameBoard = ({ history }) => {
-  const game_id = useSelector(state => state.createGame.id)
-  const blocked = useSelector(state => state.board.blocked)
-  const mapStones = useSelector(state => state.board.mapStones)
+  const game_id = useSelector((state) => state.createGame.id)
+  const blocked = useSelector((state) => state.board.blocked)
+  const mapStones = useSelector((state) => state.board.mapStones)
 
   const [hintsShow, setHintsShow] = useState(false)
   const [enemyPass, setEnemyPass] = useState(false)
@@ -58,14 +72,20 @@ const GameBoard = ({ history }) => {
   const [multipleCount, setMultipleCount] = useState([])
   const [turns, setTurns] = useState([])
   const [selfColor, setSelfColor] = useState('white')
-  const [coordinates, setCoordinates] = useState({})
+  const [currentMap, setCurrentMap] = useState([[]])
   const [self, setSelf] = useState({}) // self player object
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
   const [opponentStonesCount, setOpponentStonesCount] = useState(0)
   const [currentPlayerColor, setCurrentPlayerColor] = useState('white')
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
+  const [showTerritory, setShowTerritory] = useState(false)
+  const [showDead, setShowDead] = useState(false)
+  const [probabilityMap, setProbabilityMap] = useState([[]])
+  const [deadStones, setDeadStones] = useState([[]])
   const dispatch = useDispatch()
+
+  const coordinates = mapMap(currentMap)
 
   useEffect(() => {
     if (Object.keys(multipleHint).length === multipleCount) {
@@ -106,15 +126,26 @@ const GameBoard = ({ history }) => {
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
           const currentMap = jsonData.payload.currentMap
-          // const startTime = Date.now()
-          // deadstones.getProbabilityMap(currentMap, 200).then(data => {
-          //   console.group('here')
-          //   console.log(currentMap)
-          //   console.log(data)
-          //   console.log(Date.now() - startTime)
-          //   console.groupEnd()
-          // })
-          setCoordinates(mapMap(currentMap))
+          let selfStones = 0
+          let oppStones = 0
+          const selfValue = selfColor === 'black' ? 1 : -1
+          currentMap.forEach((row) =>
+            row.forEach((value) => {
+              if (value === selfValue) {
+                selfStones += 1
+              } else if (value !== 0) {
+                oppStones += 1
+              }
+            })
+          )
+          setSelfStonesCount(selfStones)
+          setOpponentStonesCount(oppStones)
+          setCurrentMap(currentMap)
+          // if (showDead)
+          //   deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
+          // deadstones
+          //   .getProbabilityMap(currentMap, 30)
+          //   .then((probabilities) => setProbabilityMap(probabilities))
         }
         if (jsonData.payload.type === 'currentMap') {
           setSelf(jsonData.payload.you)
@@ -138,7 +169,7 @@ const GameBoard = ({ history }) => {
           setCurrentPlayerColor(jsonData.payload.turn)
         }
         if (jsonData.payload.move) {
-          setTurns(turns => [...turns, formatTurn(jsonData)])
+          setTurns((turns) => [...turns, formatTurn(jsonData)])
         }
         if (jsonData.payload.type === 'newTurn') {
           setLastMarkers({ [jsonData.payload.place]: 'last_pos_marker' })
@@ -170,32 +201,7 @@ const GameBoard = ({ history }) => {
     dispatch(setBlocked(false))
   }
 
-  const mapMap = map => {
-    let coords = {}
-    let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
-    map.forEach((row, rowId) =>
-      row.forEach((cell, colId) => {
-        if (cell !== 0) {
-          let sign = alpha[rowId]
-          coords[`${sign}${colId + 1}`] = cell === -1 ? 'white' : 'black'
-        }
-      })
-    )
-    let steMainTemp = 0
-    let stepTwoTemp = 0
-    Object.keys(coords).forEach(key => {
-      if (String(selfColor) === String(coords[key])) {
-        steMainTemp += 1
-      } else {
-        stepTwoTemp += 1
-      }
-    })
-    setSelfStonesCount(steMainTemp)
-    setOpponentStonesCount(stepTwoTemp)
-    return coords
-  }
-
-  const move = coord => {
+  const move = (coord) => {
     if (currentPlayerColor === selfColor) {
       dispatch(markersClear())
       setActiveHelpId(null)
@@ -230,16 +236,16 @@ const GameBoard = ({ history }) => {
     )
   }
 
-  const resign = () => {
-    dispatch(setBlocked(true))
-    client.send(
-      JSON.stringify([
-        7,
-        'go/game',
-        { command: 'resign', token: token, game_id: game_id },
-      ])
-    )
-  }
+  // const resign = () => {
+  //   dispatch(setBlocked(true))
+  //   client.send(
+  //     JSON.stringify([
+  //       7,
+  //       'go/game',
+  //       { command: 'resign', token: token, game_id: game_id },
+  //     ])
+  //   )
+  // }
 
   const handleHelp = ({ type, multipleHandleCount, id, count }) => {
     dispatch(markersClear())
@@ -275,7 +281,7 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  const deleteCoordinates = hints => {
+  const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
       for (const keyHint in hints) {
         if (key === keyHint) {
@@ -285,18 +291,7 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  const timeConverter = UNIX_timestamp => {
-    let a = new Date(UNIX_timestamp)
-    let year = a.getFullYear().toString().substr(-2)
-    let month = ('0' + (a.getMonth() + 1)).slice(-2)
-    let date = ('0' + a.getDate()).slice(-2)
-    let hour = ('0' + a.getHours()).slice(-2)
-    let min = ('0' + a.getMinutes()).slice(-2)
-    let time = `${date}/${month}/${year} ${hour}:${min}`
-    return time
-  }
-
-  const setMultipleHintFunc = val => {
+  const setMultipleHintFunc = (val) => {
     if (Object.keys(mapStones).length === multipleCount - 2) {
       dispatch(markersClear())
       setActiveHelpId(null)
@@ -322,7 +317,7 @@ const GameBoard = ({ history }) => {
         setCurrentColor={setCurrentPlayerColor}
         yourColor={selfColor}
         helpType={helpType}
-        setMultipleHint={val => setMultipleHintFunc(val)}
+        setMultipleHint={(val) => setMultipleHintFunc(val)}
         multipleHint={multipleHint}
         multipleCount={multipleCount}
         coordinates={coordinates}
@@ -333,6 +328,10 @@ const GameBoard = ({ history }) => {
         classNames={{}}
         mapStones={mapStones}
         passFn={passFn}
+        setShowDead={setShowDead}
+        setShowTerritory={setShowTerritory}
+        probabilityMap={probabilityMap}
+        deadStones={deadStones}
       />
       <RightPanel
         hint={hintsShow}

@@ -36,12 +36,12 @@ const Board = ({
   mapStones,
 }) => {
   const dispatch = useDispatch()
-  const markers = useSelector(state => state.board.markers)
+  const markers = useSelector((state) => state.board.markers)
   const classNamesMapStones = useSelector(
-    state => state.board.classNamesMapStones
+    (state) => state.board.classNamesMapStones
   )
 
-  const handleTurn = stonePosition => {
+  const handleTurn = (stonePosition) => {
     client.send(
       JSON.stringify([
         7,
@@ -62,7 +62,6 @@ const Board = ({
     }
     if (valid && currentColor === yourColor) {
       setStonePosition(stonePosition)
-      //setCoordinates({ ...coordinates, [stonePosition]: currentColor });
       setCurrentColor(currentColor === 'white' ? 'black' : 'white')
       setHint(false)
       dispatch(markersClear())
@@ -72,7 +71,7 @@ const Board = ({
     }
   }
 
-  const handleMultipleTurn = stonePosition => {
+  const handleMultipleTurn = (stonePosition) => {
     let valid = true
     for (const key in coordinates) {
       if (key === stonePosition) {
@@ -82,11 +81,11 @@ const Board = ({
     if (valid) {
       dispatch(setMapStones({ ...mapStones, [stonePosition]: 'circle' }))
       setMultipleHint(stonePosition)
-      //setCoordinates({ ...coordinates, [stonePosition]: currentColor });
     }
   }
 
   let className
+  console.log(currentColor, yourColor)
   if (currentColor !== yourColor) {
     className = 'disabled'
   } else {
