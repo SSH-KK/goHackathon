@@ -45,7 +45,7 @@ export const helpHeatmapQuarter = (token, game_id, quarter) => {
 
 export const helpFutureMoves = (token, game_id, count) => {
   return GET(
-    `hints/best-moves?token=${token}&game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&count=${count}`,
+    `hints/future-moves?token=${token}&game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&count=${count}`,
     {},
     token
   )

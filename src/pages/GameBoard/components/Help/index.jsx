@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './types'
+import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER, BEST_MOVES } from './types'
 import { Alert } from '../Alert'
 
 const Wrapper = styled.div`
@@ -71,12 +71,12 @@ const Help = ({ handleHelp, activeHelpId, scores }) => {
   const [dialog, setDialog] = useState(null)
   const [rangeValue, setRangeValue] = useState(0)
 
-  const showDialog = (callback) => {
+  const showDialog = (from, to, callback) => {
     setDialog({
       type: 'range',
       props: {
-        from: 2,
-        to: 7,
+        from,
+        to,
         setValue: setRangeValue,
       },
       callback,
@@ -98,13 +98,27 @@ const Help = ({ handleHelp, activeHelpId, scores }) => {
           id: 16,
           command: () =>
             scores &&
-            showDialog((value) =>
+            showDialog(2, 7, (value) =>
               handleHelp({
                 type: 'multiple',
                 multipleHandleCount: value + 1,
                 id: 16,
               })
             ),
+        },
+        {
+          name: 'Показать лучшие ходы',
+          id: BEST_MOVES,
+          command: () => {
+            scores &&
+              showDialog(1, 5, (value) =>
+                handleHelp({
+                  type: 'single',
+                  count: value,
+                  id: BEST_MOVES,
+                })
+              )
+          },
         },
       ],
     },
