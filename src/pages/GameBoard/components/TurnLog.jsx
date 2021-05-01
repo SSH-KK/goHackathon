@@ -76,7 +76,7 @@ const TurnLog = ({ turns }) => {
                 <span>{turn.color}</span>
               </div>
               <PlaceContainer>
-                <span>{turn.place}</span>
+                <span>{turn.place ? turn.place : "PASS"}</span>
               </PlaceContainer>
             </ListElement>
           ))}

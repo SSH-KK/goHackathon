@@ -125,9 +125,6 @@ export const GameContainer = ({ passFn, ...args }) => {
           <p style={{'font-size':'1rem'}}>Pass</p>
       </MyButton>
       </PlayerInfo>
-      {/* <div style={{ bottom: 0, position: 'fixed' }}>
-        <ButtonCustom onClick={passFn}>Pass</ButtonCustom>
-      </div> */}
     </div>
   )
 }
