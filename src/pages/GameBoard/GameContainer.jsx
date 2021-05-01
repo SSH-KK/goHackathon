@@ -1,5 +1,5 @@
 import Board from './components/Board'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import history from '../../history'
 
@@ -14,13 +14,15 @@ const PlayerInfo = styled.div`
 `
 const BaseInfo = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 50%;
 `
 const PlayerP = styled.p`
   font-size: 2rem;
   margin-right: 1rem;
+  width:45%;
+  text-align:right;
 `
 const PlayerCircle = styled.div`
   background-color: ${(props) =>
@@ -149,9 +151,28 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <p style={{ 'font-size': '1rem' }}>Resign</p>
         </MyButton>
       </PlayerInfo>
-      <Board {...args} />
+
+      <Board
+      lastMarkers={args.lastMarkers}
+      setHint={args.setHint}
+      currentColor={args.currentColor}
+      setCurrentColor={args.setCurrentColor}
+      yourColor={args.yourColor}
+      helpType={args.helpType}
+      setMultipleHint={args.setMultipleHint}
+      coordinates={args.coordinates}
+      setHelpType={args.setHelpType}
+      setMultipleType={args.setMultipleType}
+      setActiveHelpId={args.setActiveHelpId}
+      setStonePosition={args.setStonePosition}
+      mapStones={args.mapStones}
+      pSum={args.pSum}
+      />
+
       <PlayerInfo>
         <EmptyButton width={'10%'}></EmptyButton>
+        <EmptyButton width={'5vh'}></EmptyButton>
+        <EmptyButton width={'5vh'}></EmptyButton>
         <BaseInfo>
           <PlayerP>{args.self.nickname}</PlayerP>
           <PlayerCircle

@@ -318,7 +318,7 @@ const GameBoard = ({ history }) => {
           probabilityMap.map((row, rowId) =>
             row.map((col, colId) =>
               currentMap[rowId][colId] == 0 && col != 0
-                ? col + 0.25 * (col / Math.abs(col))
+                ? col + 0.35 * (col / Math.abs(col))
                 : 0
             )
           ),
@@ -329,6 +329,12 @@ const GameBoard = ({ history }) => {
       )
     }
   }, [probabilityMap, showTerritory, deadStones, showDead])
+
+  useEffect(()=>{
+    if (showDead){
+      deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
+    }
+  },[showDead])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
