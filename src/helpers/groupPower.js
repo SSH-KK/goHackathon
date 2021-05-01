@@ -54,7 +54,7 @@ function countNearZeros(group, field) {
   return result.size
 }
 
-function calculatePowers(field) {
+export function calculatePowers(field) {
   const result = field.map((row) => row.map((_) => 0))
   const groups = searchGroups(field)
   const groupsPower = groups.map((group) => countNearZeros(group, field))
@@ -63,6 +63,3 @@ function calculatePowers(field) {
   )
   return result
 }
-
-// export calculatePowers
-exports.calculatePowers = calculatePowers

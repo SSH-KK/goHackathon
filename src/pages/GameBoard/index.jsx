@@ -26,6 +26,7 @@ import { clearGameId } from '../../store/GameCreate/actions'
 import { GameContainer } from './GameContainer'
 import { RightPanel } from './RightPanel'
 import { Alert } from './components/Alert'
+import { prepareProbability } from '../../helpers/prepareProbability'
 
 deadstones.useFetch('deadstones_bg.wasm')
 
@@ -117,7 +118,9 @@ const GameBoard = ({ history }) => {
 
     deadstones
       .getProbabilityMap(currentMap, 150)
-      .then((probabilities) => setProbabilityMap(probabilities))
+      .then((probabilities) =>
+        setProbabilityMap(prepareProbability(probabilities, currentMap))
+      )
 
     // eslint-disable-next-line
   }, [currentMap])
