@@ -15,6 +15,7 @@ import {
   territoryDeadShow,
 } from '../../store/Board/actions'
 
+import { calculatePowers } from '../../helpers/groupPower'
 import { formatTurn } from '../../helpers/rightBar'
 
 import { client, token } from '../../Socket.js'
@@ -89,6 +90,7 @@ const GameBoard = ({ history }) => {
   const [showDead, setShowDead] = useState(false)
   const [probabilityMap, setProbabilityMap] = useState([[]])
   const [deadStones, setDeadStones] = useState([[]])
+  const [groupPowers, setGroupPowers] = useState([[]])
   const [pSum, setPSum] = useState('0%')
   const dispatch = useDispatch()
 
@@ -121,6 +123,8 @@ const GameBoard = ({ history }) => {
       .then((probabilities) =>
         setProbabilityMap(prepareProbability(probabilities, currentMap))
       )
+
+    setGroupPowers(calculatePowers(currentMap))
 
     // eslint-disable-next-line
   }, [currentMap])
