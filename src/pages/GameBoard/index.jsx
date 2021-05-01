@@ -79,6 +79,8 @@ const GameBoard = ({ history }) => {
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
   const [opponentStonesCount, setOpponentStonesCount] = useState(0)
+  const [selfDiedCount, setSelfDiedCount] = useState(0)
+  const [opponentDiedCount, setOpponentDiedCount] = useState(0)
   const [currentColor, setCurrentColor] = useState('white')
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
   const [showTerritory, setShowTerritory] = useState(false)
@@ -132,20 +134,28 @@ const GameBoard = ({ history }) => {
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
           const currentMap = jsonData.payload.currentMap
-          let selfStones = 0
-          let oppStones = 0
-          const selfValue = selfColor === 'black' ? 1 : -1
-          currentMap.forEach((row) =>
-            row.forEach((value) => {
-              if (value === selfValue) {
-                selfStones += 1
-              } else if (value !== 0) {
-                oppStones += 1
-              }
-            })
-          )
-          setSelfStonesCount(selfStones)
-          setOpponentStonesCount(oppStones)
+          {
+            let selfStones = 0
+            let oppStones = 0
+            const selfValue = selfColor === 'black' ? 1 : -1
+            currentMap.forEach((row) =>
+              row.forEach((value) => {
+                if (value === selfValue) {
+                  selfStones += 1
+                } else if (value !== 0) {
+                  oppStones += 1
+                }
+              })
+            )
+            if (selfStones < selfStonesCount) {
+              setSelfDiedCount((n) => n + (selfStonesCount - selfStones))
+            }
+            if (oppStones < opponentStonesCount) {
+              setOpponentDiedCount((n) => n + (opponentStonesCount - oppStones))
+            }
+            setSelfStonesCount(selfStones)
+            setOpponentStonesCount(oppStones)
+          }
           setCurrentMap(currentMap)
           if (showDead)
             deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
