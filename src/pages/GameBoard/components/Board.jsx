@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Goban } from 'react-goban'
 import styled from 'styled-components'
@@ -30,6 +30,8 @@ const LeftBar = styled.div`
   position: relative;
 `
 const LeftBarProgress = styled.div`
+  top: 0;
+  left: 0;
   border-radius: var(--gap);
   position: absolute;
   height: ${(props) => props.height};
@@ -51,8 +53,7 @@ const Board = ({
   setActiveHelpId,
   setStonePosition,
   mapStones,
-  probabilityMap,
-  hint,
+  pSum,
 }) => {
   const dispatch = useDispatch()
   const markers = useSelector((state) => state.board.markers)
@@ -114,7 +115,7 @@ const Board = ({
   return (
     <Wrapper className={className}>
       <LeftBar>
-        <LeftBarProgress height={'55%'}></LeftBarProgress>
+        <LeftBarProgress height={pSum}></LeftBarProgress>
       </LeftBar>
       <Goban
         theme={'new_night'}

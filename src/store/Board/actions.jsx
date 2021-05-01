@@ -62,9 +62,9 @@ export const hintBestMoves = (game_id, count) => ({
   payload: { game_id: game_id, count: count },
 })
 
-export const territoryShow = (mas) => ({
+export const territoryShow = (mas, display) => ({
   type: TERRITORY_SHOW,
-  payload: {territory: mas}
+  payload: {territory: mas, display}
 })
 
 export const hintShowBest = (game_id, moves) => ({

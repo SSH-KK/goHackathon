@@ -47,22 +47,27 @@ export const boardReducer = (state = initialState, action) => {
         blocked: false,
       }
     case TERRITORY_SHOW:{
-      let mapStones = {},
-        classNamesMapStones = {}
-      let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
-      action.payload.territory.forEach((row, rowId) => {
-        row.forEach((cell, colId) => {
-          let sign = alpha[rowId]
-          let coord = `${sign}${colId + 1}`
-          mapStones[coord] = 'territory_show'
-          classNamesMapStones[coord] = `sl_${cell}`
+      if(action.payload.display){  
+        let mapStones = {},
+          classNamesMapStones = {}
+        let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
+        action.payload.territory.forEach((row, rowId) => {
+          row.forEach((cell, colId) => {
+            let sign = alpha[rowId]
+            let coord = `${sign}${colId + 1}`
+            mapStones[coord] = 'territory_show'
+            classNamesMapStones[coord] = `sl_${cell}`
+          })
         })
-      })
-      return {
-        ...state,
-        mapStones,
-        classNamesMapStones,
-        blocked: false,
+        return {
+          ...state,
+          mapStones,
+          classNamesMapStones,
+          blocked: false,
+        }
+      }
+      else{
+        return {...state}
       }
     }
     case MARKERS_CLEAR:

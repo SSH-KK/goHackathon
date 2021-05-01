@@ -16,7 +16,7 @@ const BaseInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70%;
+  width: 50%;
 `
 const PlayerP = styled.p`
   font-size: 2rem;
@@ -40,12 +40,13 @@ const MyButton = styled.div`
   height: 5vh;
   border: 3px solid #20e7c1;
   border-radius: 2rem;
-  color: #20e7c1;
-  width: 10%;
+  color: ${(props)=>props.active ? '#FFFFFF' : '#20e7c1'};
+  width: ${(props)=>props.width};
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s;
+  background-color: ${(props)=>props.active ? '#20e7c1' : 'inherit'};
   &:hover {
     background-color: #20e7c1;
     color: #ffffff;
@@ -55,7 +56,7 @@ const MyButton = styled.div`
 
 const EmptyButton = styled.div`
   height: 5vh;
-  width: 10%;
+  width: ${(props)=>props.width};
 `
 
 const Wrapper = styled.div`
@@ -127,8 +128,11 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
   return (
     <Wrapper>
       <PlayerInfo>
-        <MyButton onClick={() => history.push('/')}>
+        <MyButton width={'10%'} onClick={() => history.push('/')}>
           <p style={{ 'font-size': '1rem' }}>Home</p>
+        </MyButton>
+        <MyButton active={args.showTerritory} width={'5vh'} onClick={()=>args.setShowTerritory((prev)=>!prev)}>
+          <p style={{ 'font-size': '1rem' }}>T</p>
         </MyButton>
         <BaseInfo>
           <PlayerP>{args.opponent.nickname}</PlayerP>
@@ -138,13 +142,13 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           ></PlayerCircle>
           <PlayerP>{timerParseTwo}</PlayerP>
         </BaseInfo>
-        <MyButton onClick={resignFn}>
+        <MyButton width={'10%'} onClick={resignFn}>
           <p style={{ 'font-size': '1rem' }}>Resign</p>
         </MyButton>
       </PlayerInfo>
       <Board {...args} />
       <PlayerInfo>
-        <EmptyButton></EmptyButton>
+        <EmptyButton width={'10%'}></EmptyButton>
         <BaseInfo>
           <PlayerP>{args.self.nickname}</PlayerP>
           <PlayerCircle
@@ -153,7 +157,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           ></PlayerCircle>
           <PlayerP>{timerParseOne}</PlayerP>
         </BaseInfo>
-        <MyButton onClick={passFn}>
+        <MyButton width={'10%'} onClick={passFn}>
           <p style={{ 'font-size': '1rem' }}>Pass</p>
         </MyButton>
       </PlayerInfo>

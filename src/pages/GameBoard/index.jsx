@@ -88,6 +88,7 @@ const GameBoard = ({ history }) => {
   const [showDead, setShowDead] = useState(false)
   const [probabilityMap, setProbabilityMap] = useState([[]])
   const [deadStones, setDeadStones] = useState([[]])
+  const [pSum, setPSum] = useState('0%')
   const dispatch = useDispatch()
 
   const coordinates = mapMap(currentMap)
@@ -299,11 +300,18 @@ const GameBoard = ({ history }) => {
   }
 
   useEffect(()=>{
+    let temp_white_sum = 0
+    let temp_all_sum = 0
+    probabilityMap.forEach((row)=>row.forEach((col)=>{
+      temp_white_sum+= col<0 ? Math.abs(col) : 0
+      temp_all_sum+= Math.abs(col)
+    }))
+    setPSum(temp_all_sum!=0 ? `${temp_white_sum/temp_all_sum*100}%`:'0%')
     if(!hintsShow){
       dispatch(markersClear())
-      dispatch(territoryShow(probabilityMap.map((row, rowId)=>row.map((col, colId)=>currentMap[rowId][colId] == 0 ? col : 0))))
+      dispatch(territoryShow(probabilityMap.map((row, rowId)=>row.map((col, colId)=>currentMap[rowId][colId] == 0 ? col : 0)),showTerritory))
     }
-  },[probabilityMap])
+  },[probabilityMap,showTerritory])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
@@ -360,6 +368,7 @@ const GameBoard = ({ history }) => {
         setShowDead={setShowDead}
         setShowTerritory={setShowTerritory}
         probabilityMap={probabilityMap}
+        pSum={pSum}
         deadStones={deadStones}
         showTerritory={showTerritory}
         showDead={showDead}
