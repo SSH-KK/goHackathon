@@ -1,4 +1,3 @@
-import { ButtonCustom } from '../../components/ButtonCustom'
 import Board from './components/Board'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -110,11 +109,14 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
     }
   }
 
-  useEffect(async () => {
-    await clearTimeout(timesPlayerOneCall)
-    await clearTimeout(timesPlayerTwoCall)
-    timesPlayerOne(args.times.playerOne, args.stepColor === 'black')
-    timesPlayerTwo(args.times.playerTwo, args.stepColor === 'white')
+  useEffect(() => {
+    async function fn() {
+      await clearTimeout(timesPlayerOneCall)
+      await clearTimeout(timesPlayerTwoCall)
+      timesPlayerOne(args.times.playerOne, args.stepColor === 'black')
+      timesPlayerTwo(args.times.playerTwo, args.stepColor === 'white')
+    }
+    fn()
   }, [args.times])
 
   return (
