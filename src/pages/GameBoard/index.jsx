@@ -147,11 +147,11 @@ const GameBoard = ({ history }) => {
           setSelfStonesCount(selfStones)
           setOpponentStonesCount(oppStones)
           setCurrentMap(currentMap)
-          // if (showDead)
-          //   deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
-          // deadstones
-          //   .getProbabilityMap(currentMap, 30)
-          //   .then((probabilities) => setProbabilityMap(probabilities))
+          if (showDead)
+            deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
+          deadstones
+            .getProbabilityMap(currentMap, 30)
+            .then((probabilities) => setProbabilityMap(probabilities))
         }
         if (jsonData.payload.type === 'currentMap') {
           setSelf(jsonData.payload.you)
@@ -343,6 +343,8 @@ const GameBoard = ({ history }) => {
         setShowTerritory={setShowTerritory}
         probabilityMap={probabilityMap}
         deadStones={deadStones}
+        showTerritory={showTerritory}
+        showDead={showDead}
       />
       <RightPanel
         hint={hintsShow}

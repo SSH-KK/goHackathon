@@ -60,6 +60,12 @@ const EmptyButton = styled.div`
   width: 10%;
 `
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+
 export const GameContainer = ({ passFn, resignFn, ...args }) => {
   const [timerParseOne, setTimerParseOne] = useState('')
   const [timerParseTwo, setTimerParseTwo] = useState('')
@@ -118,13 +124,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
   }, [args.times])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        'flex-direction': 'column',
-        'justify-content': 'center',
-      }}
-    >
+    <Wrapper>
       <PlayerInfo>
         <MyButton onClick={() => history.push('/')}>
           <p style={{ 'font-size': '1rem' }}>Home</p>
@@ -156,6 +156,6 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <p style={{ 'font-size': '1rem' }}>Pass</p>
         </MyButton>
       </PlayerInfo>
-    </div>
+    </Wrapper>
   )
 }
