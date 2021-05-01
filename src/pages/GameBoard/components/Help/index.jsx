@@ -100,7 +100,6 @@ const Help = ({
                 onClick={helper.command}
               >
                 {helper.name}
-                {console.log(helper, activeHelpId === helper.id)}
               </HelpItem>
             ))}
           </HelpGroupList>
