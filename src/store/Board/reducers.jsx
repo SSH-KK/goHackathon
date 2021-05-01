@@ -47,10 +47,10 @@ export const boardReducer = (state = initialState, action) => {
         blocked: false,
       }
     case TERRITORY_SHOW:{
-      if(action.payload.display){  
-        let mapStones = {},
-          classNamesMapStones = {}
-        let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
+      let mapStones = {}
+      let classNamesMapStones = {}
+      let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
+      if(action.payload.displayTer){  
         action.payload.territory.forEach((row, rowId) => {
           row.forEach((cell, colId) => {
             let sign = alpha[rowId]
@@ -59,16 +59,20 @@ export const boardReducer = (state = initialState, action) => {
             classNamesMapStones[coord] = `sl_${cell}`
           })
         })
-        return {
+      }
+      if(action.payload.displayDead){
+        action.payload.dead.forEach((ob)=>{
+          let sign = alpha[ob[1]]
+          let coord = `${sign}${ob[0]+1}`
+          mapStones[coord] = 'dead_show'
+        })
+      }
+      return {
           ...state,
           mapStones,
           classNamesMapStones,
           blocked: false,
         }
-      }
-      else{
-        return {...state}
-      }
     }
     case MARKERS_CLEAR:
       return {

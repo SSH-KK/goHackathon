@@ -12,7 +12,7 @@ import {
   hintShowBest,
   setScoresWinner,
   hintBestMoves,
-  territoryShow,
+  territoryDeadShow,
 } from '../../store/Board/actions'
 
 import { formatTurn } from '../../helpers/rightBar'
@@ -162,7 +162,7 @@ const GameBoard = ({ history }) => {
           if (showDead)
             deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
           deadstones
-            .getProbabilityMap(currentMap, 30)
+            .getProbabilityMap(currentMap, 150)
             .then((probabilities) => setProbabilityMap(probabilities))
         }
         if (jsonData.payload.type === 'currentMap') {
@@ -299,19 +299,42 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     let temp_white_sum = 0
     let temp_all_sum = 0
-    probabilityMap.forEach((row)=>row.forEach((col)=>{
-      temp_white_sum+= col<0 ? Math.abs(col) : 0
-      temp_all_sum+= Math.abs(col)
-    }))
-    setPSum(temp_all_sum!=0 ? `${temp_white_sum/temp_all_sum*100}%`:'0%')
-    if(!hintsShow){
+    probabilityMap.forEach((row) =>
+      row.forEach((col) => {
+        temp_white_sum += col < 0 ? Math.abs(col) : 0
+        temp_all_sum += Math.abs(col)
+      })
+    )
+    setPSum(
+      temp_all_sum != 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%'
+    )
+    if (!hintsShow) {
       dispatch(markersClear())
-      dispatch(territoryShow(probabilityMap.map((row, rowId)=>row.map((col, colId)=>currentMap[rowId][colId] == 0 ? col : 0)),showTerritory))
+      dispatch(
+        territoryDeadShow(
+          probabilityMap.map((row, rowId) =>
+            row.map((col, colId) =>
+              currentMap[rowId][colId] == 0 && col != 0
+                ? col + 0.35 * (col / Math.abs(col))
+                : 0
+            )
+          ),
+          showTerritory,
+          deadStones,
+          showDead
+        )
+      )
     }
-  },[probabilityMap,showTerritory])
+  }, [probabilityMap, showTerritory, deadStones, showDead])
+
+  useEffect(()=>{
+    if (showDead){
+      deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
+    }
+  },[showDead])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
