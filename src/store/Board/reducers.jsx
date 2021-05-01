@@ -62,12 +62,14 @@ export const boardReducer = (state = initialState, action) => {
           })
         })
       }
-      if (action.payload.displayDead) {
-        action.payload.dead.forEach((ob) => {
-          let sign = alpha[ob[1]]
-          let coord = `${sign}${ob[0] + 1}`
-          mapStones[coord] = 'dead_show'
-        })
+      if(action.payload.displayDead){
+        action.payload.dead.forEach((row, rowId)=>row.forEach((col, colId)=>{
+          if(col == 1){
+            let sign = alpha[rowId]
+            let coord = `${sign}${colId+1}`
+            mapStones[coord] = 'dead_show'
+          }
+        }))
       }
       return {
         ...state,

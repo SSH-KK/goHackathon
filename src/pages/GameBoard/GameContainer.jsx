@@ -14,19 +14,24 @@ const PlayerInfo = styled.div`
 `
 const BaseInfo = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 50%;
 `
 const PlayerP = styled.p`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 2rem;
   margin-right: 1rem;
+  width: 45%;
+  text-align: right;
 `
 const PlayerCircle = styled.div`
   background-color: ${(props) =>
     props.color === 'black' ? '#292929;' : '#F0F0F0;'};
-  height: 2rem;
-  width: 2rem;
+  min-height: 2rem;
+  min-width: 2rem;
   margin-right: 1rem;
   border: ${(props) =>
     props.stepColor === props.color
@@ -40,13 +45,13 @@ const MyButton = styled.div`
   height: 5vh;
   border: 3px solid #20e7c1;
   border-radius: 2rem;
-  color: ${(props)=>props.active ? '#FFFFFF' : '#20e7c1'};
-  width: ${(props)=>props.width};
+  color: ${(props) => (props.active ? '#FFFFFF' : '#20e7c1')};
+  width: ${(props) => props.width};
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s;
-  background-color: ${(props)=>props.active ? '#20e7c1' : 'inherit'};
+  background-color: ${(props) => (props.active ? '#20e7c1' : 'inherit')};
   &:hover {
     background-color: #20e7c1;
     color: #ffffff;
@@ -56,7 +61,7 @@ const MyButton = styled.div`
 
 const EmptyButton = styled.div`
   height: 5vh;
-  width: ${(props)=>props.width};
+  width: ${(props) => props.width};
 `
 
 const Wrapper = styled.div`
@@ -123,6 +128,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
       timesPlayerTwo(args.times.playerTwo, args.stepColor === 'white')
     }
     fn()
+    // eslint-disable-next-line
   }, [args.times])
 
   return (
@@ -131,17 +137,25 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
         <MyButton width={'10%'} onClick={() => history.push('/')}>
           <p style={{ 'font-size': '1rem' }}>Home</p>
         </MyButton>
-        <MyButton active={args.showTerritory} width={'5vh'} onClick={()=>args.setShowTerritory((prev)=>!prev)}>
+        <MyButton
+          active={args.showTerritory}
+          width={'5vh'}
+          onClick={() => args.setShowTerritory((prev) => !prev)}
+        >
           <p style={{ 'font-size': '1rem' }}>T</p>
         </MyButton>
-        <MyButton active={args.showDead} width={'5vh'} onClick={()=>args.setShowDead((prev)=>!prev)}>
+        <MyButton
+          active={args.showDead}
+          width={'5vh'}
+          onClick={() => args.setShowDead((prev) => !prev)}
+        >
           <p style={{ 'font-size': '1rem' }}>D</p>
         </MyButton>
         <BaseInfo>
-          <PlayerP>{args.opponent.nickname}</PlayerP>
+          <PlayerP>{args.yourColor == 'white' ? args.self.nickname : args.opponent.nickname}</PlayerP>
           <PlayerCircle
             stepColor={args.stepColor}
-            color={args.yourColor === 'black' ? 'white' : 'black'}
+            color={'white'}
           ></PlayerCircle>
           <PlayerP>{timerParseTwo}</PlayerP>
         </BaseInfo>
@@ -149,14 +163,33 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <p style={{ 'font-size': '1rem' }}>Resign</p>
         </MyButton>
       </PlayerInfo>
-      <Board {...args} />
+
+      <Board
+        lastMarkers={args.lastMarkers}
+        setHint={args.setHint}
+        currentColor={args.currentColor}
+        setCurrentColor={args.setCurrentColor}
+        yourColor={args.yourColor}
+        helpType={args.helpType}
+        setMultipleHint={args.setMultipleHint}
+        coordinates={args.coordinates}
+        setHelpType={args.setHelpType}
+        setMultipleType={args.setMultipleType}
+        setActiveHelpId={args.setActiveHelpId}
+        setStonePosition={args.setStonePosition}
+        mapStones={args.mapStones}
+        pSum={args.pSum}
+      />
+
       <PlayerInfo>
         <EmptyButton width={'10%'}></EmptyButton>
+        <EmptyButton width={'5vh'}></EmptyButton>
+        <EmptyButton width={'5vh'}></EmptyButton>
         <BaseInfo>
-          <PlayerP>{args.self.nickname}</PlayerP>
+          <PlayerP>{args.yourColor == 'black' ? args.self.nickname : args.opponent.nickname}</PlayerP>
           <PlayerCircle
             stepColor={args.stepColor}
-            color={args.yourColor}
+            color={'black'}
           ></PlayerCircle>
           <PlayerP>{timerParseOne}</PlayerP>
         </BaseInfo>
