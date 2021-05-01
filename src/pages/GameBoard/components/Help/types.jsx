@@ -1,6 +1,7 @@
 export const HEATMAP_FULL = 13
 export const HEATMAP_ZONE_QUARTER = 23
 export const BEST_MOVES = 78
+export const SHOULD_PASS = 42
 
 const defaultMapClass = 'redstone'
 const defaultMapSize = 'size-70'

@@ -1,6 +1,6 @@
-import styled from "styled-components"
-import TurnLog from "./components/TurnLog"
-import Help from "./components/Help"
+import styled from 'styled-components'
+import TurnLog from './components/TurnLog'
+import Help from './components/Help'
 
 const RightWrapper = styled.div`
   height: 100vh;
@@ -34,6 +34,7 @@ export const RightPanel = ({
   mapType,
   activeHelpId,
   times,
+  currentMap,
 }) => {
   return (
     <RightWrapper>
@@ -57,6 +58,7 @@ export const RightPanel = ({
           activeHelpId={activeHelpId}
           times={times}
           scores={stepColor !== yourColor ? false : true}
+          currentMap={currentMap}
         />
       </RightContainer>
     </RightWrapper>

@@ -10,6 +10,7 @@ import {
   SCORES,
   SCORES_WINNER,
   TERRITORY_SHOW,
+  SET_HINT_WORST_ENEMY_MOVE,
 } from './types'
 import {
   MAP_HALF,
@@ -25,6 +26,7 @@ const initialState = {
   blocked: false,
   scores: null,
   scoresWinner: null,
+  possibleEnemyMove: null,
 }
 
 export const boardReducer = (state = initialState, action) => {
@@ -46,11 +48,11 @@ export const boardReducer = (state = initialState, action) => {
         markers: {},
         blocked: false,
       }
-    case TERRITORY_SHOW:{
+    case TERRITORY_SHOW: {
       let mapStones = {}
       let classNamesMapStones = {}
       let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
-      if(action.payload.displayTer){  
+      if (action.payload.displayTer) {
         action.payload.territory.forEach((row, rowId) => {
           row.forEach((cell, colId) => {
             let sign = alpha[rowId]
@@ -60,19 +62,19 @@ export const boardReducer = (state = initialState, action) => {
           })
         })
       }
-      if(action.payload.displayDead){
-        action.payload.dead.forEach((ob)=>{
+      if (action.payload.displayDead) {
+        action.payload.dead.forEach((ob) => {
           let sign = alpha[ob[1]]
-          let coord = `${sign}${ob[0]+1}`
+          let coord = `${sign}${ob[0] + 1}`
           mapStones[coord] = 'dead_show'
         })
       }
       return {
-          ...state,
-          mapStones,
-          classNamesMapStones,
-          blocked: false,
-        }
+        ...state,
+        mapStones,
+        classNamesMapStones,
+        blocked: false,
+      }
     }
     case MARKERS_CLEAR:
       return {
@@ -82,6 +84,7 @@ export const boardReducer = (state = initialState, action) => {
         classNamesMapStones: {},
         scores: null,
         scoresWinner: null,
+        possibleEnemyMove: null,
       }
     case MAP_STONES:
       return {
@@ -89,7 +92,7 @@ export const boardReducer = (state = initialState, action) => {
         mapStones: action.payload,
         blocked: false,
       }
-    case MAP_HELP:{
+    case MAP_HELP: {
       let mapStones = {},
         classNamesMapStones = {}
       if (action.payload.zone) {
@@ -139,6 +142,12 @@ export const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         scoresWinner: action.payload,
+        blocked: false,
+      }
+    case SET_HINT_WORST_ENEMY_MOVE:
+      return {
+        ...state,
+        possibleEnemyMove: action.payload,
         blocked: false,
       }
     default:

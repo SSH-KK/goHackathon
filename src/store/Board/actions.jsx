@@ -13,11 +13,12 @@ import {
   MAP_STONES,
   GET_SCORES_WINNER,
   TERRITORY_SHOW,
+  GET_HINT_WORST_ENEMY_MOVE,
 } from './types'
 
-export const hintHeatmapFull = game_id => ({
+export const hintHeatmapFull = (game_id) => ({
   type: GET_HINT_HEATMAP_FULL,
-  payload: { game_id: game_id },
+  payload: { game_id },
 })
 
 export const singleHelp = () => ({
@@ -32,52 +33,62 @@ export const markersClear = () => ({
   type: MARKERS_CLEAR,
 })
 
-export const setWinnerUser = winner => ({
+export const setWinnerUser = (winner) => ({
   type: WINNER_USER,
   payload: winner,
 })
 
-export const setLoserUser = loser => ({
+export const setLoserUser = (loser) => ({
   type: LOSER_USER,
   payload: loser,
 })
 
-export const setBlocked = blocked => ({
+export const setBlocked = (blocked) => ({
   type: SET_BLOCKED,
   payload: blocked,
 })
 
-export const setMapStones = stones => ({
+export const setMapStones = (stones) => ({
   type: MAP_STONES,
   payload: stones,
 })
 
-export const setScoresWinner = game_id => ({
+export const setScoresWinner = (game_id) => ({
   type: GET_SCORES_WINNER,
   payload: { game_id },
 })
 
 export const hintBestMoves = (game_id, count) => ({
   type: GET_HINT_BEST_MOVES,
-  payload: { game_id: game_id, count: count },
+  payload: { game_id, count: count },
 })
 
-export const territoryDeadShow = (territory, displayTer, dead, displayDead) => ({
+export const territoryDeadShow = (
+  territory,
+  displayTer,
+  dead,
+  displayDead
+) => ({
   type: TERRITORY_SHOW,
-  payload: {territory, displayTer, dead, displayDead}
+  payload: { territory, displayTer, dead, displayDead },
 })
 
 export const hintShowBest = (game_id, moves) => ({
   type: GET_HINT_SHOW_BEST,
-  payload: { game_id: game_id, moves: moves },
+  payload: { game_id, moves: moves },
 })
 
-export const hintHeatmap = game_id => ({
+export const hintHeatmap = (game_id) => ({
   type: GET_HINT_HEATMAP,
-  payload: { game_id: game_id },
+  payload: { game_id },
 })
 
 export const hintHeatmapZone = (game_id, isQuarter) => ({
   type: GET_HINT_HEATMAP_ZONE,
-  payload: { game_id: game_id, isQuarter },
+  payload: { game_id, isQuarter },
+})
+
+export const getWorstEnemyStep = (game_id, move) => ({
+  type: GET_HINT_WORST_ENEMY_MOVE,
+  payload: { game_id, move },
 })

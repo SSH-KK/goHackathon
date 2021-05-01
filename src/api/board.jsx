@@ -51,6 +51,14 @@ export const helpFutureMoves = (token, game_id, count) => {
   )
 }
 
+export const helpWorstEnemyMove = (token, game_id, move) => {
+  return GET(
+    `hints/worst-enemy-move?game_id=${game_id}&move=${move}&centaur_token=${CENTAUR_TOKEN}&token=${token}`,
+    {},
+    token
+  )
+}
+
 export const helpSuperiority = (token, game_id) => {
   return GET(
     `hints/superiority?token=${token}&game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}`,

@@ -13,12 +13,17 @@ import {
   setScoresWinner,
   hintBestMoves,
   territoryDeadShow,
+  getWorstEnemyStep,
 } from '../../store/Board/actions'
 
 import { formatTurn } from '../../helpers/rightBar'
 
 import { client, token } from '../../Socket.js'
-import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from './components/Help/types'
+import {
+  HEATMAP_FULL,
+  HEATMAP_ZONE_QUARTER,
+  SHOULD_PASS,
+} from './components/Help/types'
 import deadstones from '@sabaki/deadstones'
 
 import { clearGameId } from '../../store/GameCreate/actions'
@@ -130,7 +135,7 @@ const GameBoard = ({ history }) => {
     if (typeof e.data === 'string') {
       let jsonData = JSON.parse(e.data)
       if (jsonData.error && jsonData.error.startsWith('illegal move')) {
-        setAlert({ child: <h1>{jsonData.error}</h1> })
+        setAlert({ children: <h1>{jsonData.error}</h1> })
         setCurrentColor(currentColor === 'white' ? 'black' : 'white')
       }
       if (jsonData.payload) {
@@ -295,7 +300,13 @@ const GameBoard = ({ history }) => {
     }
     if (type === 'score') {
       dispatch(setBlocked(true))
-      dispatch(setScoresWinner(game_id))
+      switch (id) {
+        case SHOULD_PASS:
+          dispatch(getWorstEnemyStep(game_id, 'pass'))
+          break
+        default:
+          console.error('invalid id', id)
+      }
     }
   }
 
@@ -309,7 +320,7 @@ const GameBoard = ({ history }) => {
       })
     )
     setPSum(
-      temp_all_sum != 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%'
+      temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%'
     )
     if (!hintsShow) {
       dispatch(markersClear())
@@ -317,7 +328,7 @@ const GameBoard = ({ history }) => {
         territoryDeadShow(
           probabilityMap.map((row, rowId) =>
             row.map((col, colId) =>
-              currentMap[rowId][colId] == 0 && col != 0
+              currentMap[rowId][colId] === 0 && col !== 0
                 ? col + 0.25 * (col / Math.abs(col))
                 : 0
             )
@@ -408,6 +419,7 @@ const GameBoard = ({ history }) => {
         activeHelpId={activeHelpId}
         times={times}
         scores={currentColor !== selfColor ? false : true}
+        currentMap={currentMap}
       />
       {alert && <Alert {...alert} close={() => setAlert(null)} />}
     </Wrapper>
