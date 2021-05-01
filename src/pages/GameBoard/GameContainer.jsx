@@ -134,6 +134,9 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
         <MyButton active={args.showTerritory} width={'5vh'} onClick={()=>args.setShowTerritory((prev)=>!prev)}>
           <p style={{ 'font-size': '1rem' }}>T</p>
         </MyButton>
+        <MyButton active={args.showDead} width={'5vh'} onClick={()=>args.setShowDead((prev)=>!prev)}>
+          <p style={{ 'font-size': '1rem' }}>D</p>
+        </MyButton>
         <BaseInfo>
           <PlayerP>{args.opponent.nickname}</PlayerP>
           <PlayerCircle
