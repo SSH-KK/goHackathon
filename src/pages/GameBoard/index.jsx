@@ -316,7 +316,7 @@ const GameBoard = ({ history }) => {
       })
     )
     setPSum(
-      temp_all_sum != 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%'
+      temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%'
     )
     if (!hintsShow) {
       dispatch(markersClear())
@@ -324,7 +324,7 @@ const GameBoard = ({ history }) => {
         territoryDeadShow(
           probabilityMap.map((row, rowId) =>
             row.map((col, colId) =>
-              currentMap[rowId][colId] == 0 && col != 0
+              currentMap[rowId][colId] === 0 && col !== 0
                 ? col + 0.35 * (col / Math.abs(col))
                 : 0
             )
@@ -335,13 +335,8 @@ const GameBoard = ({ history }) => {
         )
       )
     }
+    // eslint-disable-next-line
   }, [probabilityMap, showTerritory, deadStones, showDead])
-
-  useEffect(() => {
-    if (showDead) {
-      deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
-    }
-  }, [showDead])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {
