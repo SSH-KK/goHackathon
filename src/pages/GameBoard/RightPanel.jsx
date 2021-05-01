@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import Info from "./components/GameInfo/components/Info"
+import TurnLog from "./components/TurnLog"
 import Help from "./components/Help"
 
 const RightWrapper = styled.div`
@@ -38,7 +38,7 @@ export const RightPanel = ({
   return (
     <RightWrapper>
       <RightContainer>
-        <Info turns={turns} />
+        <TurnLog turns={turns} />
         <Help
           you={you}
           opponent={opponent}

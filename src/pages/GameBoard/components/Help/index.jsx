@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import Players from "../GameInfo/components/Players"
 import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./types"
 
 const Wrapper = styled.div`
@@ -106,7 +105,6 @@ const Help = ({
                 onClick={helper.command}
               >
                 {helper.name}
-                {console.log(helper, activeHelpId === helper.id)}
               </HelpItem>
             ))}
           </HelpGroupList>
