@@ -60,7 +60,6 @@ function* fetchGetHintShowBest_saga(action) {
 
 function* fetchGetHintHeatmapFull_saga(action) {
   const { payload } = action
-  console.log(payload)
   try {
     const res = yield call(helpHeatmapFull, getToken(), payload.game_id)
     if (res.hint) {

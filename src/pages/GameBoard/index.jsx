@@ -12,6 +12,7 @@ import {
   hintShowBest,
   setScoresWinner,
   hintBestMoves,
+  territoryShow,
 } from '../../store/Board/actions'
 
 import { formatTurn } from '../../helpers/rightBar'
@@ -286,6 +287,13 @@ const GameBoard = ({ history }) => {
       dispatch(setScoresWinner(game_id))
     }
   }
+
+  useEffect(()=>{
+    if(!hintsShow){
+      dispatch(markersClear())
+      dispatch(territoryShow(probabilityMap.map((row, rowId)=>row.map((col, colId)=>currentMap[rowId][colId] == 0 ? col : 0))))
+    }
+  },[probabilityMap])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {

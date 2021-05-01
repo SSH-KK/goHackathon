@@ -9,6 +9,7 @@ import {
   MAP_STONES,
   SCORES,
   SCORES_WINNER,
+  TERRITORY_SHOW,
 } from './types'
 import {
   MAP_HALF,
@@ -45,6 +46,25 @@ export const boardReducer = (state = initialState, action) => {
         markers: {},
         blocked: false,
       }
+    case TERRITORY_SHOW:{
+      let mapStones = {},
+        classNamesMapStones = {}
+      let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
+      action.payload.territory.forEach((row, rowId) => {
+        row.forEach((cell, colId) => {
+          let sign = alpha[rowId]
+          let coord = `${sign}${colId + 1}`
+          mapStones[coord] = 'territory_show'
+          classNamesMapStones[coord] = `sl_${cell}`
+        })
+      })
+      return {
+        ...state,
+        mapStones,
+        classNamesMapStones,
+        blocked: false,
+      }
+    }
     case MARKERS_CLEAR:
       return {
         ...state,
@@ -60,7 +80,7 @@ export const boardReducer = (state = initialState, action) => {
         mapStones: action.payload,
         blocked: false,
       }
-    case MAP_HELP:
+    case MAP_HELP:{
       let mapStones = {},
         classNamesMapStones = {}
       if (action.payload.zone) {
@@ -89,6 +109,7 @@ export const boardReducer = (state = initialState, action) => {
         classNamesMapStones,
         blocked: false,
       }
+    }
     case WINNER_USER:
       return {
         ...state,

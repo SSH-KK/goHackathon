@@ -12,6 +12,7 @@ import {
   SET_BLOCKED,
   MAP_STONES,
   GET_SCORES_WINNER,
+  TERRITORY_SHOW,
 } from './types'
 
 export const hintHeatmapFull = game_id => ({
@@ -59,6 +60,11 @@ export const setScoresWinner = game_id => ({
 export const hintBestMoves = (game_id, count) => ({
   type: GET_HINT_BEST_MOVES,
   payload: { game_id: game_id, count: count },
+})
+
+export const territoryShow = (mas) => ({
+  type: TERRITORY_SHOW,
+  payload: {territory: mas}
 })
 
 export const hintShowBest = (game_id, moves) => ({

@@ -17,7 +17,6 @@ const BaseInfo = styled.div`
   justify-content: center;
   align-items: center;
   width: 70%;
-  // background-color: red;
 `
 const PlayerP = styled.p`
   font-size: 2rem;

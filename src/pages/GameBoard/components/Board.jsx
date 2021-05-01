@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Goban } from 'react-goban'
 import styled from 'styled-components'
@@ -51,6 +51,8 @@ const Board = ({
   setActiveHelpId,
   setStonePosition,
   mapStones,
+  probabilityMap,
+  hint,
 }) => {
   const dispatch = useDispatch()
   const markers = useSelector((state) => state.board.markers)
@@ -97,6 +99,7 @@ const Board = ({
     }
     if (valid) {
       dispatch(setMapStones({ ...mapStones, [stonePosition]: 'circle' }))
+      console.log('HOD')
       setMultipleHint(stonePosition)
     }
   }
