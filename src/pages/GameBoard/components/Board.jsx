@@ -22,19 +22,19 @@ const Wrapper = styled.div`
 `
 
 const LeftBar = styled.div`
-  background-color : #212529;
-  width : 5% !important;
-  border-radius : var(--gap);
-  margin : var(--gap);
+  background-color: #212529;
+  width: 5% !important;
+  border-radius: var(--gap);
+  margin: var(--gap);
   border: 3px solid #212529;
   position: relative;
 `
 const LeftBarProgress = styled.div`
   border-radius: var(--gap);
   position: absolute;
-  height: ${(props) => (props.height)};
+  height: ${(props) => props.height};
   width: 100%;
-  background-color: #F0F0F0;
+  background-color: #f0f0f0;
 `
 
 const Board = ({
@@ -102,7 +102,6 @@ const Board = ({
   }
 
   let className
-  console.log(currentColor, yourColor)
   if (currentColor !== yourColor) {
     className = 'disabled'
   } else {
