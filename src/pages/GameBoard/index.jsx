@@ -131,7 +131,7 @@ const GameBoard = ({ history }) => {
 
   useEffect(() => {
     if (showDead)
-      deadstones.guess(currentMap).then((deads) => setDeadStones(deads))
+      setGroupPowers(calculatePowers(currentMap))
   }, [currentMap, showDead])
 
   useEffect(() => {
@@ -337,13 +337,13 @@ const GameBoard = ({ history }) => {
             )
           ),
           showTerritory,
-          deadStones,
+          groupPowers,
           showDead
         )
       )
     }
     // eslint-disable-next-line
-  }, [probabilityMap, showTerritory, deadStones, showDead])
+  }, [probabilityMap, showTerritory, groupPowers, showDead])
 
   const deleteCoordinates = (hints) => {
     for (const key in coordinates) {

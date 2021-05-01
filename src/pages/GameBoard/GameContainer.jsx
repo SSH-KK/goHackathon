@@ -149,10 +149,10 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <p style={{ 'font-size': '1rem' }}>D</p>
         </MyButton>
         <BaseInfo>
-          <PlayerP>{args.opponent.nickname}</PlayerP>
+          <PlayerP>{args.yourColor == 'white' ? args.self.nickname : args.opponent.nickname}</PlayerP>
           <PlayerCircle
             stepColor={args.stepColor}
-            color={args.yourColor === 'black' ? 'white' : 'black'}
+            color={'white'}
           ></PlayerCircle>
           <PlayerP>{timerParseTwo}</PlayerP>
         </BaseInfo>
@@ -183,10 +183,10 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
         <EmptyButton width={'5vh'}></EmptyButton>
         <EmptyButton width={'5vh'}></EmptyButton>
         <BaseInfo>
-          <PlayerP>{args.self.nickname}</PlayerP>
+          <PlayerP>{args.yourColor == 'black' ? args.self.nickname : args.opponent.nickname}</PlayerP>
           <PlayerCircle
             stepColor={args.stepColor}
-            color={args.yourColor}
+            color={'black'}
           ></PlayerCircle>
           <PlayerP>{timerParseOne}</PlayerP>
         </BaseInfo>
