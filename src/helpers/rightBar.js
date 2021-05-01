@@ -31,14 +31,10 @@ export const countDiff = async (currentMap, enemyMove, myColor) => {
   const newMap = currentMap.map((row) => [...row])
   const pos = convertCoord(enemyMove)
 
-  console.log(enemyMove, pos)
   newMap[pos[0]][pos[1]] = myColor === 'black' ? -1 : 1
 
   const currentTerritory = await deadstones.getProbabilityMap(currentMap, 150)
   const afterPassTerritory = await deadstones.getProbabilityMap(newMap, 150)
-
-  console.log(currentMap, currentTerritory)
-  console.log(newMap, afterPassTerritory)
 
   const [currentWhite, currentBlack] = countTerritories(currentTerritory)
   const [newWhite, newBlack] = countTerritories(afterPassTerritory)
