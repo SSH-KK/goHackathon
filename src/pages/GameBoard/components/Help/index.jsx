@@ -5,12 +5,14 @@ import {
   HEATMAP_ZONE_QUARTER,
   BEST_MOVES,
   SHOULD_PASS,
+  HEATMAP_QUARTER,
 } from './types'
 import { Alert } from '../Alert'
 import { useSelector } from 'react-redux'
 import { countDiff } from '../../../../helpers/rightBar'
 import { Range } from './components/Range'
 import { Radio } from './components/Radio'
+import { ZonesSelect } from './components/ZonesSelect'
 
 const Wrapper = styled.div`
   color: #fff;
@@ -60,8 +62,9 @@ const HelpItem = styled.div`
 const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
   const [dialog, setDialog] = useState(null)
   const [rangeValue, setRangeValue] = useState(0)
+  const [zone, setZone] = useState(0)
 
-  console.log(yourColor)
+  useEffect(() => console.log(zone), [zone])
 
   const possibleEnemyMove = useSelector(
     (state) => state.board.possibleEnemyMove
@@ -77,9 +80,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
   useEffect(() => {
     ;(async () => {
       if (possibleEnemyMove) {
-        console.log('Got', possibleEnemyMove)
         const diff = await countDiff(currentMap, possibleEnemyMove, yourColor)
-        console.log(diff)
         setDialog({
           description:
             'При, предположительно, худшем для вас ходе противника вы ' +
@@ -143,6 +144,26 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
               )
           },
         },
+        {
+          name: 'Показать хитмап четверти доски',
+          id: HEATMAP_QUARTER,
+          command: () => {
+            scores &&
+              showDialog(
+                (value) =>
+                  handleHelp({
+                    type: 'map',
+                    quarter: value,
+                    id: HEATMAP_QUARTER,
+                  }),
+                {
+                  type: 'zone',
+                  props: { setValue: setZone },
+                  description: 'Какую зону вы хотите отобразить',
+                }
+              )
+          },
+        },
       ],
     },
     {
@@ -189,14 +210,20 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
       ))}
       {dialog && (
         <Alert
-          okCallback={() => dialog.callback(rangeValue)}
+          okCallback={() =>
+            dialog.callback(
+              (dialog.type === 'range' && rangeValue) ||
+                (dialog.type === 'zone' && zone)
+            )
+          }
           close={() => setDialog(null)}
         >
           {dialog.description && <p>{dialog.description}</p>}
-          {(dialog.type === 'range' && (
+          {dialog.type === 'range' && (
             <Range {...dialog.props} value={rangeValue} />
-          )) ||
-            (dialog.type === 'radio' && <Radio {...dialog.props} />)}
+          )}
+          {dialog.type === 'radio' && <Radio {...dialog.props} />}
+          {dialog.type === 'zone' && <ZonesSelect {...dialog.props} />}
         </Alert>
       )}
     </Wrapper>

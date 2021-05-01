@@ -14,6 +14,7 @@ import {
   GET_SCORES_WINNER,
   TERRITORY_SHOW,
   GET_HINT_WORST_ENEMY_MOVE,
+  GET_HINT_HEATMAP_QUARTER,
 } from './types'
 
 export const hintHeatmapFull = (game_id) => ({
@@ -86,6 +87,11 @@ export const hintHeatmap = (game_id) => ({
 export const hintHeatmapZone = (game_id, isQuarter) => ({
   type: GET_HINT_HEATMAP_ZONE,
   payload: { game_id, isQuarter },
+})
+
+export const hintHeatmapQuarter = (game_id, quarter) => ({
+  type: GET_HINT_HEATMAP_QUARTER,
+  payload: { game_id, quarter },
 })
 
 export const getWorstEnemyStep = (game_id, move) => ({

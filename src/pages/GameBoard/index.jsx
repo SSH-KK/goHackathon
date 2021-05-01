@@ -14,6 +14,7 @@ import {
   hintBestMoves,
   territoryDeadShow,
   getWorstEnemyStep,
+  hintHeatmapQuarter,
 } from '../../store/Board/actions'
 
 import { calculatePowers } from '../../helpers/groupPower'
@@ -22,6 +23,7 @@ import { formatTurn } from '../../helpers/rightBar'
 import { client, token } from '../../Socket.js'
 import {
   HEATMAP_FULL,
+  HEATMAP_QUARTER,
   HEATMAP_ZONE_QUARTER,
   SHOULD_PASS,
 } from './components/Help/types'
@@ -135,8 +137,7 @@ const GameBoard = ({ history }) => {
   }, [currentMap])
 
   useEffect(() => {
-    if (showDead)
-      setGroupPowers(calculatePowers(currentMap))
+    if (showDead) setGroupPowers(calculatePowers(currentMap))
   }, [currentMap, showDead])
 
   useEffect(() => {
@@ -284,7 +285,7 @@ const GameBoard = ({ history }) => {
     )
   }
 
-  const handleHelp = ({ type, multipleHandleCount, id, count }) => {
+  const handleHelp = ({ type, multipleHandleCount, id, count, quarter }) => {
     dispatch(markersClear())
     setMultipleHint({})
     setActiveHelpId(id)
@@ -307,6 +308,9 @@ const GameBoard = ({ history }) => {
           break
         case HEATMAP_ZONE_QUARTER:
           dispatch(hintHeatmapZone(game_id, true))
+          break
+        case HEATMAP_QUARTER:
+          dispatch(hintHeatmapQuarter(game_id, quarter))
           break
         default:
           console.error('invalid id', id)

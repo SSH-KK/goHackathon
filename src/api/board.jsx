@@ -11,7 +11,7 @@ export const helpBestMoves = (token, game_id, count) => {
 
 export const helpShowBest = (token, game_id, moves) => {
   return GET(
-    `hints/show-best?game_id=${game_id}&moves=${moves}&centaur_token=test1&token=${token}`,
+    `hints/show-best?game_id=${game_id}&moves=${moves}&centaur_token=${CENTAUR_TOKEN}&token=${token}`,
     {},
     token
   )
@@ -19,7 +19,7 @@ export const helpShowBest = (token, game_id, moves) => {
 
 export const helpHeatmapFull = (token, game_id) => {
   return GET(
-    `hints/heatmap-full?game_id=${game_id}&centaur_token=test1&token=${token}`,
+    `hints/heatmap-full?game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&token=${token}`,
     {},
     token
   )
@@ -27,7 +27,7 @@ export const helpHeatmapFull = (token, game_id) => {
 
 export const helpHeatmapZone = (token, game_id, is_quarter) => {
   return GET(
-    `hints/heatmap-best-move-zone?game_id=${game_id}&centaur_token=test1&token=${token}&is_quarter=${
+    `hints/heatmap-best-move-zone?game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&token=${token}&is_quarter=${
       is_quarter ? 1 : 0
     }`,
     {},
@@ -37,7 +37,7 @@ export const helpHeatmapZone = (token, game_id, is_quarter) => {
 
 export const helpHeatmapQuarter = (token, game_id, quarter) => {
   return GET(
-    `hints/heatmap-best-move-zone?game_id=${game_id}&centaur_token=test1&token=${token}&quarter=${quarter}`,
+    `hints/heatmap-quarter?game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&token=${token}&quarter=${quarter}`,
     {},
     token
   )
@@ -69,7 +69,7 @@ export const helpSuperiority = (token, game_id) => {
 
 export const scoresWinner = (token, game_id) => {
   return GET(
-    `hints/winner?game_id=${game_id}&centaur_token=test1&token=${token}`,
+    `hints/winner?game_id=${game_id}&centaur_token=${CENTAUR_TOKEN}&token=${token}`,
     {},
     token
   )
