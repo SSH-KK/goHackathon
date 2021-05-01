@@ -44,8 +44,8 @@ const HelpGroupList = styled.div`
 const HelpItem = styled.div`
   border-radius: var(--gap);
   border: 2px solid #20e7c1;
-  background: ${(props) => (props.active ? '#20e7c1' : '#212529')};
-  color: ${(props) => (props.active ? '#212529' : '#fff')};
+  background: ${props => (props.active ? '#20e7c1' : '#212529')};
+  color: ${props => (props.active ? '#212529' : '#fff')};
   padding: var(--gap);
   cursor: pointer;
   display: flex;
@@ -54,7 +54,7 @@ const HelpItem = styled.div`
   transition: all 0.3s;
 
   &:hover {
-    background-color: ${(props) =>
+    background-color: ${props =>
       props.active ? 'rgba(32,231,193,1)' : 'rgba(32,231,193,0.6)'};
   }
 `
@@ -64,9 +64,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
   const [rangeValue, setRangeValue] = useState(0)
   const [zone, setZone] = useState(0)
 
-  const possibleEnemyMove = useSelector(
-    (state) => state.board.possibleEnemyMove
-  )
+  const possibleEnemyMove = useSelector(state => state.board.possibleEnemyMove)
 
   const showDialog = (callback, componentProps) => {
     setDialog({
@@ -89,6 +87,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
         })
       }
     })()
+    // eslint-disable-next-line
   }, [possibleEnemyMove])
 
   const helpers = [
@@ -109,7 +108,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
           command: () =>
             scores &&
             showDialog(
-              (value) =>
+              value =>
                 handleHelp({
                   type: 'multiple',
                   multipleHandleCount: value + 1,
@@ -128,7 +127,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
           command: () => {
             scores &&
               showDialog(
-                (value) =>
+                value =>
                   handleHelp({
                     type: 'single',
                     count: value,
@@ -148,7 +147,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
           command: () => {
             scores &&
               showDialog(
-                (value) =>
+                value =>
                   handleHelp({
                     type: 'map',
                     quarter: value,

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react"
-import styled from "styled-components"
+import React, { useEffect, useRef } from 'react'
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   overflow-y: scroll;
@@ -21,8 +21,8 @@ const ListElement = styled.div`
 `
 
 const TimeWrapper = styled.div`
-  background-color: ${(props) => (props.active ? "#20e7c1" : "")};
-  color: ${(props) => (props.active ? "#212529" : "#fff")};
+  background-color: ${props => (props.active ? '#20e7c1' : '')};
+  color: ${props => (props.active ? '#212529' : '#fff')};
   border-radius: 0 var(--gap) var(--gap) 0;
   & > * {
     display: block;
@@ -58,7 +58,7 @@ const TurnLog = ({ turns }) => {
   const endRef = useRef(null)
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behaviour: "smooth" })
+    endRef.current?.scrollIntoView({ behaviour: 'smooth' })
   }, [turns])
 
   return (
@@ -76,7 +76,7 @@ const TurnLog = ({ turns }) => {
                 <span>{turn.color}</span>
               </div>
               <PlaceContainer>
-                <span>{turn.place ? turn.place : "PASS"}</span>
+                <span>{turn.place ? turn.place : 'PASS'}</span>
               </PlaceContainer>
             </ListElement>
           ))}

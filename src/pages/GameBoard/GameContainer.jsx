@@ -28,12 +28,12 @@ const PlayerP = styled.p`
   text-align: right;
 `
 const PlayerCircle = styled.div`
-  background-color: ${(props) =>
+  background-color: ${props =>
     props.color === 'black' ? '#292929;' : '#F0F0F0;'};
   min-height: 2rem;
   min-width: 2rem;
   margin-right: 1rem;
-  border: ${(props) =>
+  border: ${props =>
     props.stepColor === props.color
       ? '3px solid #20E7C1;'
       : props.color === 'black'
@@ -45,13 +45,13 @@ const MyButton = styled.div`
   height: 5vh;
   border: 3px solid #20e7c1;
   border-radius: 2rem;
-  color: ${(props) => (props.active ? '#FFFFFF' : '#20e7c1')};
-  width: ${(props) => props.width};
+  color: ${props => (props.active ? '#FFFFFF' : '#20e7c1')};
+  width: ${props => props.width};
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s;
-  background-color: ${(props) => (props.active ? '#20e7c1' : 'inherit')};
+  background-color: ${props => (props.active ? '#20e7c1' : 'inherit')};
   &:hover {
     background-color: #20e7c1;
     color: #ffffff;
@@ -61,7 +61,7 @@ const MyButton = styled.div`
 
 const EmptyButton = styled.div`
   height: 5vh;
-  width: ${(props) => props.width};
+  width: ${props => props.width};
 `
 
 const Wrapper = styled.div`
@@ -140,19 +140,23 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
         <MyButton
           active={args.showTerritory}
           width={'5vh'}
-          onClick={() => args.setShowTerritory((prev) => !prev)}
+          onClick={() => args.setShowTerritory(prev => !prev)}
         >
           <p style={{ 'font-size': '1rem' }}>T</p>
         </MyButton>
         <MyButton
           active={args.showDead}
           width={'5vh'}
-          onClick={() => args.setShowDead((prev) => !prev)}
+          onClick={() => args.setShowDead(prev => !prev)}
         >
           <p style={{ 'font-size': '1rem' }}>D</p>
         </MyButton>
         <BaseInfo>
-          <PlayerP>{args.yourColor == 'white' ? args.self.nickname : args.opponent.nickname}</PlayerP>
+          <PlayerP>
+            {args.yourColor === 'white'
+              ? args.self.nickname
+              : args.opponent.nickname}
+          </PlayerP>
           <PlayerCircle
             stepColor={args.stepColor}
             color={'white'}
@@ -186,7 +190,11 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
         <EmptyButton width={'5vh'}></EmptyButton>
         <EmptyButton width={'5vh'}></EmptyButton>
         <BaseInfo>
-          <PlayerP>{args.yourColor == 'black' ? args.self.nickname : args.opponent.nickname}</PlayerP>
+          <PlayerP>
+            {args.yourColor === 'black'
+              ? args.self.nickname
+              : args.opponent.nickname}
+          </PlayerP>
           <PlayerCircle
             stepColor={args.stepColor}
             color={'black'}

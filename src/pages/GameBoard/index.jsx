@@ -10,7 +10,6 @@ import {
   setLoserUser,
   setBlocked,
   hintShowBest,
-  setScoresWinner,
   hintBestMoves,
   territoryDeadShow,
   getWorstEnemyStep,
@@ -56,7 +55,7 @@ const Wrap = styled.div`
   z-index: 99;
 `
 
-const mapMap = (map) => {
+const mapMap = map => {
   let coords = {}
   let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
   map.forEach((row, rowId) =>
@@ -73,9 +72,9 @@ const mapMap = (map) => {
 const xyDist = (x1, x2, y1, y2) => Math.abs(x1 - x2) + Math.abs(y1 - y2)
 
 const GameBoard = ({ history }) => {
-  const game_id = useSelector((state) => state.createGame.id)
-  const blocked = useSelector((state) => state.board.blocked)
-  const mapStones = useSelector((state) => state.board.mapStones)
+  const game_id = useSelector(state => state.createGame.id)
+  const blocked = useSelector(state => state.board.blocked)
+  const mapStones = useSelector(state => state.board.mapStones)
 
   const [alert, setAlert] = useState(null)
   const [hintsShow, setHintsShow] = useState(false)
@@ -93,14 +92,16 @@ const GameBoard = ({ history }) => {
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
   const [opponentStonesCount, setOpponentStonesCount] = useState(0)
+  // @todo
+  // eslint-disable-next-line
   const [selfDiedCount, setSelfDiedCount] = useState(0)
+  // eslint-disable-next-line
   const [opponentDiedCount, setOpponentDiedCount] = useState(0)
   const [currentColor, setCurrentColor] = useState('white')
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
   const [showTerritory, setShowTerritory] = useState(false)
   const [showDead, setShowDead] = useState(false)
   const [probabilityMap, setProbabilityMap] = useState([[]])
-  const [deadStones, setDeadStones] = useState([[]])
   const [groupPowers, setGroupPowers] = useState([[]])
   const [pSum, setPSum] = useState('0%')
   const dispatch = useDispatch()
@@ -111,8 +112,8 @@ const GameBoard = ({ history }) => {
     let selfStones = 0
     let oppStones = 0
     const selfValue = selfColor === 'black' ? 1 : -1
-    currentMap.forEach((row) =>
-      row.forEach((value) => {
+    currentMap.forEach(row =>
+      row.forEach(value => {
         if (value === selfValue) {
           selfStones += 1
         } else if (value !== 0) {
@@ -121,22 +122,19 @@ const GameBoard = ({ history }) => {
       })
     )
     if (selfStones < selfStonesCount) {
-      setSelfDiedCount((n) => n + (selfStonesCount - selfStones))
+      setSelfDiedCount(n => n + (selfStonesCount - selfStones))
     }
     if (oppStones < opponentStonesCount) {
-      setOpponentDiedCount((n) => n + (opponentStonesCount - oppStones))
+      setOpponentDiedCount(n => n + (opponentStonesCount - oppStones))
     }
     setSelfStonesCount(selfStones)
     setOpponentStonesCount(oppStones)
 
     deadstones
       .getProbabilityMap(currentMap, 150)
-      .then((probabilities) =>
+      .then(probabilities =>
         setProbabilityMap(prepareProbability(probabilities, currentMap))
       )
-
-    setGroupPowers(calculatePowers(currentMap))
-
     // eslint-disable-next-line
   }, [currentMap])
 
@@ -211,7 +209,7 @@ const GameBoard = ({ history }) => {
           setCurrentColor(jsonData.payload.turn)
         }
         if (jsonData.payload.move) {
-          setTurns((turns) => [...turns, formatTurn(jsonData)])
+          setTurns(turns => [...turns, formatTurn(jsonData)])
         }
         if (jsonData.payload.type === 'newTurn') {
           setLastMarkers({ [jsonData.payload.place]: 'last_pos_marker' })
@@ -249,10 +247,10 @@ const GameBoard = ({ history }) => {
     let showAlert = false
     const selfColorInt = selfColor === 'black' ? 1 : -1
     if (!ignoreAlert && currentMap[y][x] === 0) {
-      const newMap = currentMap.map((row) => [...row])
+      const newMap = currentMap.map(row => [...row])
       newMap[y][x] = selfColorInt
-      const powers = calculatePowers(newMap, true).map((row) =>
-        row.map((power) => power === 1)
+      const powers = calculatePowers(newMap, true).map(row =>
+        row.map(power => power === 1)
       )
       let minDist = 1000
       const size = powers.length
@@ -375,8 +373,8 @@ const GameBoard = ({ history }) => {
   useEffect(() => {
     let temp_white_sum = 0
     let temp_all_sum = 0
-    probabilityMap.forEach((row) =>
-      row.forEach((col) => {
+    probabilityMap.forEach(row =>
+      row.forEach(col => {
         temp_white_sum += col < 0 ? Math.abs(col) : 0
         temp_all_sum += Math.abs(col)
       })
@@ -404,7 +402,7 @@ const GameBoard = ({ history }) => {
     // eslint-disable-next-line
   }, [probabilityMap, showTerritory, groupPowers, showDead])
 
-  const deleteCoordinates = (hints) => {
+  const deleteCoordinates = hints => {
     for (const key in coordinates) {
       for (const keyHint in hints) {
         if (key === keyHint) {
@@ -414,7 +412,7 @@ const GameBoard = ({ history }) => {
     }
   }
 
-  const setMultipleHintFunc = (val) => {
+  const setMultipleHintFunc = val => {
     if (Object.keys(mapStones).length === multipleCount - 2) {
       dispatch(markersClear())
       setActiveHelpId(null)
@@ -441,7 +439,7 @@ const GameBoard = ({ history }) => {
         yourColor={selfColor}
         stepColor={currentColor}
         helpType={helpType}
-        setMultipleHint={(val) => setMultipleHintFunc(val)}
+        setMultipleHint={val => setMultipleHintFunc(val)}
         multipleHint={multipleHint}
         multipleCount={multipleCount}
         coordinates={coordinates}
@@ -460,7 +458,6 @@ const GameBoard = ({ history }) => {
         setShowTerritory={setShowTerritory}
         probabilityMap={probabilityMap}
         pSum={pSum}
-        deadStones={deadStones}
         showTerritory={showTerritory}
         showDead={showDead}
       />

@@ -10,13 +10,14 @@ const Wrapper = styled.div`
 `
 
 export const ZonesSelect = ({ setValue }) => {
-  const handleChange = (e) => setValue(e.target.value)
+  const handleChange = e => setValue(e.target.value)
 
+  // eslint-disable-next-line
   useEffect(() => setValue(1), [])
 
   return (
     <Wrapper>
-      {[2, 1, 3, 4].map((index) => (
+      {[2, 1, 3, 4].map(index => (
         <div key={index}>
           <input
             key={index}

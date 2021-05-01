@@ -17,7 +17,7 @@ import {
   GET_HINT_HEATMAP_QUARTER,
 } from './types'
 
-export const hintHeatmapFull = (game_id) => ({
+export const hintHeatmapFull = game_id => ({
   type: GET_HINT_HEATMAP_FULL,
   payload: { game_id },
 })
@@ -34,27 +34,27 @@ export const markersClear = () => ({
   type: MARKERS_CLEAR,
 })
 
-export const setWinnerUser = (winner) => ({
+export const setWinnerUser = winner => ({
   type: WINNER_USER,
   payload: winner,
 })
 
-export const setLoserUser = (loser) => ({
+export const setLoserUser = loser => ({
   type: LOSER_USER,
   payload: loser,
 })
 
-export const setBlocked = (blocked) => ({
+export const setBlocked = blocked => ({
   type: SET_BLOCKED,
   payload: blocked,
 })
 
-export const setMapStones = (stones) => ({
+export const setMapStones = stones => ({
   type: MAP_STONES,
   payload: stones,
 })
 
-export const setScoresWinner = (game_id) => ({
+export const setScoresWinner = game_id => ({
   type: GET_SCORES_WINNER,
   payload: { game_id },
 })
@@ -79,7 +79,7 @@ export const hintShowBest = (game_id, moves) => ({
   payload: { game_id, moves: moves },
 })
 
-export const hintHeatmap = (game_id) => ({
+export const hintHeatmap = game_id => ({
   type: GET_HINT_HEATMAP,
   payload: { game_id },
 })

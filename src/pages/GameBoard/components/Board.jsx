@@ -34,7 +34,7 @@ const LeftBarProgress = styled.div`
   left: 0;
   border-radius: var(--gap);
   position: absolute;
-  height: ${(props) => props.height};
+  height: ${props => props.height};
   width: 100%;
   background-color: #f0f0f0;
 `
@@ -56,12 +56,12 @@ const Board = ({
   pSum,
 }) => {
   const dispatch = useDispatch()
-  const markers = useSelector((state) => state.board.markers)
+  const markers = useSelector(state => state.board.markers)
   const classNamesMapStones = useSelector(
-    (state) => state.board.classNamesMapStones
+    state => state.board.classNamesMapStones
   )
 
-  const handleTurn = (stonePosition) => {
+  const handleTurn = stonePosition => {
     client.send(
       JSON.stringify([
         7,
@@ -91,7 +91,7 @@ const Board = ({
     }
   }
 
-  const handleMultipleTurn = (stonePosition) => {
+  const handleMultipleTurn = stonePosition => {
     let valid = true
     for (const key in coordinates) {
       if (key === stonePosition) {

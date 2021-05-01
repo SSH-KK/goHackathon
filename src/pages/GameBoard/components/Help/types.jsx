@@ -19,8 +19,8 @@ const getZone = (
   let alpha = rangeAlpha.toUpperCase().split('')
   let digits = digitRange.split(',')
 
-  alpha.forEach((char) => {
-    digits.forEach((digit) => {
+  alpha.forEach(char => {
+    digits.forEach(digit => {
       mapStones[`${char}${digit}`] = type
       classNamesMapStones[`${char}${digit}`] = `${size} ${color}`
     })
