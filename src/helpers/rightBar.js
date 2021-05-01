@@ -40,6 +40,6 @@ export const countDiff = async (currentMap, enemyMove, myColor) => {
 
   return (
     (newBlack - newWhite - (currentBlack - currentWhite)) *
-    (myColor === 'black' ? 1 : -1)
+    (myColor === 'black' ? -1 : 1)
   )
 }
