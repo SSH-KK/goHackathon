@@ -313,6 +313,7 @@ const GameBoard = ({ history }) => {
         currentColor={currentColor}
         setCurrentColor={setCurrentColor}
         yourColor={selfColor}
+        stepColor={currentColor}
         helpType={helpType}
         setMultipleHint={(val) => setMultipleHintFunc(val)}
         multipleHint={multipleHint}
@@ -323,6 +324,9 @@ const GameBoard = ({ history }) => {
         setMultipleType={setMultipleType}
         setActiveHelpId={setActiveHelpId}
         classNames={{}}
+        self={self}
+        times={times}
+        opponent={opponent}
         mapStones={mapStones}
         passFn={passFn}
       />

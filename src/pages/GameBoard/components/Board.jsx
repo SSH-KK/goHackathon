@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-height: 90vh;
+  max-height: 80vh;
   & > div {
     width: 100%;
     height: 100%;
@@ -19,6 +19,22 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
   }
+`
+
+const LeftBar = styled.div`
+  background-color : #212529;
+  width : 5% !important;
+  border-radius : var(--gap);
+  margin : var(--gap);
+  border: 3px solid #212529;
+  position: relative;
+`
+const LeftBarProgress = styled.div`
+  border-radius: var(--gap);
+  position: absolute;
+  height: ${(props) => (props.height)};
+  width: 100%;
+  background-color: #F0F0F0;
 `
 
 const Board = ({
@@ -96,6 +112,9 @@ const Board = ({
 
   return (
     <Wrapper className={className}>
+      <LeftBar>
+        <LeftBarProgress height={'55%'}></LeftBarProgress>
+      </LeftBar>
       <Goban
         theme={'new_night'}
         stones={coordinates}
