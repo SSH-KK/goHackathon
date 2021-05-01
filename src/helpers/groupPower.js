@@ -54,10 +54,18 @@ function countNearZeros(group, field) {
   return result.size
 }
 
-export function calculatePowers(field) {
+export function calculatePowers(field, optimize = false) {
   const result = field.map((row) => row.map((_) => 0))
   const groups = searchGroups(field)
   const groupsPower = groups.map((group) => countNearZeros(group, field))
+  if (optimize && groupsPower.indexOf(0) !== -1) {
+    const fieldCopy = field.map((row) => [...row])
+    groups.forEach((group, i) => {
+      if (groupsPower[i] > 0) return
+      group.forEach(([x, y]) => (fieldCopy[y][x] = 0))
+    })
+    return calculatePowers(fieldCopy)
+  }
   groups.forEach((group, i) =>
     group.forEach(([x, y]) => (result[y][x] = groupsPower[i]))
   )

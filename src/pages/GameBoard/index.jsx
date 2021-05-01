@@ -249,7 +249,7 @@ const GameBoard = ({ history }) => {
     if (!ignoreAlert && currentMap[y][x] === 0) {
       const newMap = currentMap.map((row) => [...row])
       newMap[y][x] = selfColorInt
-      const powers = calculatePowers(newMap).map((row) =>
+      const powers = calculatePowers(newMap, true).map((row) =>
         row.map((power) => power === 1)
       )
       let minDist = 1000
@@ -257,7 +257,7 @@ const GameBoard = ({ history }) => {
       for (let px = 0; px < size; px++) {
         for (let py = 0; py < size; py++) {
           if (!powers[py][px]) continue
-          // if (currentMap[py][px] !== selfColorInt) continue // if missclick when user tried to capture group
+          if (currentMap[py][px] !== selfColorInt) continue
           const d = xyDist(px, x, py, y)
           if (d < minDist) minDist = d
         }
