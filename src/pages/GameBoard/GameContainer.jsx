@@ -12,8 +12,20 @@ export const GameContainer = ({
   console.log(probabilityMap)
   console.log(countPercentage(probabilityMap, yourColor))
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        'flex-direction': 'column',
+        'justify-content': 'center',
+      }}
+    >
+      <div>
+        <h4>adakdjak</h4>
+      </div>
       <Board {...args} yourColor={yourColor} />
+      <div>
+        <h4>adakdjak</h4>
+      </div>
       <div style={{ bottom: 0, position: 'fixed' }}>
         <ButtonCustom onClick={passFn}>Pass</ButtonCustom>
         <ButtonCustom onClick={() => setShowTerritory(true)}>

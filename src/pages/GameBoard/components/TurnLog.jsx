@@ -54,7 +54,7 @@ const TimeContainer = ({ timeStamp, active }) => {
   )
 }
 
-const Info = ({ turns }) => {
+const TurnLog = ({ turns }) => {
   const endRef = useRef(null)
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Info = ({ turns }) => {
                 <span>{turn.color}</span>
               </div>
               <PlaceContainer>
-                <span>{turn.place}</span>
+                <span>{turn.place ? turn.place : "PASS"}</span>
               </PlaceContainer>
             </ListElement>
           ))}
@@ -92,4 +92,4 @@ const Info = ({ turns }) => {
   )
 }
 
-export default Info
+export default TurnLog

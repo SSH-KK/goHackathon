@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-// import Players from "../GameInfo/components/Players"
 import { HEATMAP_FULL, HEATMAP_ZONE_QUARTER } from "./types"
 
 const Wrapper = styled.div`
@@ -40,6 +39,11 @@ const HelpItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s;
+
+  &:hover{
+    background-color: ${(props) => (props.active ? "rgba(32,231,193,1)" : "rgba(32,231,193,0.6)")};
+  }
 `
 
 const Help = ({

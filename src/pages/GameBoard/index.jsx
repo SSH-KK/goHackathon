@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import styled from "styled-components"
 import {
   hintHeatmapFull,
   hintHeatmapZone,
@@ -22,8 +22,9 @@ import deadstones from '@sabaki/deadstones'
 
 import { clearGameId } from '../../store/GameCreate/actions'
 
-import { GameContainer } from './GameContainer'
-import { RightPanel } from './RightPanel'
+import { GameContainer } from "./GameContainer"
+import { RightPanel } from "./RightPanel"
+import { Alert } from "./components/Alert"
 
 deadstones.useFetch('deadstones_bg.wasm')
 
@@ -40,7 +41,7 @@ const Wrap = styled.div`
   left: 0;
   top: 0;
   background-color: rgba(255, 255, 255, 0.5);
-  z-index: 99999999;
+  z-index: 99;
 `
 
 const mapMap = (map) => {
@@ -62,11 +63,12 @@ const GameBoard = ({ history }) => {
   const blocked = useSelector((state) => state.board.blocked)
   const mapStones = useSelector((state) => state.board.mapStones)
 
+  const [alert, setAlert] = useState(null)
   const [hintsShow, setHintsShow] = useState(false)
   const [enemyPass, setEnemyPass] = useState(false)
   const [lastMarkers, setLastMarkers] = useState(null)
-  const [helpType, setHelpType] = useState('')
-  const [activeHelpId, setActiveHelpId] = useState('')
+  const [helpType, setHelpType] = useState("")
+  const [activeHelpId, setActiveHelpId] = useState("")
   const [multipleType, setMultipleType] = useState(false)
   const [multipleHint, setMultipleHint] = useState({})
   const [multipleCount, setMultipleCount] = useState([])
@@ -77,7 +79,7 @@ const GameBoard = ({ history }) => {
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
   const [opponentStonesCount, setOpponentStonesCount] = useState(0)
-  const [currentPlayerColor, setCurrentPlayerColor] = useState('white')
+  const [currentColor, setCurrentColor] = useState("white")
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
   const [showTerritory, setShowTerritory] = useState(false)
   const [showDead, setShowDead] = useState(false)
@@ -91,26 +93,26 @@ const GameBoard = ({ history }) => {
     if (Object.keys(multipleHint).length === multipleCount) {
       dispatch(multipleHelp())
       deleteCoordinates(multipleHint)
-      setHelpType('')
+      setHelpType("")
       setMultipleHint({})
     }
     // eslint-disable-next-line
   }, [multipleHint, multipleCount])
 
   if (game_id === null) {
-    history.push('/')
+    history.push("/")
   }
 
   useEffect(() => {
     if (game_id) {
-      client.send(JSON.stringify([5, 'go/game']))
+      client.send(JSON.stringify([5, "go/game"]))
       client.send(
         JSON.stringify([
           7,
-          'go/game',
+          "go/game",
           {
-            command: 'auth',
-            token: localStorage.getItem('GoGameToken'),
+            command: "auth",
+            token: localStorage.getItem("GoGameToken"),
             game_id: game_id,
           },
         ])
@@ -121,8 +123,12 @@ const GameBoard = ({ history }) => {
 
   client.onmessage = function (e) {
     setEnemyPass(false)
-    if (typeof e.data === 'string') {
+    if (typeof e.data === "string") {
       let jsonData = JSON.parse(e.data)
+      if (jsonData.error && jsonData.error.startsWith("illegal move")) {
+        setAlert(jsonData.error)
+        setCurrentColor(currentColor === "white" ? "black" : "white")
+      }
       if (jsonData.payload) {
         if (jsonData.payload.currentMap) {
           const currentMap = jsonData.payload.currentMap
@@ -147,35 +153,35 @@ const GameBoard = ({ history }) => {
           //   .getProbabilityMap(currentMap, 30)
           //   .then((probabilities) => setProbabilityMap(probabilities))
         }
-        if (jsonData.payload.type === 'currentMap') {
+        if (jsonData.payload.type === "currentMap") {
           setSelf(jsonData.payload.you)
           setOpponent(jsonData.payload.opponent)
         }
         if (jsonData.payload.player) {
-          if (typeof jsonData.payload.player === 'string') {
-            setSelfColor(jsonData.payload.player === 'w' ? 'white' : 'black')
+          if (typeof jsonData.payload.player === "string") {
+            setSelfColor(jsonData.payload.player === "w" ? "white" : "black")
           }
         }
-        if (jsonData.payload.type && jsonData.payload.type === 'endGame') {
+        if (jsonData.payload.type && jsonData.payload.type === "endGame") {
           let winner = jsonData.payload.winnerPlayer
           let loser = jsonData.payload.loserPlayer
           winner.finalScore = jsonData.payload.finalScore
           dispatch(setWinnerUser(winner))
           dispatch(setLoserUser(loser))
-          history.push('/', { from: 'Win' })
+          history.push("/", { from: "Win" })
           dispatch(clearGameId())
         }
         if (jsonData.payload.turn) {
-          setCurrentPlayerColor(jsonData.payload.turn)
+          setCurrentColor(jsonData.payload.turn)
         }
         if (jsonData.payload.move) {
           setTurns((turns) => [...turns, formatTurn(jsonData)])
         }
-        if (jsonData.payload.type === 'newTurn') {
-          setLastMarkers({ [jsonData.payload.place]: 'last_pos_marker' })
+        if (jsonData.payload.type === "newTurn") {
+          setLastMarkers({ [jsonData.payload.place]: "last_pos_marker" })
         }
-        if (jsonData.payload.moveType === 'pass') {
-          if (currentPlayerColor !== selfColor) {
+        if (jsonData.payload.moveType === "pass") {
+          if (currentColor !== selfColor) {
             setEnemyPass(true)
           }
         }
@@ -205,14 +211,14 @@ const GameBoard = ({ history }) => {
     if (currentPlayerColor === selfColor) {
       dispatch(markersClear())
       setActiveHelpId(null)
-      setHelpType('')
+      setHelpType("")
       dispatch(setBlocked(true))
       client.send(
         JSON.stringify([
           7,
-          'go/game',
+          "go/game",
           {
-            command: 'move',
+            command: "move",
             token: token,
             place: coord.toString().toLowerCase(),
             game_id: game_id,
@@ -225,45 +231,45 @@ const GameBoard = ({ history }) => {
   const passFn = () => {
     dispatch(markersClear())
     setActiveHelpId(null)
-    setHelpType('')
+    setHelpType("")
     dispatch(setBlocked(true))
     client.send(
       JSON.stringify([
         7,
-        'go/game',
-        { command: 'pass', token: token, game_id: game_id },
+        "go/game",
+        { command: "pass", token: token, game_id: game_id },
       ])
     )
   }
 
-  // const resign = () => {
-  //   dispatch(setBlocked(true))
-  //   client.send(
-  //     JSON.stringify([
-  //       7,
-  //       'go/game',
-  //       { command: 'resign', token: token, game_id: game_id },
-  //     ])
-  //   )
-  // }
+  const resign = () => {
+    dispatch(setBlocked(true))
+    client.send(
+      JSON.stringify([
+        7,
+        "go/game",
+        { command: "resign", token: token, game_id: game_id },
+      ])
+    )
+  }
 
   const handleHelp = ({ type, multipleHandleCount, id, count }) => {
     dispatch(markersClear())
     setMultipleHint({})
     setActiveHelpId(id)
-    if (type === 'single') {
+    if (type === "single") {
       dispatch(setBlocked(true))
-      setHelpType('single')
+      setHelpType("single")
       dispatch(hintBestMoves(game_id, count))
     }
-    if (type === 'multiple') {
-      setHelpType('multiple')
-      setMultipleType('multiple')
+    if (type === "multiple") {
+      setHelpType("multiple")
+      setMultipleType("multiple")
       setMultipleCount(multipleHandleCount)
     }
-    if (type === 'map') {
+    if (type === "map") {
       dispatch(setBlocked(true))
-      setHelpType('map')
+      setHelpType("map")
       switch (id) {
         case HEATMAP_FULL:
           dispatch(hintHeatmapFull(game_id))
@@ -272,10 +278,10 @@ const GameBoard = ({ history }) => {
           dispatch(hintHeatmapZone(game_id, true))
           break
         default:
-          console.error('invalid id', id)
+          console.error("invalid id", id)
       }
     }
-    if (type === 'score') {
+    if (type === "score") {
       dispatch(setBlocked(true))
       dispatch(setScoresWinner(game_id))
     }
@@ -296,10 +302,10 @@ const GameBoard = ({ history }) => {
       dispatch(markersClear())
       setActiveHelpId(null)
       setMultipleHint({})
-      setHelpType('')
+      setHelpType("")
       dispatch(setBlocked(true))
       dispatch(
-        hintShowBest(game_id, Object.keys({ ...mapStones, [val]: 'circle' }))
+        hintShowBest(game_id, Object.keys({ ...mapStones, [val]: "circle" }))
       )
     } else {
       setMultipleHint(mapStones)
@@ -313,8 +319,8 @@ const GameBoard = ({ history }) => {
         lastMarkers={lastMarkers}
         hint={hintsShow}
         setHint={setHintsShow}
-        currentColor={currentPlayerColor}
-        setCurrentColor={setCurrentPlayerColor}
+        currentColor={currentColor}
+        setCurrentColor={setCurrentColor}
         yourColor={selfColor}
         helpType={helpType}
         setMultipleHint={(val) => setMultipleHintFunc(val)}
@@ -337,7 +343,7 @@ const GameBoard = ({ history }) => {
         hint={hintsShow}
         you={self}
         opponent={opponent}
-        stepColor={currentPlayerColor}
+        stepColor={currentColor}
         yourColor={selfColor}
         turns={turns}
         enemyPass={enemyPass}
@@ -350,8 +356,14 @@ const GameBoard = ({ history }) => {
         multipleType={multipleType}
         activeHelpId={activeHelpId}
         times={times}
-        scores={currentPlayerColor !== selfColor ? false : true}
+        scores={currentColor !== selfColor ? false : true}
       />
+      {alert && (
+        <>
+          <Wrap />
+          <Alert text={alert} hideAlert={() => setAlert(null)} />
+        </>
+      )}
     </Wrapper>
   )
 }
