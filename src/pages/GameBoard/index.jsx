@@ -24,6 +24,7 @@ import { clearGameId } from "../../store/GameCreate/actions"
 
 import { GameContainer } from "./GameContainer"
 import { RightPanel } from "./RightPanel"
+import { Alert } from "./components/Alert"
 
 deadstones.useFetch("deadstones_bg.wasm")
 
@@ -40,7 +41,7 @@ const Wrap = styled.div`
   left: 0;
   top: 0;
   background-color: rgba(255, 255, 255, 0.5);
-  z-index: 99999999;
+  z-index: 99;
 `
 
 const GameBoard = ({ history }) => {
@@ -48,6 +49,7 @@ const GameBoard = ({ history }) => {
   const blocked = useSelector((state) => state.board.blocked)
   const mapStones = useSelector((state) => state.board.mapStones)
 
+  const [alert, setAlert] = useState(null)
   const [hintsShow, setHintsShow] = useState(false)
   const [enemyPass, setEnemyPass] = useState(false)
   const [lastMarkers, setLastMarkers] = useState(null)
@@ -104,6 +106,7 @@ const GameBoard = ({ history }) => {
     if (typeof e.data === "string") {
       let jsonData = JSON.parse(e.data)
       if (jsonData.error && jsonData.error.startsWith("illegal move")) {
+        setAlert(jsonData.error)
         setCurrentColor(currentColor === "white" ? "black" : "white")
       }
       if (jsonData.payload) {
@@ -345,6 +348,12 @@ const GameBoard = ({ history }) => {
         times={times}
         scores={currentColor !== selfColor ? false : true}
       />
+      {alert && (
+        <>
+          <Wrap />
+          <Alert text={alert} hideAlert={() => setAlert(null)} />
+        </>
+      )}
     </Wrapper>
   )
 }
