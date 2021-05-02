@@ -135,21 +135,21 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
     <Wrapper>
       <PlayerInfo>
         <MyButton width={'10%'} onClick={() => history.push('/')}>
-          <p style={{ 'font-size': '1rem' }}>Home</p>
+          <p style={{ fontSize: '1rem' }}>Home</p>
         </MyButton>
         <MyButton
           active={args.showTerritory}
           width={'5vh'}
           onClick={() => args.setShowTerritory(prev => !prev)}
         >
-          <p style={{ 'font-size': '1rem' }}>T</p>
+          <p style={{ fontSize: '1rem' }}>T</p>
         </MyButton>
         <MyButton
           active={args.showDead}
           width={'5vh'}
           onClick={() => args.setShowDead(prev => !prev)}
         >
-          <p style={{ 'font-size': '1rem' }}>D</p>
+          <p style={{ fontSize: '1rem' }}>D</p>
         </MyButton>
         <BaseInfo>
           <PlayerP>
@@ -164,7 +164,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <PlayerP>{timerParseTwo}</PlayerP>
         </BaseInfo>
         <MyButton width={'10%'} onClick={resignFn}>
-          <p style={{ 'font-size': '1rem' }}>Resign</p>
+          <p style={{ fontSize: '1rem' }}>Resign</p>
         </MyButton>
       </PlayerInfo>
 
@@ -202,7 +202,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <PlayerP>{timerParseOne}</PlayerP>
         </BaseInfo>
         <MyButton width={'10%'} onClick={passFn}>
-          <p style={{ 'font-size': '1rem' }}>Pass</p>
+          <p style={{ fontSize: '1rem' }}>Pass</p>
         </MyButton>
       </PlayerInfo>
     </Wrapper>
