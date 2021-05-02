@@ -54,7 +54,6 @@ const Wrap = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   z-index: 99;
 `
-
 const mapMap = map => {
   let coords = {}
   let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
@@ -87,7 +86,7 @@ const GameBoard = ({ history }) => {
   const [multipleCount, setMultipleCount] = useState([])
   const [turns, setTurns] = useState([])
   const [selfColor, setSelfColor] = useState('white')
-  const [currentMap, setCurrentMap] = useState([[]])
+  const [currentMap, setCurrentMap] = useState([[0]])
   const [self, setSelf] = useState({}) // self player object
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
