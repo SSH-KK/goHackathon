@@ -390,10 +390,12 @@ const GameBoard = ({ history }) => {
     let black_c = 0
     probabilityMap.forEach((row, rowId) =>
       row.forEach((col, colId) => {
-        temp_white_sum += col < 0 ? Math.abs(col) : 0
-        temp_all_sum += Math.abs(col)
-        white_c += currentMap[rowId][colId] === -1 ? 1 : col <= -0.5 ? 1 : 0
-        black_c += currentMap[rowId][colId] === 1 ? 1 : col >= 0.5 ? 1 : 0
+        if (currentMap[rowId][colId] === 0) {
+          temp_white_sum += col < 0 ? Math.abs(col) : 0
+          temp_all_sum += Math.abs(col)
+        }
+        if (currentMap[rowId][colId] !== -1) white_c += col <= -0.3 ? 1 : 0
+        if (currentMap[rowId][colId] !== 1) black_c += col >= 0.3 ? 1 : 0
       })
     )
     setPSum({
@@ -420,7 +422,15 @@ const GameBoard = ({ history }) => {
       )
     }
     // eslint-disable-next-line
-  }, [probabilityMap, showTerritory, groupPowers, showDead])
+  }, [
+    probabilityMap,
+    showTerritory,
+    groupPowers,
+    showDead,
+    selfDiedCount,
+    opponentDiedCount,
+    currentMap,
+  ])
 
   const deleteCoordinates = hints => {
     for (const key in coordinates) {
