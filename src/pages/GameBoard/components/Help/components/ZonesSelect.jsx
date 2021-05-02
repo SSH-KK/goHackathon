@@ -59,7 +59,6 @@ export const ZonesSelect = ({ setValue }) => {
             value={index}
             name={'radio'}
             onChange={handleChange}
-            checked={index === 1}
           />
           <label htmlFor={index}>{index}</label>
         </div>

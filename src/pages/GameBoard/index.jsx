@@ -92,11 +92,6 @@ const GameBoard = ({ history }) => {
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
   const [opponentStonesCount, setOpponentStonesCount] = useState(0)
-  // @todo
-  // eslint-disable-next-line
-  const [selfDiedCount, setSelfDiedCount] = useState(0)
-  // eslint-disable-next-line
-  const [opponentDiedCount, setOpponentDiedCount] = useState(0)
   const [currentColor, setCurrentColor] = useState('white')
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
   const [showTerritory, setShowTerritory] = useState(false)
@@ -125,12 +120,6 @@ const GameBoard = ({ history }) => {
         }
       })
     )
-    if (selfStones < selfStonesCount) {
-      setSelfDiedCount(n => n + (selfStonesCount - selfStones))
-    }
-    if (oppStones < opponentStonesCount) {
-      setOpponentDiedCount(n => n + (opponentStonesCount - oppStones))
-    }
     setSelfStonesCount(selfStones)
     setOpponentStonesCount(oppStones)
 
@@ -389,23 +378,19 @@ const GameBoard = ({ history }) => {
   useEffect(() => {
     let temp_white_sum = 0
     let temp_all_sum = 0
-    let white_c = 0
-    let black_c = 0
     probabilityMap.forEach((row, rowId) =>
       row.forEach((col, colId) => {
         if (currentMap[rowId][colId] === 0) {
           temp_white_sum += col < 0 ? Math.abs(col) : 0
           temp_all_sum += Math.abs(col)
         }
-        if (currentMap[rowId][colId] !== -1) white_c += col <= -0.3 ? 1 : 0
-        if (currentMap[rowId][colId] !== 1) black_c += col >= 0.3 ? 1 : 0
       })
     )
     setPSum({
       all:
         temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
-      white: white_c,
-      black: black_c,
+      white: selfColor === 'black' ? opponentStonesCount : selfStonesCount,
+      black: selfColor === 'black' ? selfStonesCount : opponentStonesCount,
     })
     if (!hintsShow) {
       dispatch(markersClear())
@@ -430,8 +415,8 @@ const GameBoard = ({ history }) => {
     showTerritory,
     groupPowers,
     showDead,
-    selfDiedCount,
-    opponentDiedCount,
+    selfStonesCount,
+    opponentStonesCount,
     currentMap,
   ])
 
