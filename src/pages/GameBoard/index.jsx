@@ -372,8 +372,8 @@ const GameBoard = ({ history }) => {
       row.forEach((col, colId) => {
         temp_white_sum += col < 0 ? Math.abs(col) : 0
         temp_all_sum += Math.abs(col)
-        white_c += currentMap[rowId][colId] == -1 ? 1 : col<=-0.5 ? 1 : 0
-        black_c += currentMap[rowId][colId] == 1 ? 1 : col>=0.5 ? 1 : 0
+        white_c += currentMap[rowId][colId] === -1 ? 1 : col<=-0.5 ? 1 : 0
+        black_c += currentMap[rowId][colId] === 1 ? 1 : col>=0.5 ? 1 : 0
       })
     )
     setPSum({
