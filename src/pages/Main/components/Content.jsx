@@ -14,11 +14,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 
 const Wrapper = styled.div`
-  width: 613px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: 100%;
 `
 
 const ContentMainBoard = (setSearchType, searchType, history, gameId) => {
@@ -104,21 +101,21 @@ export const Content = ({ history, searchType, setSearchType }) => {
       {!searchType ? (
         <>
           <ButtonCustom
-            mb={30}
+            mb={10}
             onClick={() => history.push('/gameBoard')}
             disabled={gameId === null}
           >
             Продолжить игру
           </ButtonCustom>
           <ButtonCustom
-            mb={30}
+            mb={10}
             onClick={() => setSearchType('Random')}
             disabled={gameId !== null}
           >
             Игра со случайным соперником
           </ButtonCustom>
           <ButtonCustom
-            mb={30}
+            mb={10}
             onClick={() => setSearchType('WithAi')}
             disabled={gameId !== null}
           >
@@ -126,14 +123,14 @@ export const Content = ({ history, searchType, setSearchType }) => {
           </ButtonCustom>
           <ButtonCustom
             onClick={() => setSearchType('Code')}
-            mb={30}
+            mb={10}
             disabled={gameId !== null}
           >
             Закрытая игра
           </ButtonCustom>
-          <ButtonCustom mb={30} onClick={() => history.push('/liders')}>
+          <ButtonCustom mb={10} onClick={() => history.push('/liders')}>
             Рейтинг игроков
-          </ButtonCustom>{' '}
+          </ButtonCustom>
           <ButtonCustom
             onClick={() => {
               history.push(INFO_URL)
@@ -141,7 +138,7 @@ export const Content = ({ history, searchType, setSearchType }) => {
             }}
           >
             Информация для участников
-          </ButtonCustom>{' '}
+          </ButtonCustom>
         </>
       ) : null}
       {ContentMainBoard(setSearchType, searchType, history, gameId)}

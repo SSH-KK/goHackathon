@@ -5,19 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getLiders } from '../store/Profile/actions'
 
 const Wrapper = styled.div`
-  max-width: 1300px;
   margin: 0 auto;
   height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  padding-top: 200px;
 `
 
 const LidersCont = styled.div`
   width: 100%;
-  max-height: 590px;
-  overflow-y: scroll;
   display: flex;
   flex-wrap: wrap;
 `

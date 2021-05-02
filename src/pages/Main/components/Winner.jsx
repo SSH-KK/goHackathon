@@ -47,7 +47,7 @@ const ScoreAfter = styled(Score)`
     content: '';
     width: 100%;
     height: 3px;
-    background: #ffc164;
+    background: #20e7c1;
     bottom: 0;
   }
 `
@@ -64,6 +64,13 @@ const Pts = styled.p`
 const Avatar = styled.img`
   border-radius: 100px;
   width: 150px;
+`
+
+const Right = styled.div``
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `
 
 export const Winner = ({ setSearchType }) => {
@@ -87,7 +94,7 @@ export const Winner = ({ setSearchType }) => {
   }, [winner, loser])
 
   return (
-    <>
+    <Wrapper>
       <Enemy>
         <Info>
           <Avatar alt="avatar" src={player?.avatar} />
@@ -98,31 +105,34 @@ export const Winner = ({ setSearchType }) => {
             <Pts>{player?.position + 'th'}</Pts>
           </ScoreWrapper>
         </Info>
+        <Text>{winner?.id === userId ? 'Победил!' : 'Проиграл!'}</Text>
       </Enemy>
-      <Text>{winner?.id === userId ? 'Победил!' : 'Проиграл!'}</Text>
-      <ScoreText>
-        Счет: <ScoreAfter>{player?.finalScore}</ScoreAfter>
-        {/*/ <ScoreBefore>10</ScoreBefore>*/}
-      </ScoreText>
-      <ScoreText>
-        Очки по подсказкам: <ScoreAfter>{player?.hintScore}</ScoreAfter>
-      </ScoreText>
-      <ScoreText>
-        Итоговые очки: <ScoreAfter>{player?.rpScore}</ScoreAfter>
-      </ScoreText>
-      <ButtonCustom
-        width="327px"
-        mt={30}
-        mb={30}
-        onClick={() => {
-          setSearchType('')
-        }}
-      >
-        В меню
-      </ButtonCustom>
-      <ButtonCustom width="327px" onClick={() => setSearchType('')}>
-        Играть еще
-      </ButtonCustom>
-    </>
+      <Right>
+        <ScoreText>
+          Счет: <ScoreAfter>{player?.finalScore}</ScoreAfter>
+          {/*/ <ScoreBefore>10</ScoreBefore>*/}
+        </ScoreText>
+        <ScoreText>
+          Очки по подсказкам: <ScoreAfter>{player?.hintScore}</ScoreAfter>
+        </ScoreText>
+        <ScoreText>
+          Итоговые очки: <ScoreAfter>{player?.rpScore}</ScoreAfter>
+        </ScoreText>
+
+        <ButtonCustom
+          width="100%"
+          mt={30}
+          mb={30}
+          onClick={() => {
+            setSearchType('')
+          }}
+        >
+          В меню
+        </ButtonCustom>
+        <ButtonCustom width="100%" onClick={() => setSearchType('')}>
+          Играть еще
+        </ButtonCustom>
+      </Right>
+    </Wrapper>
   )
 }

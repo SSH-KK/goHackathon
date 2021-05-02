@@ -34,7 +34,7 @@ export function Alert({ children, okCallback, close }) {
           mb={10}
           mt={10}
           backgroundColor="#292929"
-          hvbg='rgba(32,231,193,0.6)'
+          hvbg="rgba(32,231,193,0.6)"
           textColor="#20E7C1"
           onClick={() => {
             if (okCallback) okCallback()
@@ -43,14 +43,16 @@ export function Alert({ children, okCallback, close }) {
         >
           OK
         </ButtonCustom>
-        <ButtonCustom
-          backgroundColor="#292929"
-          hvbg='rgba(32,231,193,0.6)'
-          textColor="#20E7C1"
-          onClick={() => close()}
-        >
-          Отметить
-        </ButtonCustom>
+        {okCallback && (
+          <ButtonCustom
+            backgroundColor="#292929"
+            hvbg="rgba(32,231,193,0.6)"
+            textColor="#20E7C1"
+            onClick={() => close()}
+          >
+            Отметить
+          </ButtonCustom>
+        )}
       </Inner>
     </Outer>
   )

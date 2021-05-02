@@ -6,25 +6,19 @@ import { ButtonCustom } from '../../../components/ButtonCustom'
 import { Input } from '../../../components/InputCustom'
 
 const Wrapper = styled.div`
-  max-width: 1300px;
-  margin: 0 auto;
-  padding-top: 35px;
+  padding: 10px 0;
   display: flex;
-  justify-content: flex-start;
-  position: absolute;
   width: 100%;
-  top: 0;
 `
 
 const Left = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: auto;
-  flex-shrink: 1;
+  width: 50%;
 `
 const Right = styled.div`
-  width: 100%;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -53,9 +47,8 @@ const Info = styled.div`
 `
 
 const Logotype = styled.img`
-  width: 405px;
   height: auto;
-  margin-right: 14px;
+  width: 100%;
 `
 
 const Name = styled.p`
