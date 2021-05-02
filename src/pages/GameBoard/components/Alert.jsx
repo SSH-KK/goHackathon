@@ -31,7 +31,8 @@ export function Alert({ children, okCallback, close }) {
       <Inner>
         {children}
         <ButtonCustom
-          backgroundColor="#20e7c1"
+          backgroundColor="#F0F0F0"
+          textColor="#20E7C1"
           onClick={() => {
             if (okCallback) okCallback()
             close()

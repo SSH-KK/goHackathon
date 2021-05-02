@@ -79,7 +79,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
         const diff = await countDiff(currentMap, possibleEnemyMove, yourColor)
         setDialog({
           description:
-            'При, предположительно, худшем для вас ходе противника вы ' +
+            'При, предположительно, лучшем ходе противника вы ' +
             (diff >= 0
               ? 'получите ' + diff
               : 'потеряете ' + -diff + ' территорий'),
@@ -117,7 +117,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
               {
                 type: 'range',
                 props: { from: 2, to: 7, setValue: setRangeValue },
-                description: 'Сколько ходов проверить',
+                description: 'Сколько ходов проверить?',
               }
             ),
         },
@@ -136,7 +136,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
                 {
                   type: 'range',
                   props: { from: 1, to: 5, setValue: setRangeValue },
-                  description: 'Сколько ходов показать',
+                  description: 'Сколько ходов показать?',
                 }
               )
           },
@@ -156,7 +156,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
                 {
                   type: 'zone',
                   props: { setValue: setZone },
-                  description: 'Какую зону вы хотите отобразить',
+                  description: 'Какую зону вы хотите отобразить?',
                 }
               )
           },
@@ -173,7 +173,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
             scores && handleHelp({ type: 'map', id: HEATMAP_ZONE_QUARTER }),
         },
         {
-          name: 'Стоит ли пасовать',
+          name: 'Стоит ли пасовать?',
           id: SHOULD_PASS,
           command: () =>
             scores &&

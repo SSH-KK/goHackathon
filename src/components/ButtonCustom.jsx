@@ -20,15 +20,17 @@ const Btn = styled.button`
       ? '#DEDEDE'
       : props.backgroundColor
       ? props.backgroundColor
-      : '#FFE3BA'};
+      : '#FFFFFF'};
   color: ${props =>
-    props.disabled ? '#9b9b9b' : props.textColor ? props.textColor : '#000'};
+    props.disabled ? '#9b9b9b' : props.textColor ? props.textColor : '#20E7C1'};
   cursor: pointer;
   font-size: ${props => (props.fontSize ? props.fontSize : '28px')};
-  border: none;
   &:hover {
-    background-color: ${props => (props.disabled ? '#DEDEDE' : '#FFC266')};
+    background-color: ${props => (props.disabled ? '#DEDEDE' : '#20E7C1')};
+    color: ${props => props.disabled ? '#9b9b9b' : '#F0F0F0'};
   }
+  border: 3px solid #20E7C1;
+  transition: all .3s;
 `
 
 export const ButtonCustom = ({

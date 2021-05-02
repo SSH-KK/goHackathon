@@ -23,7 +23,7 @@ const RangeInput = styled.input`
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background: #04aa6d;
+    background: #20E7C1;
     cursor: pointer;
   }
   &::-moz-range-thumb {
