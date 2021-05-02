@@ -13,32 +13,32 @@ const CustomRadio = styled.input`
   position: absolute;
   z-index: -1;
   opacity: 0;
-  &+label{
+  & + label {
     display: inline-flex;
     align-items: center;
     user-select: none;
   }
-  &+label::before{
+  & + label::before {
     content: '';
     display: inline-block;
     width: 1rem;
     height: 1rem;
     flex-shrink: 0;
     flex-grow: 0;
-    border: 2px solid #F0F0F0;
+    border: 2px solid #f0f0f0;
     border-radius: 50%;
     margin-right: 0.5em;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 50% 50%;
     cursor: pointer;
-    transition: all .3s;
+    transition: all 0.3s;
   }
-  &:not(:disabled):not(:checked)+label:hover::before{
-    border-color: #20E7C1;
+  &:not(:disabled):not(:checked) + label:hover::before {
+    border-color: #20e7c1;
   }
-  &:not(:disabled):checked+label::before{
-    background-color:#20E7C1;
+  &:not(:disabled):checked + label::before {
+    background-color: #20e7c1;
   }
 `
 
@@ -59,6 +59,7 @@ export const ZonesSelect = ({ setValue }) => {
             value={index}
             name={'radio'}
             onChange={handleChange}
+            checked={index === 1}
           />
           <label htmlFor={index}>{index}</label>
         </div>
