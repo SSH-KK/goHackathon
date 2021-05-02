@@ -12,8 +12,6 @@ const Text = styled.p`
 const ScoreText = styled.p`
   font-size: 36px;
   line-height: 42px;
-  text-align: center;
-  display: flex;
   margin-top: 15px;
 `
 
