@@ -2,8 +2,7 @@ FROM node:alpine AS builder
 
 WORKDIR /app
 COPY . .
-RUN npm install react-scripts -g
-RUN npm install
+RUN npm --legacy-peer-deps install
 RUN NODE_ENV=production npm run build
 
 FROM node:alpine
