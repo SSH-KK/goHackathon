@@ -4,7 +4,7 @@ import { ButtonCustom } from '../components/ButtonCustom'
 import { MAIN_URL } from '../constants/routes'
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 100%;
   position: relative;
   justify-content: space-between;
   flex-direction: column;
@@ -98,7 +98,7 @@ const Info = ({ history }) => {
             выбранных вами ходов является лучшим.
           </CustomP>
           <CustomP>
-            <strong>Показать тепловую карту:</strong>Показывает наиболее удачные
+            <strong>Показать тепловую карту:</strong> Показывает наиболее удачные
             позиции для совершения хода.
           </CustomP>
         </Text>
