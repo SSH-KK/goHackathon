@@ -39,6 +39,8 @@ import { ButtonCustom } from '../../components/ButtonCustom'
 
 deadstones.useFetch('deadstones_bg.wasm')
 
+window.calculatePowers = calculatePowers
+
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -258,7 +260,7 @@ const GameBoard = ({ history }) => {
     if (!ignoreAlert && currentMap[y][x] === 0) {
       const newMap = currentMap.map(row => [...row])
       newMap[y][x] = selfColorInt
-      const powers = calculatePowers(newMap, true).map(row =>
+      const powers = calculatePowers(newMap, false).map(row =>
         row.map(power => power === 1)
       )
       let minDist = 1000
@@ -266,7 +268,7 @@ const GameBoard = ({ history }) => {
       for (let px = 0; px < size; px++) {
         for (let py = 0; py < size; py++) {
           if (!powers[py][px]) continue
-          if (currentMap[py][px] !== selfColorInt) continue
+          if (newMap[py][px] !== selfColorInt) continue
           const d = xyDist(px, x, py, y)
           if (d < minDist) minDist = d
         }
@@ -370,17 +372,21 @@ const GameBoard = ({ history }) => {
   useEffect(() => {
     let temp_white_sum = 0
     let temp_all_sum = 0
-    probabilityMap.forEach(row =>
-      row.forEach(col => {
+    let white_c = 0
+    let black_c = 0
+    probabilityMap.forEach((row, rowId) =>
+      row.forEach((col, colId) => {
         temp_white_sum += col < 0 ? Math.abs(col) : 0
         temp_all_sum += Math.abs(col)
+        white_c += currentMap[rowId][colId] === -1 ? 1 : col <= -0.5 ? 1 : 0
+        black_c += currentMap[rowId][colId] === 1 ? 1 : col >= 0.5 ? 1 : 0
       })
     )
     setPSum({
       all:
         temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
-      white: temp_white_sum,
-      black: temp_all_sum - temp_white_sum,
+      white: white_c,
+      black: black_c,
     })
     if (!hintsShow) {
       dispatch(markersClear())

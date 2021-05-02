@@ -133,10 +133,8 @@ const Board = ({
   return (
     <Wrapper className={className}>
       <LeftBar>
-        <LeftBarCount top={'0%'}>{pSum.white.toFixed(2)}</LeftBarCount>
-        <LeftBarCount top={'calc(100% - 1.5rem);'}>
-          {pSum.black.toFixed(2)}
-        </LeftBarCount>
+        <LeftBarCount top={'0%'}>{pSum.white.toFixed(0)}</LeftBarCount>
+        <LeftBarCount top={'calc(100% - 1.5rem);'}>{pSum.black.toFixed(0)}</LeftBarCount>
         <LeftBarProgress height={pSum.all}></LeftBarProgress>
       </LeftBar>
       {useMemo(
