@@ -54,7 +54,6 @@ const Wrap = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   z-index: 99;
 `
-
 const mapMap = map => {
   let coords = {}
   let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
@@ -87,7 +86,7 @@ const GameBoard = ({ history }) => {
   const [multipleCount, setMultipleCount] = useState([])
   const [turns, setTurns] = useState([])
   const [selfColor, setSelfColor] = useState('white')
-  const [currentMap, setCurrentMap] = useState([[]])
+  const [currentMap, setCurrentMap] = useState([[0]])
   const [self, setSelf] = useState({}) // self player object
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
@@ -183,7 +182,7 @@ const GameBoard = ({ history }) => {
     if (typeof e.data === 'string') {
       let jsonData = JSON.parse(e.data)
       if (jsonData.error && jsonData.error.startsWith('illegal move')) {
-        setAlert({ children: <h1>{jsonData.error}</h1> })
+        setAlert({ text: jsonData.error })
         setCurrentColor(currentColor === 'white' ? 'black' : 'white')
       }
       if (jsonData.payload) {
@@ -270,19 +269,7 @@ const GameBoard = ({ history }) => {
     }
     if (showAlert) {
       setAlert({
-        children: (
-          <>
-            <h2>Nearly with your move will be akami</h2>
-            <ButtonCustom
-              onClick={() => {
-                setCurrentColor(selfColor)
-                setAlert(null)
-              }}
-            >
-              Cancel
-            </ButtonCustom>
-          </>
-        ),
+        type: 'akami-alert',
         okCallback: () => move(coord, true),
         close: () => setAlert(null),
       })
@@ -487,7 +474,24 @@ const GameBoard = ({ history }) => {
         scores={currentColor !== selfColor ? false : true}
         currentMap={currentMap}
       />
-      {alert && <Alert {...alert} close={() => setAlert(null)} />}
+      {alert &&
+        (alert.type === 'akami-alert' ? (
+          <Alert {...alert}>
+            <h2>Nearly with your move will be akami</h2>
+            <ButtonCustom
+              onClick={() => {
+                setCurrentColor(selfColor)
+                setAlert(null)
+              }}
+            >
+              Cancel
+            </ButtonCustom>
+          </Alert>
+        ) : (
+          <Alert close={() => setAlert(null)}>
+            <h1>{alert.text}</h1>
+          </Alert>
+        ))}
     </Wrapper>
   )
 }
