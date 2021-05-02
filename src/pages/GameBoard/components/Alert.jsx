@@ -25,7 +25,7 @@ const Inner = styled.div`
   background-color: #292929;
 `
 
-export function Alert({ children, okCallback, close }) {
+export function Alert({ children, okCallback, cancelCallback, close }) {
   return (
     <Outer>
       <Inner>
@@ -48,7 +48,10 @@ export function Alert({ children, okCallback, close }) {
             backgroundColor="#292929"
             hvbg="rgba(32,231,193,0.6)"
             textColor="#20E7C1"
-            onClick={() => close()}
+            onClick={() => {
+              if (cancelCallback) cancelCallback()
+              close()
+            }}
           >
             Отменить
           </ButtonCustom>

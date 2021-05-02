@@ -294,6 +294,7 @@ const GameBoard = ({ history }) => {
         type: 'akami-alert',
         okCallback: () => move(coord, true),
         close: () => setAlert(null),
+        cancelCallback: () => setCurrentColor(selfColor),
       })
       return
     }
@@ -514,18 +515,10 @@ const GameBoard = ({ history }) => {
       {alert &&
         (alert.type === 'akami-alert' ? (
           <Alert {...alert}>
-            <h2>
+            <h2 style={{ color: 'white' }}>
               Рядом с этим ходом есть или появится аками. Вы уверены, что хотите
               сделать этот ход?
             </h2>
-            <ButtonCustom
-              onClick={() => {
-                setCurrentColor(selfColor)
-                setAlert(null)
-              }}
-            >
-              Нет
-            </ButtonCustom>
           </Alert>
         ) : (
           <Alert close={() => setAlert(null)}>
