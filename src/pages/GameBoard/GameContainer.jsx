@@ -20,6 +20,7 @@ const BaseInfo = styled.div`
 `
 const PlayerP = styled.p`
   text-overflow: ellipsis;
+  color: #292929;
   white-space: nowrap;
   overflow: hidden;
   font-size: 2rem;
