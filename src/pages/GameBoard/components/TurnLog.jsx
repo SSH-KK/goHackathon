@@ -48,7 +48,7 @@ const TimeContainer = ({ timeStamp, active }) => {
 
   return (
     <TimeWrapper active={active}>
-      <span>{`${time.getDay()}.${time.getMonth()}.${time.getFullYear()}`}</span>
+      <span>{`${time.getDate()}.${time.getMonth()}.${time.getFullYear()}`}</span>
       <span>{`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`}</span>
     </TimeWrapper>
   )

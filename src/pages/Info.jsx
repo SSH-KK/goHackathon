@@ -27,7 +27,7 @@ const Content = styled.div`
   overflow: hidden;
   overflow-y: scroll;
 `
-const Text = styled.p`
+const Text = styled.article`
   font-size: 24px;
   line-height: 32px;
 `
@@ -72,16 +72,12 @@ const Info = ({ history }) => {
           подсказки двух уровней сложности от ИИ, а также дополнительный
           визуальный интерфейс, упрощающий процесс игры.
           <SubTitle>Дополнительный визуальный интерфейс</SubTitle>
-          <MyButton width={'5vh'}>
-            <p>T</p>
-          </MyButton>
+          <MyButton width={'5vh'}>T</MyButton>
           Включение/Отключение отображения захваченных территорий. Помогает
           понять кому из игроков вероятнее всего будет принадлежать данная
           позиция.
           <hr />
-          <MyButton width={'5vh'}>
-            <p>D</p>
-          </MyButton>
+          <MyButton width={'5vh'}>D</MyButton>
           Включение/Отключение отображения групп камней, у которых осталось 1
           дыхание. Помогает избежать неожиданной потери камней :).
           <SubTitle>Подсказки от ИИ</SubTitle>

@@ -33,7 +33,7 @@ const Name = styled.p`
   font-weight: 700;
 `
 
-const Score = styled.p`
+const Score = styled.span`
   font-size: 36px;
   line-height: 42px;
   font-weight: 700;
