@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Goban } from 'react-goban'
 import styled from 'styled-components'
@@ -129,18 +129,32 @@ const Board = ({
         <LeftBarCount top={'calc(100% - 1.5rem);'}>{pSum.black.toFixed(0)}</LeftBarCount>
         <LeftBarProgress height={pSum.all}></LeftBarProgress>
       </LeftBar>
-      <Goban
-        theme={'new_night'}
-        stones={coordinates}
-        markers={markers}
-        lastMarkers={lastMarkers}
-        mapStones={mapStones}
-        classNamesMapStones={classNamesMapStones}
-        onIntersectionClick={
-          helpType !== 'multiple' ? handleTurn : handleMultipleTurn
-        }
-        nextToPlay={yourColor}
-      />
+      {useMemo(
+        () => (
+          <Goban
+            theme={'new_night'}
+            stones={coordinates}
+            markers={markers}
+            lastMarkers={lastMarkers}
+            mapStones={mapStones}
+            classNamesMapStones={classNamesMapStones}
+            onIntersectionClick={
+              helpType !== 'multiple' ? handleTurn : handleMultipleTurn
+            }
+            nextToPlay={yourColor}
+          />
+        ),
+        // eslint-disable-next-line
+        [
+          coordinates,
+          markers,
+          lastMarkers,
+          mapStones,
+          classNamesMapStones,
+          helpType,
+          yourColor,
+        ]
+      )}
     </Wrapper>
   )
 }
