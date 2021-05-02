@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
@@ -101,7 +101,7 @@ const GameBoard = ({ history }) => {
   const [currentColor, setCurrentColor] = useState('white')
   const [times, setTimes] = useState({ playerOne: 0, playerTwo: 0 })
   const [showTerritory, setShowTerritory] = useState(false)
-  const [showDead, setShowDead] = useState(false)
+  const [showDead, setShowDead] = useState(true)
   const [probabilityMap, setProbabilityMap] = useState([[]])
   const [groupPowers, setGroupPowers] = useState([[]])
   const [pSum, setPSum] = useState({
@@ -156,12 +156,26 @@ const GameBoard = ({ history }) => {
     // eslint-disable-next-line
   }, [multipleHint, multipleCount])
 
-  useLayoutEffect(
-    () => () => {
+  useEffect(() => {
+    const handleKeypress = e => {
+      switch (e.key) {
+        case 't':
+        case 'е':
+          setShowTerritory(prev => !prev)
+          break
+        case 'd':
+        case 'в':
+          setShowDead(prev => !prev)
+      }
+    }
+
+    document.addEventListener('keypress', handleKeypress)
+
+    return () => {
       client.onmessage = () => {}
-    },
-    []
-  )
+      document.removeEventListener('keypress', handleKeypress)
+    }
+  }, [])
 
   if (game_id === null) {
     history.push('/')

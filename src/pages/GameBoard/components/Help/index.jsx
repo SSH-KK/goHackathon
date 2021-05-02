@@ -24,21 +24,11 @@ const HelpHeader = styled.h2`
   padding-bottom: var(--gap);
 `
 
-const HelpGroup = styled.details`
-  margin-bottom: var(--gap);
-`
-
-const HelpGroupHeader = styled.summary`
-  outline: none;
-  color: #fff;
-  margin-bottom: var(--gap);
-  cursor: pointer;
-`
-
 const HelpGroupList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: var(--gap);
+  display: flex;
+  gap: var(--gap);
+  flex-wrap: wrap;
+  flex-basis: 50%;
 `
 
 const HelpItem = styled.div`
@@ -52,6 +42,7 @@ const HelpItem = styled.div`
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
+  text-align: center;
 
   &:hover {
     background-color: ${props =>
@@ -92,119 +83,105 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
 
   const helpers = [
     {
-      title: 'Продвинутые подсказки',
-      content: [
-        {
-          name: 'Тепловая карта',
-          id: HEATMAP_FULL,
-          command: () =>
-            scores &&
-            !possibleEnemyMove &&
-            handleHelp({ type: 'map', id: HEATMAP_FULL }),
-        },
-        {
-          name: 'Выбрать лучший из N ходов',
-          id: 16,
-          command: () =>
-            scores &&
-            showDialog(
-              value =>
-                handleHelp({
-                  type: 'multiple',
-                  multipleHandleCount: value + 1,
-                  id: 16,
-                }),
-              {
-                type: 'range',
-                props: { from: 2, to: 7, setValue: setRangeValue },
-                description: 'Сколько ходов проверить?',
-              }
-            ),
-        },
-        {
-          name: 'Показать лучшие ходы',
-          id: BEST_MOVES,
-          command: () => {
-            scores &&
-              showDialog(
-                value =>
-                  handleHelp({
-                    type: 'single',
-                    count: value,
-                    id: BEST_MOVES,
-                  }),
-                {
-                  type: 'range',
-                  props: { from: 1, to: 5, setValue: setRangeValue },
-                  description: 'Сколько ходов показать?',
-                }
-              )
-          },
-        },
-        {
-          name: 'Показать хитмап четверти доски',
-          id: HEATMAP_QUARTER,
-          command: () => {
-            scores &&
-              showDialog(
-                value =>
-                  handleHelp({
-                    type: 'map',
-                    quarter: value,
-                    id: HEATMAP_QUARTER,
-                  }),
-                {
-                  type: 'zone',
-                  props: { setValue: setZone },
-                  description: 'Какую зону вы хотите отобразить?',
-                }
-              )
-          },
-        },
-      ],
+      name: 'Тепловая карта',
+      id: HEATMAP_FULL,
+      command: () =>
+        scores &&
+        !possibleEnemyMove &&
+        handleHelp({ type: 'map', id: HEATMAP_FULL }),
     },
     {
-      title: 'Для дурачков',
-      content: [
-        {
-          name: 'В какой четверти доски сейчас лучший ход?',
-          id: HEATMAP_ZONE_QUARTER,
-          command: () =>
-            scores && handleHelp({ type: 'map', id: HEATMAP_ZONE_QUARTER }),
-        },
-        {
-          name: 'Стоит ли пасовать?',
-          id: SHOULD_PASS,
-          command: () =>
-            scores &&
+      name: 'Выбрать лучший из N ходов',
+      id: 16,
+      command: () =>
+        scores &&
+        showDialog(
+          value =>
             handleHelp({
-              type: 'score',
-              id: SHOULD_PASS,
+              type: 'multiple',
+              multipleHandleCount: value + 1,
+              id: 16,
             }),
-        },
-      ],
+          {
+            type: 'range',
+            props: { from: 2, to: 7, setValue: setRangeValue },
+            description: 'Сколько ходов проверить?',
+          }
+        ),
+    },
+    {
+      name: 'Показать лучшие ходы',
+      id: BEST_MOVES,
+      command: () => {
+        scores &&
+          showDialog(
+            value =>
+              handleHelp({
+                type: 'single',
+                count: value,
+                id: BEST_MOVES,
+              }),
+            {
+              type: 'range',
+              props: { from: 1, to: 5, setValue: setRangeValue },
+              description: 'Сколько ходов показать?',
+            }
+          )
+      },
+    },
+    {
+      name: 'Показать хитмап четверти доски',
+      id: HEATMAP_QUARTER,
+      command: () => {
+        scores &&
+          showDialog(
+            value =>
+              handleHelp({
+                type: 'map',
+                quarter: value,
+                id: HEATMAP_QUARTER,
+              }),
+            {
+              type: 'zone',
+              props: { setValue: setZone },
+              description: 'Какую зону вы хотите отобразить?',
+            }
+          )
+      },
+    },
+    {
+      name: 'В какой четверти доски сейчас лучший ход?',
+      id: HEATMAP_ZONE_QUARTER,
+      command: () =>
+        scores && handleHelp({ type: 'map', id: HEATMAP_ZONE_QUARTER }),
+    },
+    {
+      name: 'Стоит ли пасовать?',
+      id: SHOULD_PASS,
+      command: () =>
+        scores &&
+        handleHelp({
+          type: 'score',
+          id: SHOULD_PASS,
+        }),
     },
   ]
 
   return (
     <Wrapper>
       <HelpHeader>Подсказки</HelpHeader>
-      {helpers.map((group, groupIndex) => (
-        <HelpGroup key={groupIndex}>
-          <HelpGroupHeader>{group.title}</HelpGroupHeader>
-          <HelpGroupList>
-            {group.content.map((helper, helperIndex) => (
-              <HelpItem
-                key={helperIndex}
-                active={activeHelpId === helper.id}
-                onClick={helper.command}
-              >
-                {helper.name}
-              </HelpItem>
-            ))}
-          </HelpGroupList>
-        </HelpGroup>
-      ))}
+      <HelpGroupList>
+        {helpers.map((helper, helperIndex) => (
+          <HelpItem
+            key={helperIndex}
+            active={activeHelpId === helper.id}
+            onClick={helper.command}
+          >
+            {helper.name}
+          </HelpItem>
+        ))}
+      </HelpGroupList>
+
       {dialog && (
         <Alert
           okCallback={() =>
