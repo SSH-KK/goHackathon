@@ -85,15 +85,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
 
   const helpers = [
     {
-      name: 'Тепловая карта',
-      id: HEATMAP_FULL,
-      command: () =>
-        scores &&
-        !possibleEnemyMove &&
-        handleHelp({ type: 'map', id: HEATMAP_FULL }),
-    },
-    {
-      name: 'Выбрать лучший из N ходов',
+      name: 'Выбрать лучший из N ходов (2)',
       id: 16,
       command: () =>
         scores &&
@@ -112,7 +104,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
         ),
     },
     {
-      name: 'Показать лучшие ходы',
+      name: 'Показать лучшие ходы (3)',
       id: BEST_MOVES,
       command: () => {
         scores &&
@@ -132,7 +124,15 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
       },
     },
     {
-      name: 'Показать хитмап четверти доски',
+      name: 'Тепловая карта (2)',
+      id: HEATMAP_FULL,
+      command: () =>
+        scores &&
+        !possibleEnemyMove &&
+        handleHelp({ type: 'map', id: HEATMAP_FULL }),
+    },
+    {
+      name: 'Показать хитмап четверти доски (1)',
       id: HEATMAP_QUARTER,
       command: () => {
         scores &&
@@ -152,13 +152,13 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
       },
     },
     {
-      name: 'В какой четверти доски сейчас лучший ход?',
+      name: 'В какой четверти доски сейчас лучший ход? (1)',
       id: HEATMAP_ZONE_QUARTER,
       command: () =>
         scores && handleHelp({ type: 'map', id: HEATMAP_ZONE_QUARTER }),
     },
     {
-      name: 'Стоит ли пасовать?',
+      name: 'Стоит ли пасовать? (3)',
       id: SHOULD_PASS,
       command: () =>
         scores &&
