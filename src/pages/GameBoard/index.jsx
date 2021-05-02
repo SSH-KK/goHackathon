@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
@@ -156,6 +156,13 @@ const GameBoard = ({ history }) => {
     // eslint-disable-next-line
   }, [multipleHint, multipleCount])
 
+  useLayoutEffect(
+    () => () => {
+      client.onmessage = () => {}
+    },
+    []
+  )
+
   if (game_id === null) {
     history.push('/')
   }
@@ -266,7 +273,6 @@ const GameBoard = ({ history }) => {
           if (d < minDist) minDist = d
         }
       }
-      console.log(minDist)
       showAlert = minDist <= 2
     }
     if (showAlert) {
@@ -372,14 +378,15 @@ const GameBoard = ({ history }) => {
       row.forEach((col, colId) => {
         temp_white_sum += col < 0 ? Math.abs(col) : 0
         temp_all_sum += Math.abs(col)
-        white_c += currentMap[rowId][colId] === -1 ? 1 : col<=-0.5 ? 1 : 0
-        black_c += currentMap[rowId][colId] === 1 ? 1 : col>=0.5 ? 1 : 0
+        white_c += currentMap[rowId][colId] === -1 ? 1 : col <= -0.5 ? 1 : 0
+        black_c += currentMap[rowId][colId] === 1 ? 1 : col >= 0.5 ? 1 : 0
       })
     )
     setPSum({
-      all:temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
+      all:
+        temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
       white: white_c,
-      black: black_c
+      black: black_c,
     })
     if (!hintsShow) {
       dispatch(markersClear())
