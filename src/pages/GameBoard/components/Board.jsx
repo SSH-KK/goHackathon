@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Goban } from 'react-goban'
 import styled from 'styled-components'
-import { markersClear, setMapStones } from '../../../store/Board/actions'
+import { setMapStones } from '../../../store/Board/actions'
 import { client } from '../../../Socket'
 
 const Wrapper = styled.div`
@@ -96,7 +96,7 @@ const Board = ({
         setStonePosition(stonePosition)
         setCurrentColor(currentColor === 'white' ? 'black' : 'white')
         setHint(false)
-        dispatch(markersClear())
+        // dispatch(markersClear())
         setHelpType('')
         setActiveHelpId('')
         setMultipleType(false)
@@ -134,7 +134,9 @@ const Board = ({
     <Wrapper className={className}>
       <LeftBar>
         <LeftBarCount top={'0%'}>{pSum.white.toFixed(0)}</LeftBarCount>
-        <LeftBarCount top={'calc(100% - 1.5rem);'}>{pSum.black.toFixed(0)}</LeftBarCount>
+        <LeftBarCount top={'calc(100% - 1.5rem);'}>
+          {pSum.black.toFixed(0)}
+        </LeftBarCount>
         <LeftBarProgress height={pSum.all}></LeftBarProgress>
       </LeftBar>
       {useMemo(
