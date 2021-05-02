@@ -128,6 +128,11 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
       timesPlayerTwo(args.times.playerTwo, args.stepColor === 'white')
     }
     fn()
+
+    return () => {
+      clearTimeout(timesPlayerOneCall)
+      clearTimeout(timesPlayerTwoCall)
+    }
     // eslint-disable-next-line
   }, [args.times])
 

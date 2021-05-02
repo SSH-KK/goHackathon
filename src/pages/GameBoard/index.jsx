@@ -87,7 +87,7 @@ const GameBoard = ({ history }) => {
   const [multipleCount, setMultipleCount] = useState([])
   const [turns, setTurns] = useState([])
   const [selfColor, setSelfColor] = useState('white')
-  const [currentMap, setCurrentMap] = useState([[]])
+  const [currentMap, setCurrentMap] = useState([[0]])
   const [self, setSelf] = useState({}) // self player object
   const [opponent, setOpponent] = useState({}) // opponent player object
   const [selfStonesCount, setSelfStonesCount] = useState(0)
@@ -179,7 +179,7 @@ const GameBoard = ({ history }) => {
     if (typeof e.data === 'string') {
       let jsonData = JSON.parse(e.data)
       if (jsonData.error && jsonData.error.startsWith('illegal move')) {
-        setAlert({ children: <h1>{jsonData.error}</h1> })
+        setAlert({ text: jsonData.error })
         setCurrentColor(currentColor === 'white' ? 'black' : 'white')
       }
       if (jsonData.payload) {
@@ -481,7 +481,7 @@ const GameBoard = ({ history }) => {
         scores={currentColor !== selfColor ? false : true}
         currentMap={currentMap}
       />
-      {alert && <Alert {...alert} close={() => setAlert(null)} />}
+      {alert && <Alert close={() => setAlert(null)}>{alert.text}</Alert>}
     </Wrapper>
   )
 }
