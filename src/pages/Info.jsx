@@ -37,10 +37,13 @@ const SubTitle = styled.h2`
 `
 
 const MyButton = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
   height: 5vh;
   border: 3px solid #20e7c1;
   border-radius: 2rem;
-  display: inline-block;
   text-align: center;
   margin-right: 26px;
   color: ${props => (props.active ? '#FFFFFF' : '#20e7c1')};
@@ -70,14 +73,14 @@ const Info = ({ history }) => {
           визуальный интерфейс, упрощающий процесс игры.
           <SubTitle>Дополнительный визуальный интерфейс</SubTitle>
           <MyButton width={'5vh'}>
-            <p style={{ 'font-size': '1rem' }}>T</p>
+            <p>T</p>
           </MyButton>
           Включение/Отключение отображения захваченных территорий. Помогает
           понять кому из игроков вероятнее всего будет принадлежать данная
           позиция.
           <hr />
           <MyButton width={'5vh'}>
-            <p style={{ 'font-size': '1rem' }}>D</p>
+            <p>D</p>
           </MyButton>
           Включение/Отключение отображения групп камней, у которых осталось 1
           дыхание. Помогает избежать неожиданной потери камней :).

@@ -39,6 +39,17 @@ const LeftBarProgress = styled.div`
   background-color: #f0f0f0;
 `
 
+const LeftBarCount = styled.span`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  font-size: 1.5rem;
+  left: 150%;
+  color: #20E7C1;
+  top: ${props => props.top};
+`
+
 const Board = ({
   lastMarkers,
   setHint,
@@ -114,7 +125,9 @@ const Board = ({
   return (
     <Wrapper className={className}>
       <LeftBar>
-        <LeftBarProgress height={pSum}></LeftBarProgress>
+        <LeftBarCount top={'0%'}>{pSum.white.toFixed(2)}</LeftBarCount>
+        <LeftBarCount top={'calc(100% - 1.5rem);'}>{pSum.black.toFixed(2)}</LeftBarCount>
+        <LeftBarProgress height={pSum.all}></LeftBarProgress>
       </LeftBar>
       <Goban
         theme={'new_night'}

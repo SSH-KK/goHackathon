@@ -103,7 +103,11 @@ const GameBoard = ({ history }) => {
   const [showDead, setShowDead] = useState(false)
   const [probabilityMap, setProbabilityMap] = useState([[]])
   const [groupPowers, setGroupPowers] = useState([[]])
-  const [pSum, setPSum] = useState('0%')
+  const [pSum, setPSum] = useState({
+    all: '0%',
+    white: 0,
+    black: 0
+  })
   const dispatch = useDispatch()
 
   const coordinates = mapMap(currentMap)
@@ -379,9 +383,11 @@ const GameBoard = ({ history }) => {
         temp_all_sum += Math.abs(col)
       })
     )
-    setPSum(
-      temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%'
-    )
+    setPSum({
+      all:temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
+      white: temp_white_sum,
+      black: temp_all_sum-temp_white_sum
+    })
     if (!hintsShow) {
       dispatch(markersClear())
       dispatch(
