@@ -266,7 +266,6 @@ const GameBoard = ({ history }) => {
           if (d < minDist) minDist = d
         }
       }
-      console.log(minDist)
       showAlert = minDist <= 2
     }
     if (showAlert) {
