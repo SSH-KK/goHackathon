@@ -22,7 +22,7 @@ const Inner = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px;
-  background-color: #bbbbbb;
+  background-color: #292929;
 `
 
 export function Alert({ children, okCallback, close }) {
@@ -31,7 +31,10 @@ export function Alert({ children, okCallback, close }) {
       <Inner>
         {children}
         <ButtonCustom
-          backgroundColor="#F0F0F0"
+          mb={10}
+          mt={10}
+          backgroundColor="#292929"
+          hvbg='rgba(32,231,193,0.6)'
           textColor="#20E7C1"
           onClick={() => {
             if (okCallback) okCallback()
@@ -39,6 +42,14 @@ export function Alert({ children, okCallback, close }) {
           }}
         >
           OK
+        </ButtonCustom>
+        <ButtonCustom
+          backgroundColor="#292929"
+          hvbg='rgba(32,231,193,0.6)'
+          textColor="#20E7C1"
+          onClick={() => close()}
+        >
+          Отметить
         </ButtonCustom>
       </Inner>
     </Outer>

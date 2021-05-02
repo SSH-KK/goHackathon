@@ -26,7 +26,7 @@ const Btn = styled.button`
   cursor: ${props => (props.disabled ? 'default' : 'pointer')};
   font-size: ${props => (props.fontSize ? props.fontSize : '28px')};
   &:hover {
-    background-color: ${props => (props.disabled ? '#DEDEDE' : '#20E7C1')};
+    background-color: ${props => (props.disabled ? '#DEDEDE' : props.hvbg ? props.hvbg : '#20E7C1')};
     color: ${props => props.disabled ? '#9b9b9b' : '#F0F0F0'};
   }
   border: 3px solid #20E7C1;
@@ -49,6 +49,7 @@ export const ButtonCustom = ({
   textColor,
   disabled,
   type,
+  hvbg,
   onClick,
 }) => (
   <Btn
@@ -67,6 +68,7 @@ export const ButtonCustom = ({
     disabled={disabled}
     type={type}
     onClick={onClick}
+    hvbg={hvbg}
   >
     {children}
   </Btn>
