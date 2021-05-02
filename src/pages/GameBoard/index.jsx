@@ -54,7 +54,6 @@ const Wrap = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   z-index: 99;
 `
-
 const mapMap = map => {
   let coords = {}
   let alpha = 'ABCDEFGHJKLMNOPQRSTUV'
