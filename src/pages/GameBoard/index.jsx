@@ -133,11 +133,10 @@ const GameBoard = ({ history }) => {
     setSelfStonesCount(selfStones)
     setOpponentStonesCount(oppStones)
 
-    deadstones
-      .getProbabilityMap(currentMap, 150)
-      .then(probabilities =>
+    deadstones.getProbabilityMap(currentMap, 150).then(probabilities => {
+      if (currentMap.length === 13)
         setProbabilityMap(prepareProbability(probabilities, currentMap))
-      )
+    })
     // eslint-disable-next-line
   }, [currentMap])
 
