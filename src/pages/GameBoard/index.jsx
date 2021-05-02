@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
@@ -105,7 +105,7 @@ const GameBoard = ({ history }) => {
   const [pSum, setPSum] = useState({
     all: '0%',
     white: 0,
-    black: 0
+    black: 0,
   })
   const dispatch = useDispatch()
 
@@ -153,6 +153,13 @@ const GameBoard = ({ history }) => {
     }
     // eslint-disable-next-line
   }, [multipleHint, multipleCount])
+
+  useLayoutEffect(
+    () => () => {
+      client.onmessage = () => {}
+    },
+    []
+  )
 
   if (game_id === null) {
     history.push('/')
@@ -370,9 +377,10 @@ const GameBoard = ({ history }) => {
       })
     )
     setPSum({
-      all:temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
+      all:
+        temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
       white: temp_white_sum,
-      black: temp_all_sum-temp_white_sum
+      black: temp_all_sum - temp_white_sum,
     })
     if (!hintsShow) {
       dispatch(markersClear())
