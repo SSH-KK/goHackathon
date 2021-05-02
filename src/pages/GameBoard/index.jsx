@@ -514,14 +514,17 @@ const GameBoard = ({ history }) => {
       {alert &&
         (alert.type === 'akami-alert' ? (
           <Alert {...alert}>
-            <h2>Nearly with your move will be akami</h2>
+            <h2>
+              Рядом с этим ходом есть или появится аками. Вы уверены, что хотите
+              сделать этот ход?
+            </h2>
             <ButtonCustom
               onClick={() => {
                 setCurrentColor(selfColor)
                 setAlert(null)
               }}
             >
-              Cancel
+              Нет
             </ButtonCustom>
           </Alert>
         ) : (

@@ -50,7 +50,7 @@ export function Alert({ children, okCallback, close }) {
             textColor="#20E7C1"
             onClick={() => close()}
           >
-            Отметить
+            Отменить
           </ButtonCustom>
         )}
       </Inner>

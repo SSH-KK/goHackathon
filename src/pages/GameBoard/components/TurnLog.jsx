@@ -73,10 +73,10 @@ const TurnLog = ({ turns }) => {
               />
               <div>
                 <span>{turn.name}</span>
-                <span>{turn.color}</span>
+                <span>{turn.color === 'black' ? 'черные' : 'белые'}</span>
               </div>
               <PlaceContainer>
-                <span>{turn.place ? turn.place : 'PASS'}</span>
+                <span>{turn.place ? turn.place : 'ПАС'}</span>
               </PlaceContainer>
             </ListElement>
           ))}

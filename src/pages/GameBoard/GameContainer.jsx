@@ -141,7 +141,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
     <Wrapper>
       <PlayerInfo>
         <MyButton width={'10%'} onClick={() => history.push('/')}>
-          <p style={{ fontSize: '1rem' }}>Home</p>
+          <p style={{ fontSize: '1rem' }}>Меню</p>
         </MyButton>
         <MyButton
           active={args.showTerritory}
@@ -170,7 +170,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <PlayerP>{timerParseTwo}</PlayerP>
         </BaseInfo>
         <MyButton width={'10%'} onClick={resignFn}>
-          <p style={{ fontSize: '1rem' }}>Resign</p>
+          <p style={{ fontSize: '1rem' }}>Сдаться</p>
         </MyButton>
       </PlayerInfo>
 
@@ -208,7 +208,7 @@ export const GameContainer = ({ passFn, resignFn, ...args }) => {
           <PlayerP>{timerParseOne}</PlayerP>
         </BaseInfo>
         <MyButton width={'10%'} onClick={passFn}>
-          <p style={{ fontSize: '1rem' }}>Pass</p>
+          <p style={{ fontSize: '1rem' }}>Пac</p>
         </MyButton>
       </PlayerInfo>
     </Wrapper>
