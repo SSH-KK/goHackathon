@@ -35,7 +35,6 @@ import { RightPanel } from './RightPanel'
 import { Alert } from './components/Alert'
 import { prepareProbability } from '../../helpers/prepareProbability'
 import { coord2yx } from '../../helpers/coords'
-import { ButtonCustom } from '../../components/ButtonCustom'
 
 deadstones.useFetch('deadstones_bg.wasm')
 
@@ -166,6 +165,9 @@ const GameBoard = ({ history }) => {
         case 'd':
         case 'в':
           setShowDead(prev => !prev)
+          break
+        default:
+          break
       }
     }
 
@@ -522,7 +524,7 @@ const GameBoard = ({ history }) => {
           </Alert>
         ) : (
           <Alert close={() => setAlert(null)}>
-            <h1>{alert.text}</h1>
+            <h1 style={{ color: 'white' }}>{alert.text}</h1>
           </Alert>
         ))}
     </Wrapper>
