@@ -26,6 +26,7 @@ const HelpHeader = styled.h2`
 
 const HelpGroupList = styled.div`
   display: flex;
+  flex-direction: column;
   gap: var(--gap);
   flex-wrap: wrap;
   flex-basis: 50%;
