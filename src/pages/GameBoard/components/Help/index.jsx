@@ -30,6 +30,7 @@ const HelpGroupList = styled.div`
   gap: var(--gap);
   flex-wrap: wrap;
   flex-basis: 50%;
+  margin-bottom: 10px;
 `
 
 const HelpItem = styled.div`
@@ -71,7 +72,7 @@ const Help = ({ handleHelp, activeHelpId, scores, currentMap, yourColor }) => {
         const diff = await countDiff(currentMap, possibleEnemyMove, yourColor)
         setDialog({
           description:
-            'При, предположительно, лучшем ходе противника вы ' +
+            `В лучшем случае противник сделает ход ${possibleEnemyMove}, а вы ` +
             (diff >= 0
               ? 'получите ' + diff
               : 'потеряете ' + -diff + ' территорий'),
