@@ -364,16 +364,20 @@ const GameBoard = ({ history }) => {
   useEffect(() => {
     let temp_white_sum = 0
     let temp_all_sum = 0
-    probabilityMap.forEach(row =>
-      row.forEach(col => {
+    let white_c = 0
+    let black_c = 0
+    probabilityMap.forEach((row, rowId) =>
+      row.forEach((col, colId) => {
         temp_white_sum += col < 0 ? Math.abs(col) : 0
         temp_all_sum += Math.abs(col)
+        white_c += currentMap[rowId][colId] == -1 ? 1 : col<=-0.5 ? 1 : 0
+        black_c += currentMap[rowId][colId] == 1 ? 1 : col>=0.5 ? 1 : 0
       })
     )
     setPSum({
       all:temp_all_sum !== 0 ? `${(temp_white_sum / temp_all_sum) * 100}%` : '0%',
-      white: temp_white_sum,
-      black: temp_all_sum-temp_white_sum
+      white: white_c,
+      black: black_c
     })
     if (!hintsShow) {
       dispatch(markersClear())
