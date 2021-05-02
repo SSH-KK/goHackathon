@@ -265,19 +265,7 @@ const GameBoard = ({ history }) => {
     }
     if (showAlert) {
       setAlert({
-        children: (
-          <>
-            <h2>Nearly with your move will be akami</h2>
-            <ButtonCustom
-              onClick={() => {
-                setCurrentColor(selfColor)
-                setAlert(null)
-              }}
-            >
-              Cancel
-            </ButtonCustom>
-          </>
-        ),
+        type: 'akami-alert',
         okCallback: () => move(coord, true),
         close: () => setAlert(null),
       })
@@ -480,7 +468,24 @@ const GameBoard = ({ history }) => {
         scores={currentColor !== selfColor ? false : true}
         currentMap={currentMap}
       />
-      {alert && <Alert close={() => setAlert(null)}>{alert.text}</Alert>}
+      {alert &&
+        (alert.type === 'akami-alert' ? (
+          <Alert {...alert}>
+            <h2>Nearly with your move will be akami</h2>
+            <ButtonCustom
+              onClick={() => {
+                setCurrentColor(selfColor)
+                setAlert(null)
+              }}
+            >
+              Cancel
+            </ButtonCustom>
+          </Alert>
+        ) : (
+          <Alert close={() => setAlert(null)}>
+            <h1>{alert.text}</h1>
+          </Alert>
+        ))}
     </Wrapper>
   )
 }
