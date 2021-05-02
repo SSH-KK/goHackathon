@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 const LeftBar = styled.div`
   background-color: #212529;
   width: 5% !important;
-  border-radius: var(--gap);
+  border-radius: 2rem;
   margin: var(--gap);
   border: 3px solid #212529;
   position: relative;
@@ -32,7 +32,7 @@ const LeftBar = styled.div`
 const LeftBarProgress = styled.div`
   top: 0;
   left: 0;
-  border-radius: var(--gap);
+  border-radius: 2rem;
   position: absolute;
   height: ${props => props.height};
   width: 100%;

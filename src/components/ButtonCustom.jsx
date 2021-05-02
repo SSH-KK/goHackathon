@@ -23,7 +23,7 @@ const Btn = styled.button`
       : '#FFFFFF'};
   color: ${props =>
     props.disabled ? '#9b9b9b' : props.textColor ? props.textColor : '#20E7C1'};
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
   font-size: ${props => (props.fontSize ? props.fontSize : '28px')};
   &:hover {
     background-color: ${props => (props.disabled ? '#DEDEDE' : '#20E7C1')};
