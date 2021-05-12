@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import Canvas from './Canvas'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+  const fun_c = (pos)=>{
+    console.log(pos)
+  }
+
+  const mas = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,-1,0,0,0,0,0,0,0],
+    [0,0,0,0,-1,1,-1,0,0,0,0,0,0],
+    [0,0,0,0,0,-1,-1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+  ]
+
+  const markers = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,{type: 'probability', probability: 1},0,0,0,0,0,0,0,0,0],
+    [0,0,0,{type: 'probability', probability: -0.4},0,0,{type: 'circle', color:'#20E7C1', fill: false},{type: 'circle', color:'#20E7C1', fill: true, text:'2', textColor:'#ffffff'},0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,{type:'gradient', multiplier:1.3},0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,{type:'triangle', color: '#ff0000'},0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],
+  ]
+
+  return <Canvas size='700' on_click={fun_c} markers={markers} stones={mas} board_size={13}/>
 }
 
-export default App;
+export default App
