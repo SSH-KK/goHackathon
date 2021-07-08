@@ -1,8 +1,10 @@
 FROM node:alpine AS builder
 
 WORKDIR /app
-COPY . .
+COPY ./package.json ./package-lock.json ./
 RUN npm --legacy-peer-deps install
+COPY public ./public
+COPY src ./src
 RUN NODE_ENV=production npm run build
 
 FROM node:alpine

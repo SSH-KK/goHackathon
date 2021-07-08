@@ -1,1 +1,1 @@
-export const siteUrl = 'http://176.112.193.1'
+export const siteUrl = 'http://server.mindgamehack.ru'
